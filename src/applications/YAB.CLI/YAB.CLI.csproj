@@ -5,4 +5,11 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\YAB.Core.Pipelines\YAB.Core.Pipelines.csproj" />
+    <ProjectReference Include="..\..\libraries\YAB.Core\YAB.Core.csproj" />
+    <ProjectReference Include="..\..\libraries\YAB.Plugins.Injectables\YAB.Plugins.Injectables.csproj" />
+    <ProjectReference Include="..\..\libraries\YAB.Plugins\YAB.Plugins.csproj" />
+  </ItemGroup>
+
 </Project>
