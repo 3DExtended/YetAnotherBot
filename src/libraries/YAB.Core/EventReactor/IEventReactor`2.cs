@@ -7,7 +7,7 @@ namespace YAB.Core.EventReactor
 {
     public interface IEventReactor<TConfiguration, TEvent> : IEventReactor
         where TConfiguration : IEventReactorConfiguration
-        where TEvent : EventBase
+        where TEvent : IEventBase
     {
         public Task RunAsync(TConfiguration config, TEvent evt, CancellationToken cancellationToken);
     }

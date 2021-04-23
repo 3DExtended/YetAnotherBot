@@ -2,7 +2,7 @@
 
 namespace YAB.Core.Events
 {
-    public abstract class EventBase : IEventBase
+    public interface IEventBase
     {
         public Guid Id { get; set; }
     }

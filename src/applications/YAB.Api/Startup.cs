@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +12,11 @@ using Microsoft.OpenApi.Models;
 
 using SimpleInjector;
 
+using YAB.Core.Pipeline;
+using YAB.Plugins;
 using YAB.Plugins.Injectables;
+using YAB.Plugins.Injectables.Options;
+using YAB.Services.Common;
 
 namespace YAB.Api
 {
@@ -44,6 +53,23 @@ namespace YAB.Api
             {
                 endpoints.MapControllers();
             });
+
+            // TODO figure out where we want to locate this code and where we get a cancellation token from.
+            var backgroundTasks = _container.GetAllInstances<IBackgroundTask>().ToList();
+            foreach (var backgroundTask in backgroundTasks)
+            {
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        await backgroundTask.RunUntilCancelledAsync(default);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                });
+            }
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -71,8 +97,15 @@ namespace YAB.Api
 
         private void InitializeContainer()
         {
-            _container.RegisterInstance<IContainerAccessor>(new ContainerAccessor(_container));
+            var containerAccessor = new ContainerAccessor(_container);
+
+            _container.RegisterInstance(new TwitchOptions());
+            _container.RegisterInstance<IContainerAccessor>(containerAccessor);
             _container.RegisterInstance<IAvailablePluginsHelper>(new AvailablePluginsHelper());
+            _container.RegisterInstance<IPipelineStore>(new PipelineStore { Pipelines = new List<Pipeline> { } });
+            _container.RegisterSingleton(typeof(IEventSender), typeof(EventSenderInstantExecuter));
+
+            _container.LoadAllPlugins();
         }
     }
 }

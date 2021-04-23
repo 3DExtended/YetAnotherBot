@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAB.Plugins.Injectables", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAB.Api", "src\applications\YAB.Api\YAB.Api.csproj", "{420BD09D-FBD5-4614-94E5-C422BBD10661}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAB.Services.Common", "src\libraries\YAB.Services.Common\YAB.Services.Common.csproj", "{0562CCB3-EEFD-45F7-B1B9-ADF3F0D6F0A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{420BD09D-FBD5-4614-94E5-C422BBD10661}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{420BD09D-FBD5-4614-94E5-C422BBD10661}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{420BD09D-FBD5-4614-94E5-C422BBD10661}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0562CCB3-EEFD-45F7-B1B9-ADF3F0D6F0A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0562CCB3-EEFD-45F7-B1B9-ADF3F0D6F0A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0562CCB3-EEFD-45F7-B1B9-ADF3F0D6F0A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0562CCB3-EEFD-45F7-B1B9-ADF3F0D6F0A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{610EB5E6-16C3-498B-A840-28C638F48DC0} = {0A750672-B2E9-4011-A69C-66082B34BD0F}
 		{9835385D-3315-4133-A9F3-F0902439EB0A} = {0A750672-B2E9-4011-A69C-66082B34BD0F}
 		{420BD09D-FBD5-4614-94E5-C422BBD10661} = {54AD8A7E-E840-44A3-A5DF-6D6246A06DCA}
+		{0562CCB3-EEFD-45F7-B1B9-ADF3F0D6F0A9} = {0A750672-B2E9-4011-A69C-66082B34BD0F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF5317AD-B66F-45CE-B71D-D88FEAC09F21}

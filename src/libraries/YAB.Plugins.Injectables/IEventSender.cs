@@ -7,6 +7,6 @@ namespace YAB.Plugins.Injectables
 {
     public interface IEventSender
     {
-        public Task SendEvent(EventBase evt, CancellationToken cancellationToken);
+        public Task SendEvent(IEventBase evt, CancellationToken cancellationToken);
     }
 }
