@@ -1,7 +1,7 @@
 {
     "plugins": [{
         "PluginName": "TwitchBotPlugin",
-        "DllPath": "K:/Projekte/YetAnotherBot/extensions/TwitchBotPlugin/bin/Debug/net5.0/TwitchBotPlugin.dll",
+        "DllPath": "K:/Projekte/YetAnotherBot/extensions/TwitchBotPlugin/bin/Debug/net5.0/",
         "RepositoryUrl": ""
     }]
 }

@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +10,6 @@ using Microsoft.OpenApi.Models;
 using SimpleInjector;
 
 using YAB.Core.Pipeline;
-using YAB.Plugins;
 using YAB.Plugins.Injectables;
 using YAB.Plugins.Injectables.Options;
 using YAB.Services.Common;
@@ -53,23 +49,6 @@ namespace YAB.Api
             {
                 endpoints.MapControllers();
             });
-
-            // TODO figure out where we want to locate this code and where we get a cancellation token from.
-            var backgroundTasks = _container.GetAllInstances<IBackgroundTask>().ToList();
-            foreach (var backgroundTask in backgroundTasks)
-            {
-                Task.Run(async () =>
-                {
-                    try
-                    {
-                        await backgroundTask.RunUntilCancelledAsync(default);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
-                });
-            }
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

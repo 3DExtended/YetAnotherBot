@@ -1,0 +1,505 @@
+{
+    "pipes": [],
+    "interfaces": [],
+    "injectables": [],
+    "classes": [],
+    "directives": [],
+    "components": [
+        {
+            "name": "AppComponent",
+            "id": "component-AppComponent-6e838055c533cf7bd47d73daf2b5700e",
+            "file": "src/app/app.component.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-root",
+            "styleUrls": [
+                "./app.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./app.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "title",
+                    "defaultValue": "'YetAnotherBotClient'",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                }
+            ],
+            "methodsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class AppComponent {\n  title = 'YetAnotherBotClient';\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./app.component.css"
+                }
+            ],
+            "stylesData": "",
+            "templateData": "\n<app-bubble-with-icon [title]=\"'Hello'\" [message]=\"'message'\"></app-bubble-with-icon>\n"
+        },
+        {
+            "name": "BubbleWithIconComponent",
+            "id": "component-BubbleWithIconComponent-dee02d1769d5bd88238718a8ec3f906a",
+            "file": "src/stories/components/bubble-with-icon/bubble-with-icon.component.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-bubble-with-icon",
+            "styleUrls": [
+                "./bubble-with-icon.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./bubble-with-icon.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "message",
+                    "defaultValue": "\"\"",
+                    "line": 12,
+                    "type": "string"
+                },
+                {
+                    "name": "title",
+                    "defaultValue": "\"\"",
+                    "line": 11,
+                    "type": "string"
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onClick",
+                    "defaultValue": "new EventEmitter<MouseEvent>()",
+                    "line": 14,
+                    "type": "EventEmitter<MouseEvent>"
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 18
+                },
+                {
+                    "name": "onClickHandler",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "any"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 21,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-bubble-with-icon',\n  templateUrl: './bubble-with-icon.component.html',\n  styleUrls: ['./bubble-with-icon.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class BubbleWithIconComponent implements OnInit {\n\n  @Input() title: string = \"\";\n  @Input() message: string = \"\";\n\n  @Output() onClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public onClickHandler(event: any) {\n    this.onClick.next(event);\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import '../../../styles.css';\r\n\r\n.message-icon {\r\n  /*background-color: #487dff;*/\r\n  /*-webkit-mask-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxzdmcgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZS8+PGcgZGF0YS1uYW1lPSJtYWlsIGVtYWlsIGUtbWFpbCBsZXR0ZXIiIGlkPSJtYWlsX2VtYWlsX2UtbWFpbF9sZXR0ZXIiPjxwYXRoIGQ9Ik0yOCwxM2ExLDEsMCwwLDAtMSwxdjhhMSwxLDAsMCwxLTEsMUg2YTEsMSwwLDAsMS0xLTFWMTRhMSwxLDAsMCwwLTIsMHY4YTMsMywwLDAsMCwuODgsMi4xMkEzLDMsMCwwLDAsNiwyNUgyNmEzLDMsMCwwLDAsMi4xMi0uODhBMywzLDAsMCwwLDI5LDIyVjE0QTEsMSwwLDAsMCwyOCwxM1oiLz48cGF0aCBkPSJNMTUuNCwxOC44YTEsMSwwLDAsMCwxLjIsMEwyOC40MSw5Ljk0YTEsMSwwLDAsMCwuMy0xLjIzLDMuMDYsMy4wNiwwLDAsMC0uNTktLjgzQTMsMywwLDAsMCwyNiw3SDZhMywzLDAsMCwwLTIuMTIuODgsMy4wNiwzLjA2LDAsMCwwLS41OS44MywxLDEsMCwwLDAsLjMsMS4yM1pNNiw5SDI2YS45LjksMCwwLDEsLjI4LDBMMTYsMTYuNzUsNS43Miw5QS45LjksMCwwLDEsNiw5WiIvPjwvZz48L3N2Zz4=');*/\r\n  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxzdmcgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZS8+PGcgZGF0YS1uYW1lPSJtYWlsIGVtYWlsIGUtbWFpbCBsZXR0ZXIiIGlkPSJtYWlsX2VtYWlsX2UtbWFpbF9sZXR0ZXIiPjxwYXRoIGQ9Ik0yOCwxM2ExLDEsMCwwLDAtMSwxdjhhMSwxLDAsMCwxLTEsMUg2YTEsMSwwLDAsMS0xLTFWMTRhMSwxLDAsMCwwLTIsMHY4YTMsMywwLDAsMCwuODgsMi4xMkEzLDMsMCwwLDAsNiwyNUgyNmEzLDMsMCwwLDAsMi4xMi0uODhBMywzLDAsMCwwLDI5LDIyVjE0QTEsMSwwLDAsMCwyOCwxM1oiLz48cGF0aCBkPSJNMTUuNCwxOC44YTEsMSwwLDAsMCwxLjIsMEwyOC40MSw5Ljk0YTEsMSwwLDAsMCwuMy0xLjIzLDMuMDYsMy4wNiwwLDAsMC0uNTktLjgzQTMsMywwLDAsMCwyNiw3SDZhMywzLDAsMCwwLTIuMTIuODgsMy4wNiwzLjA2LDAsMCwwLS41OS44MywxLDEsMCwwLDAsLjMsMS4yM1pNNiw5SDI2YS45LjksMCwwLDEsLjI4LDBMMTYsMTYuNzUsNS43Miw5QS45LjksMCwwLDEsNiw5WiIvPjwvZz48L3N2Zz4=');\r\n  filter: invert(37%) sepia(95%) saturate(1010%) hue-rotate(205deg) brightness(102%) contrast(104%);\r\n}\r\n",
+                    "styleUrl": "./bubble-with-icon.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 14
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"relative inline-flex rounded-md shadow-sm cursor-pointer\" (click)=\"onClickHandler($event)\">\n  <span class=\"flex absolute h-3 w-3 top-0 right-0 -mt-1 -mr-1\">\n    <span class=\"animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75\"></span>\n    <span class=\"relative inline-flex rounded-full h-3 w-3 bg-purple-500\"></span>\n  </span>\n\n\n  <div class=\" p-6 max-w-sm mx-auto rounded-xl shadow-md flex items-center space-x-4 bg-white dark:bg-gray-800\">\n    <div class=\"flex-shrink-0 bg-white dark:bg-gray-800\">\n      <div class=\"h-12 w-12 message-icon\" alt=\"ChitChat Logo\"></div>\n    </div>\n    <div>\n      <div class=\"text-xl font-medium dark:text-white text-black dark:text-white\">{{title}}</div>\n      <p class=\"dark:text-white text-gray-500 dark:text-white\">{{message}}</p>\n    </div>\n  </div>\n</div>\n"
+        },
+        {
+            "name": "NavbarComponent",
+            "id": "component-NavbarComponent-0c0b5a6eea57fe7efa44285c451611cc",
+            "file": "src/stories/components/navbar/navbar.component.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-navbar",
+            "styleUrls": [
+                "./navbar.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./navbar.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "loggedIn",
+                    "defaultValue": "false",
+                    "line": 11,
+                    "type": "boolean"
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "isMobileMenuShowing",
+                    "defaultValue": "false",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17
+                },
+                {
+                    "name": "onMobileMenuButtonClicked",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 20,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-navbar',\n  templateUrl: './navbar.component.html',\n  styleUrls: ['./navbar.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class NavbarComponent implements OnInit {\n\n  @Input() loggedIn: boolean = false;\n\n  public isMobileMenuShowing: boolean = false;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public onMobileMenuButtonClicked(event: MouseEvent) {\n    this.isMobileMenuShowing = !this.isMobileMenuShowing;\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import '../../../styles.css';\r\n\r\n.message-icon {\r\n  /*background-color: #487dff;*/\r\n  /*-webkit-mask-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxzdmcgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZS8+PGcgZGF0YS1uYW1lPSJtYWlsIGVtYWlsIGUtbWFpbCBsZXR0ZXIiIGlkPSJtYWlsX2VtYWlsX2UtbWFpbF9sZXR0ZXIiPjxwYXRoIGQ9Ik0yOCwxM2ExLDEsMCwwLDAtMSwxdjhhMSwxLDAsMCwxLTEsMUg2YTEsMSwwLDAsMS0xLTFWMTRhMSwxLDAsMCwwLTIsMHY4YTMsMywwLDAsMCwuODgsMi4xMkEzLDMsMCwwLDAsNiwyNUgyNmEzLDMsMCwwLDAsMi4xMi0uODhBMywzLDAsMCwwLDI5LDIyVjE0QTEsMSwwLDAsMCwyOCwxM1oiLz48cGF0aCBkPSJNMTUuNCwxOC44YTEsMSwwLDAsMCwxLjIsMEwyOC40MSw5Ljk0YTEsMSwwLDAsMCwuMy0xLjIzLDMuMDYsMy4wNiwwLDAsMC0uNTktLjgzQTMsMywwLDAsMCwyNiw3SDZhMywzLDAsMCwwLTIuMTIuODgsMy4wNiwzLjA2LDAsMCwwLS41OS44MywxLDEsMCwwLDAsLjMsMS4yM1pNNiw5SDI2YS45LjksMCwwLDEsLjI4LDBMMTYsMTYuNzUsNS43Miw5QS45LjksMCwwLDEsNiw5WiIvPjwvZz48L3N2Zz4=');*/\r\n  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxzdmcgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZS8+PGcgZGF0YS1uYW1lPSJtYWlsIGVtYWlsIGUtbWFpbCBsZXR0ZXIiIGlkPSJtYWlsX2VtYWlsX2UtbWFpbF9sZXR0ZXIiPjxwYXRoIGQ9Ik0yOCwxM2ExLDEsMCwwLDAtMSwxdjhhMSwxLDAsMCwxLTEsMUg2YTEsMSwwLDAsMS0xLTFWMTRhMSwxLDAsMCwwLTIsMHY4YTMsMywwLDAsMCwuODgsMi4xMkEzLDMsMCwwLDAsNiwyNUgyNmEzLDMsMCwwLDAsMi4xMi0uODhBMywzLDAsMCwwLDI5LDIyVjE0QTEsMSwwLDAsMCwyOCwxM1oiLz48cGF0aCBkPSJNMTUuNCwxOC44YTEsMSwwLDAsMCwxLjIsMEwyOC40MSw5Ljk0YTEsMSwwLDAsMCwuMy0xLjIzLDMuMDYsMy4wNiwwLDAsMC0uNTktLjgzQTMsMywwLDAsMCwyNiw3SDZhMywzLDAsMCwwLTIuMTIuODgsMy4wNiwzLjA2LDAsMCwwLS41OS44MywxLDEsMCwwLDAsLjMsMS4yM1pNNiw5SDI2YS45LjksMCwwLDEsLjI4LDBMMTYsMTYuNzUsNS43Miw5QS45LjksMCwwLDEsNiw5WiIvPjwvZz48L3N2Zz4=');\r\n  filter: invert(37%) sepia(95%) saturate(1010%) hue-rotate(205deg) brightness(102%) contrast(104%);\r\n}\r\n",
+                    "styleUrl": "./navbar.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 13
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<!-- navbar goes here -->\n<nav class=\"bg-gray-100\">\n  <div class=\"max-w-6xl mx-auto px-4\">\n    <div class=\"flex justify-between\">\n\n      <div class=\"flex space-x-4\">\n        <!-- logo -->\n        <div>\n          <a href=\"#\" class=\"flex items-center py-5 px-2 text-gray-700 hover:text-gray-900\">\n            <svg class=\"h-6 w-6 mr-1 text-blue-400\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\"\n              stroke=\"currentColor\">\n              <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                d=\"M12 19l9 2-9-18-9 18 9-2zm0 0v-8\" />\n            </svg>\n            <span class=\"font-bold\">Better Dev</span>\n          </a>\n        </div>\n\n        <!-- primary nav -->\n        <div class=\"hidden md:flex items-center space-x-1\">\n          <a href=\"#\" class=\"py-5 px-3 text-gray-700 hover:text-gray-900\">Features</a>\n          <a href=\"#\" class=\"py-5 px-3 text-gray-700 hover:text-gray-900\">Pricing</a>\n        </div>\n      </div>\n\n      <!-- secondary nav -->\n      <div class=\"hidden md:flex items-center space-x-1\">\n        <a href=\"\" class=\"py-5 px-3\">Login</a>\n        <a href=\"\"\n          class=\"py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300\">Signup</a>\n      </div>\n\n      <!-- mobile button goes here -->\n      <div class=\"md:hidden flex items-center\">\n        <button class=\"mobile-menu-button\" (click)=\"onMobileMenuButtonClicked($event)\">\n          <svg class=\"w-6 h-6\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\" />\n          </svg>\n        </button>\n      </div>\n\n    </div>\n  </div>\n\n  <!-- mobile menu -->\n  <div [ngClass]=\"{'mobile-menu':true, 'hidden':isMobileMenuShowing 'md:hidden':true}\">\n    <a href=\"#\" class=\"block py-2 px-4 text-sm hover:bg-gray-200\">Features</a>\n    <a href=\"#\" class=\"block py-2 px-4 text-sm hover:bg-gray-200\">Pricing</a>\n  </div>\n</nav>\n"
+        }
+    ],
+    "modules": [
+        {
+            "name": "AppModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "AppComponent"
+                        },
+                        {
+                            "name": "BubbleWithIconComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": [
+                        {
+                            "name": "AppRoutingModule"
+                        }
+                    ]
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": [
+                        {
+                            "name": "AppComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "AppRoutingModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        }
+    ],
+    "miscellaneous": {
+        "variables": [
+            {
+                "name": "context",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/test.ts",
+                "type": "",
+                "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.prod.ts",
+                "type": "object",
+                "defaultValue": "{\n  production: true\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.ts",
+                "type": "object",
+                "defaultValue": "{\n  production: false\n}"
+            },
+            {
+                "name": "require",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/test.ts",
+                "type": "literal type"
+            }
+        ],
+        "functions": [],
+        "typealiases": [],
+        "enumerations": [],
+        "groupedVariables": {
+            "src/test.ts": [
+                {
+                    "name": "context",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/test.ts",
+                    "type": "",
+                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+                },
+                {
+                    "name": "require",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/test.ts",
+                    "type": "literal type"
+                }
+            ],
+            "src/environments/environment.prod.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.prod.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  production: true\n}"
+                }
+            ],
+            "src/environments/environment.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  production: false\n}"
+                }
+            ]
+        },
+        "groupedFunctions": {},
+        "groupedEnumerations": {},
+        "groupedTypeAliases": {}
+    },
+    "routes": {
+        "name": "<root>",
+        "kind": "module",
+        "className": "AppModule",
+        "children": [
+            {
+                "name": "routes",
+                "filename": "src/app/app-routing.module.ts",
+                "module": "AppRoutingModule",
+                "children": [],
+                "kind": "module"
+            }
+        ]
+    },
+    "coverage": {
+        "count": 0,
+        "status": "low",
+        "files": [
+            {
+                "filePath": "src/app/app.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "AppComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/environments/environment.prod.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "environment",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/environments/environment.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "environment",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/components/bubble-with-icon/bubble-with-icon.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "BubbleWithIconComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/components/navbar/navbar.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "NavbarComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/test.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "context",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/test.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "require",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            }
+        ]
+    }
+}

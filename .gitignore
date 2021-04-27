@@ -335,3 +335,4 @@ ASALocalRun/
 desktop.ini
 /extensions
 /src/applications/YAB.Api/*.encjson
+/*.encjson
