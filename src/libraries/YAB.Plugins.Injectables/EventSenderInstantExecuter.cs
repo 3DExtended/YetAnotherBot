@@ -1,23 +1,30 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using Microsoft.Extensions.Logging;
 
+using YAB.Core.EventReactor;
 using YAB.Core.Events;
 
 namespace YAB.Plugins.Injectables
 {
     public class EventSenderInstantExecuter : IEventSender
     {
+        private readonly IList<IEventReactor> _allEventReactors;
         private readonly IContainerAccessor _containerAccessor;
 
         private readonly ILogger _logger;
 
-        public EventSenderInstantExecuter(IContainerAccessor containerAccessor, ILogger logger)
+        public EventSenderInstantExecuter(IContainerAccessor containerAccessor, ILogger logger, IList<IEventReactor> allEventReactors)
         {
             _containerAccessor = containerAccessor;
             _logger = logger;
+            _allEventReactors = allEventReactors;
         }
 
         public static T CastObject<T>(object obj) where T : class
@@ -43,18 +50,24 @@ namespace YAB.Plugins.Injectables
                     var typeOfConfig = configuration.GetType();
                     var interfaceWithHandlerDetails = typeOfConfig.GetInterfaces().Single(i => i.IsGenericType && i.GetGenericArguments().Length == 2);
                     var typeOfHandler = interfaceWithHandlerDetails.GetGenericArguments()[0];
+                    var handlerInstance = (dynamic)_allEventReactors.Single(r => r.GetType().Name == typeOfHandler.Name);
 
-                    // this is of type IEventReactor<IEventReactorConfiguration, IEventBase>
-                    // in order to call the RunAsync method we have to cast the event to the correct type
-                    var handlerInstance = (dynamic)_containerAccessor.Container.GetInstance(typeOfHandler);
-
-                    var correctEventType = typeOfHandler.GetInterfaces().Single(i => i.IsGenericType && i.GetGenericArguments().Length == 2).GetGenericArguments()[1];
+                    var correctConfigurationType = ((Type)(handlerInstance.GetType())).GetInterfaces().Single(i => i.IsGenericType && i.GetGenericArguments().Length == 2).GetGenericArguments()[0];
+                    var correctEventType = ((Type)(handlerInstance.GetType())).GetInterfaces().Single(i => i.IsGenericType && i.GetGenericArguments().Length == 2).GetGenericArguments()[1];
                     var castMethodToCorrectEventType = GetType().GetMethods().Single(m => m.Name.Contains("CastObject")).MakeGenericMethod(correctEventType);
                     var castedEvt = (dynamic)castMethodToCorrectEventType.Invoke(null, new[] { evt });
 
+                    // we have to use a mapper here in order to convert a Api based configuration into the type of the plugin (or vice versa)
+                    var config = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap(configuration.GetType(), correctConfigurationType);
+                    });
+
+                    var mapper = new AutoMapper.Mapper(config);
+
                     // public Task RunAsync(TConfiguration config, TEvent evt, CancellationToken cancellationToken);
-                    var runAsyncMethod = typeOfHandler.GetMethods().Single(m => m.Name.Contains("RunAsync"));
-                    await runAsyncMethod.Invoke(handlerInstance, new[] { configuration, castedEvt, cancellationToken }).ConfigureAwait(false);
+                    var runAsyncMethod = ((Type)(handlerInstance.GetType())).GetMethods().Single(m => m.Name.Contains("RunAsync"));
+                    await runAsyncMethod.Invoke(handlerInstance, new[] { mapper.Map(configuration, configuration.GetType(), correctConfigurationType), (object)evt, cancellationToken }).ConfigureAwait(false);
                 }
             }
         }

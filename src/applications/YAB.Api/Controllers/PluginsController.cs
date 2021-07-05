@@ -26,21 +26,21 @@ namespace YAB.Api.Controllers
             _availablePluginsHelper = containerAccessor.Container.GetInstance<IAvailablePluginsHelper>();
         }
 
-        [HttpGet]
-        public Task<SupportedPlugins> Get(CancellationToken cancellationToken)
-        {
-            return this._availablePluginsHelper.GetSupportedPlugins(cancellationToken);
-        }
-
         [HttpGet("events")]
-        public IActionResult GetAllEvents()
+        public IActionResult GetAllEventsAsync()
         {
             var result = JsonConvert.SerializeObject(_containerAccessor.Container.GetAllInstances<IEventBase>().ToList(), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
             return Ok(result);
         }
 
+        [HttpGet]
+        public Task<SupportedPlugins> GetAsync(CancellationToken cancellationToken)
+        {
+            return this._availablePluginsHelper.GetSupportedPlugins(cancellationToken);
+        }
+
         [HttpPost("events/send")]
-        public async Task<IActionResult> SendEvent(string eventDefinition, CancellationToken cancellationToken)
+        public async Task<IActionResult> SendEventAsync(string eventDefinition, CancellationToken cancellationToken)
         {
             var result = JsonConvert.DeserializeObject(eventDefinition, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
             var eventSender = _containerAccessor.Container.GetInstance<IEventSender>();

@@ -1,0 +1,28 @@
+YetAnotherBot:
+    ☐ API:
+        ☐ Controller pipelines
+            ✔ Return registered pipelines @done(21-07-05 17:54)
+            ✔ Return single pipeline @done(21-07-05 17:55)
+            ✔ Create new piplines @done(21-07-05 19:41)
+            ☐ Edit pipelines
+        ☐ EventReactorController
+            ✔ Return available event reator configurations @done(21-07-05 18:26)
+            ☐ Serialized properties of event reactor configurations currenty loose their information about their value type. 
+                Maybe its a good idea to keep every property a string value. Thus, the frontend would know what to send and the backend knows what to expect.
+                    Downside is that we have to parse ints and other values in the event reactors of every pluging but maybe thats a tradeoff we are okay with
+        ☐ Authentication 
+        ☐ Bot Status Controller 
+            ☐ Start the bot
+            ☐ End the bot
+            ☐ Reload (for registering new pipelines) 
+    ☐ Frontend:
+        ☐ Login Page
+        ☐ Status page for the bot
+            Maybe show number of processed events, last executed pipelines and such
+        ☐ Pipeline Overview page
+            See all pipelines, their request event and the number of executed commands
+        ☐ Pipeline Details page 
+            Graphical overview of my pipeline
+        ☐ Pipeline Edit view
+            Some way of creating end editing new pipelines
+        ☐ Stream overlay page (which we can use in OBS)

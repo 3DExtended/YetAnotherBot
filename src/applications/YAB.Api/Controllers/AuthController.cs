@@ -23,7 +23,7 @@ namespace YAB.Api.Controllers
         }
 
         [HttpGet("setup/twitch")]
-        public bool LoadSecrets(string botPassword, CancellationToken cancellationToken)
+        public bool LoadSecretsAsync(string botPassword, CancellationToken cancellationToken)
         {
             var options = _containerAccessor.Container.GetInstance<TwitchOptions>();
             options.Load(botPassword);
@@ -50,7 +50,7 @@ namespace YAB.Api.Controllers
         }
 
         [HttpPost("setup/twitch")]
-        public bool SetTwitchClientSecrets(string botPassword, string twitchBotToken, string twitchBotUsername, string twitchChannelToJoin)
+        public bool SetTwitchClientSecretsAsync(string botPassword, string twitchBotToken, string twitchBotUsername, string twitchChannelToJoin)
         {
             var options = _containerAccessor.Container.GetInstance<TwitchOptions>();
 
