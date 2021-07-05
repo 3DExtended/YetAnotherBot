@@ -32,7 +32,7 @@ namespace YAB.Plugins.Injectables.Options
             }
         }
 
-        public void Save()
+        public void Save(string password)
         {
             // TODO encrypt file
             File.WriteAllText(filename, JsonSerializer.Serialize((T)this));

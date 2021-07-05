@@ -24,10 +24,6 @@ namespace YAB.Api.Controllers
         {
             _containerAccessor = containerAccessor;
             _availablePluginsHelper = containerAccessor.Container.GetInstance<IAvailablePluginsHelper>();
-            // var asdf = containerAccessor.Container.GetAllInstances<IBackgroundTask>().ToList();
-            // var asdf2 = containerAccessor.Container.GetAllInstances<IEventReactor>().ToList();
-            // var asdf3 = containerAccessor.Container.GetAllInstances<IEventBase>().ToList();
-            logger.LogInformation("Hello world");
         }
 
         [HttpGet]

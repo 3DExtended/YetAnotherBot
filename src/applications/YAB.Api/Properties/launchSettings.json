@@ -3,7 +3,7 @@
   "profiles": {
     "YAB.Api": {
       "commandName": "Project",
-      "workingDirectory": "K:\\Projekte\\YetAnotherBot",
+      "workingDirectory": "D:\\projects\\YetAnotherBot\\",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {

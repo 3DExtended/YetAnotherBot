@@ -27,6 +27,25 @@ namespace YAB.Services.Common
             var loadedEventReactors = new List<Type>();
             var loadedBackgroundTasks = new List<Type>();
 
+            var lastCounterOfExceptionsWhileLoading = int.MaxValue;
+            var counterOfExceptionsWhileLoading = int.MaxValue - 1;
+            while (lastCounterOfExceptionsWhileLoading > counterOfExceptionsWhileLoading)
+            {
+                lastCounterOfExceptionsWhileLoading = counterOfExceptionsWhileLoading;
+                counterOfExceptionsWhileLoading = 0;
+                foreach (var assemblyFilePath in pluginFiles)
+                {
+                    try
+                    {
+                        Assembly.LoadFrom(assemblyFilePath);
+                    }
+                    catch
+                    {
+                        counterOfExceptionsWhileLoading++;
+                    }
+                }
+            }
+
             foreach (var plugin in pluginFiles)
             {
                 try
@@ -43,7 +62,7 @@ namespace YAB.Services.Common
                             loadedAssemblies.Add(asm);
                         }
 
-                        var modules = asm.GetTypes().Where(t => !t.IsAbstract && !t.IsGenericType && typeof(IPluginModule).IsAssignableFrom(t));
+                        var modules = asm.GetExportedTypes().Where(t => !t.IsAbstract && !t.IsGenericType && typeof(IPluginModule).IsAssignableFrom(t));
                         foreach (var module in modules)
                         {
                             var moduleInstance = (IPluginModule)Activator.CreateInstance(module);

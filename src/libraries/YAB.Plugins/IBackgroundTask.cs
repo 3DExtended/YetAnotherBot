@@ -7,6 +7,8 @@ namespace YAB.Plugins
 {
     public interface IBackgroundTask : IPlugin
     {
+        public Task InitializeAsync(CancellationToken cancellation);
+
         public Task RunUntilCancelledAsync(CancellationToken cancellationToken);
     }
 }

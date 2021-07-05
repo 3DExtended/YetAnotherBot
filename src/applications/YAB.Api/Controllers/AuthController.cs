@@ -22,7 +22,7 @@ namespace YAB.Api.Controllers
             _containerAccessor = containerAccessor;
         }
 
-        [HttpPost]
+        [HttpGet("setup/twitch")]
         public bool LoadSecrets(string botPassword, CancellationToken cancellationToken)
         {
             var options = _containerAccessor.Container.GetInstance<TwitchOptions>();
@@ -36,6 +36,7 @@ namespace YAB.Api.Controllers
                 {
                     try
                     {
+                        await backgroundTask.InitializeAsync(default);
                         await backgroundTask.RunUntilCancelledAsync(default);
                     }
                     catch (Exception ex)
@@ -45,6 +46,19 @@ namespace YAB.Api.Controllers
                 });
             }
 
+            return true;
+        }
+
+        [HttpPost("setup/twitch")]
+        public bool SetTwitchClientSecrets(string botPassword, string twitchBotToken, string twitchBotUsername, string twitchChannelToJoin)
+        {
+            var options = _containerAccessor.Container.GetInstance<TwitchOptions>();
+
+            options.TwitchBotToken = twitchBotToken;
+            options.TwitchBotUsername = twitchBotUsername;
+            options.TwitchChannelToJoin = twitchChannelToJoin;
+
+            options.Save(botPassword);
             return true;
         }
     }
