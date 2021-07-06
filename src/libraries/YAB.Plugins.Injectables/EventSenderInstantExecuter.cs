@@ -52,8 +52,9 @@ namespace YAB.Plugins.Injectables
                     var typeOfHandler = interfaceWithHandlerDetails.GetGenericArguments()[0];
                     var handlerInstance = (dynamic)_allEventReactors.Single(r => r.GetType().Name == typeOfHandler.Name);
 
-                    var correctConfigurationType = ((Type)(handlerInstance.GetType())).GetInterfaces().Single(i => i.IsGenericType && i.GetGenericArguments().Length == 2).GetGenericArguments()[0];
-                    var correctEventType = ((Type)(handlerInstance.GetType())).GetInterfaces().Single(i => i.IsGenericType && i.GetGenericArguments().Length == 2).GetGenericArguments()[1];
+                    var interfaceGenericArguments = ((Type)(handlerInstance.GetType())).GetInterfaces().Single(i => i.IsGenericType && i.GetGenericArguments().Length == 2 && GetParentClassesAndSelf(evt.GetType()).Any(t => t.FullName.Contains(i.GetGenericArguments()[1].Name))).GetGenericArguments();
+                    var correctConfigurationType = interfaceGenericArguments[0];
+                    var correctEventType = interfaceGenericArguments[1];
                     var castMethodToCorrectEventType = GetType().GetMethods().Single(m => m.Name.Contains("CastObject")).MakeGenericMethod(correctEventType);
                     var castedEvt = (dynamic)castMethodToCorrectEventType.Invoke(null, new[] { evt });
 
@@ -66,10 +67,29 @@ namespace YAB.Plugins.Injectables
                     var mapper = new AutoMapper.Mapper(config);
 
                     // public Task RunAsync(TConfiguration config, TEvent evt, CancellationToken cancellationToken);
-                    var runAsyncMethod = ((Type)(handlerInstance.GetType())).GetMethods().Single(m => m.Name.Contains("RunAsync"));
+                    var runAsyncMethod = ((Type)(handlerInstance.GetType()))
+                        .GetMethods()
+                        .Single(m => m.Name.Contains("RunAsync")
+                            && m.GetParameters()[1].ParameterType.FullName.Contains(correctEventType.Name));
                     await runAsyncMethod.Invoke(handlerInstance, new[] { mapper.Map(configuration, configuration.GetType(), correctConfigurationType), (object)evt, cancellationToken }).ConfigureAwait(false);
                 }
             }
+        }
+
+        private IEnumerable<Type> GetParentClassesAndSelf(Type childType)
+        {
+            AppDomain root = AppDomain.CurrentDomain;
+
+            var parentTypes = root.GetAssemblies()
+                .Where(a => !a.IsDynamic)
+                .SelectMany(a => a.GetExportedTypes())
+                .Where(t => childType.IsSubclassOf(t) || t == childType);
+
+            Console.WriteLine("Check parent classes");
+            Console.WriteLine(childType.FullName);
+            Console.WriteLine(string.Join(", ", parentTypes.Select(t => t.FullName)));
+
+            return parentTypes;
         }
     }
 }

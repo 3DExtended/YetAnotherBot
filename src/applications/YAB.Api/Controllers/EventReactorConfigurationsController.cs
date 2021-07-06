@@ -31,16 +31,20 @@ namespace YAB.Api.Controllers
 
             foreach (var eventReactor in _eventReactors)
             {
-                var eventReactor2Interface = eventReactor.GetType().GetInterfaces().Single(i => i.IsGenericType && i.GetGenericArguments().Length == 2 && i.Name == typeof(IEventReactor<,>).Name);
-                var configurationType = eventReactor2Interface.GetGenericArguments()[0];
-                var configurationInstance = (IEventReactorConfiguration)Activator.CreateInstance(configurationType);
-                var eventType = eventReactor2Interface.GetGenericArguments()[1];
+                var eventReactor2Interfaces = eventReactor.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericArguments().Length == 2 && i.Name == typeof(IEventReactor<,>).Name);
 
-                result.Add(new EventReactorConfigurationDto
+                foreach (var eventReactor2Interface in eventReactor2Interfaces)
                 {
-                    EventTypeName = eventType.Name,
-                    SeralizedEventReactorConfiguration = JsonConvert.SerializeObject(configurationInstance, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })
-                });
+                    var configurationType = eventReactor2Interface.GetGenericArguments()[0];
+                    var configurationInstance = (IEventReactorConfiguration)Activator.CreateInstance(configurationType);
+                    var eventType = eventReactor2Interface.GetGenericArguments()[1];
+
+                    result.Add(new EventReactorConfigurationDto
+                    {
+                        EventTypeName = eventType.Name,
+                        SeralizedEventReactorConfiguration = JsonConvert.SerializeObject(configurationInstance, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })
+                    });
+                }
             }
 
             return Task.FromResult<IActionResult>(Ok(result));

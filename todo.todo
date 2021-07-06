@@ -4,6 +4,7 @@ YetAnotherBot:
             ✔ Return registered pipelines @done(21-07-05 17:54)
             ✔ Return single pipeline @done(21-07-05 17:55)
             ✔ Create new piplines @done(21-07-05 19:41)
+            ☐ Save pipelines in file?
             ☐ Edit pipelines
         ☐ EventReactorController
             ✔ Return available event reator configurations @done(21-07-05 18:26)
