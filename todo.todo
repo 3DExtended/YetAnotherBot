@@ -16,6 +16,9 @@ YetAnotherBot:
             ☐ Start the bot
             ☐ End the bot
             ☐ Reload (for registering new pipelines) 
+        ☐ Pipelines
+            ✔ Add filtering of events for a given pipeline. @done(21-07-06 19:43)
+            ☐ What about a pipeline that does not need filtering? Maybe add an empty group with an or and condition? 
     ☐ Frontend:
         ☐ Login Page
         ☐ Status page for the bot

@@ -42,6 +42,7 @@ namespace YAB.Api.Controllers
 
             return Task.FromResult<IActionResult>(Ok(new PipelineDto
             {
+                EventFilter = pipeline.EventFilter,
                 EventName = pipeline.EventType.FullName,
                 EventReactors = pipeline.PipelineHandlerConfigurations.Select(t => t.GetType().FullName).ToList(),
                 SerializedEventReactorConfiguration = pipeline.PipelineHandlerConfigurations.Select(c => JsonConvert.SerializeObject(c, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })).ToList()
@@ -52,14 +53,17 @@ namespace YAB.Api.Controllers
         public Task<IActionResult> GetRegisteredPipelinesAsync(CancellationToken cancellationToken)
         {
             var pipelineStore = _containerAccessor.Container.GetInstance<IPipelineStore>();
+            List<PipelineDto> resultDtos = pipelineStore.Pipelines.Select(p => new PipelineDto
+            {
+                EventFilter = p.EventFilter,
+                EventName = p.EventType.FullName,
+                EventReactors = p.PipelineHandlerConfigurations.Select(t => t.GetType().FullName).ToList(),
+                SerializedEventReactorConfiguration = p.PipelineHandlerConfigurations.Select(c => JsonConvert.SerializeObject(c, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })).ToList()
+            }).ToList();
+
             return Task.FromResult<IActionResult>(
-                Ok(
-                    pipelineStore.Pipelines.Select(p => new PipelineDto
-                    {
-                        EventName = p.EventType.FullName,
-                        EventReactors = p.PipelineHandlerConfigurations.Select(t => t.GetType().FullName).ToList(),
-                        SerializedEventReactorConfiguration = p.PipelineHandlerConfigurations.Select(c => JsonConvert.SerializeObject(c, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })).ToList()
-                    }).ToList()));
+                base.Ok(
+                    resultDtos));
         }
 
         [HttpPost()]
@@ -85,7 +89,7 @@ namespace YAB.Api.Controllers
                 eventReactorConfigurations.Add(configuration);
             }
 
-            var newPipeline = new Pipeline(eventType.GetType(), eventReactorConfigurations);
+            var newPipeline = new Pipeline(eventType.GetType(), pipelineDto.EventFilter, eventReactorConfigurations);
 
             _pipelineStore.Pipelines.Add(newPipeline);
             return Task.FromResult<IActionResult>(Ok());

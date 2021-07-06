@@ -57,7 +57,13 @@ namespace YAB.Api
             // neccessary in order to inject IContainerAccessor into controller
             services.AddSingleton(typeof(IContainerAccessor), new ContainerAccessor(_container));
 
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All;
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "YAB.Api", Version = "v1" });

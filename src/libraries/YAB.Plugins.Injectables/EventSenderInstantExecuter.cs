@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 using YAB.Core.EventReactor;
 using YAB.Core.Events;
+using YAB.Core.Pipelines.Filter;
 
 namespace YAB.Plugins.Injectables
 {
@@ -44,6 +45,11 @@ namespace YAB.Plugins.Injectables
             // execute all pipelines (should not be many...)
             foreach (var pipeline in pipelinesToExecute)
             {
+                if (!FiltersAllowExecution(pipeline.EventFilter, evt))
+                {
+                    continue;
+                }
+
                 // foreach configuration of this pipeline, get the instance of the reactor from the container and execute it
                 foreach (var configuration in pipeline.PipelineHandlerConfigurations)
                 {
@@ -74,6 +80,71 @@ namespace YAB.Plugins.Injectables
                     await runAsyncMethod.Invoke(handlerInstance, new[] { mapper.Map(configuration, configuration.GetType(), correctConfigurationType), (object)evt, cancellationToken }).ConfigureAwait(false);
                 }
             }
+        }
+
+        private bool FiltersAllowExecution(FilterBase filterBase, IEventBase evt)
+        {
+            if (filterBase is FilterGroup filterGroup)
+            {
+                if (filterGroup.Filters.Count == 0)
+                {
+                    return true;
+                }
+
+                foreach (var filterBaseInGroup in filterGroup.Filters)
+                {
+                    var subFilterAllowsExecution = FiltersAllowExecution(filterBaseInGroup, evt);
+                    switch (filterGroup.Operator)
+                    {
+                        case LogicalOperator.And:
+                            if (!subFilterAllowsExecution) return false;
+                            break;
+
+                        case LogicalOperator.Or:
+                            if (subFilterAllowsExecution) return true;
+                            break;
+                    }
+                }
+
+                if (filterGroup.Operator == LogicalOperator.And)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (filterBase is Filter filter)
+            {
+                var listOfProperties = evt.GetType().GetProperties().Where(p => p.CanRead).ToList();
+                var propertyOfFilterComparison = listOfProperties
+                        .SingleOrDefault(p => p.Name.Equals(filter.PropertyName, StringComparison.CurrentCultureIgnoreCase));
+
+                if (propertyOfFilterComparison == null)
+                {
+                    return false;
+                }
+
+                var eventPropertyString = propertyOfFilterComparison.GetValue(evt).ToString();
+
+                switch (filter.Operator)
+                {
+                    case FilterOperator.Contains:
+                        return eventPropertyString.Contains(filter.FilterValue, filter.IgnoreValueCasing ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+
+                    case FilterOperator.NotContains:
+                        return !eventPropertyString.Contains(filter.FilterValue, filter.IgnoreValueCasing ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+
+                    case FilterOperator.Equals:
+                        return eventPropertyString.Equals(filter.FilterValue, filter.IgnoreValueCasing ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+
+                    case FilterOperator.NotEquals:
+                        return !eventPropertyString.Equals(filter.FilterValue, filter.IgnoreValueCasing ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+                }
+            }
+
+            throw new NotImplementedException("This kind of filter type is not implemented.");
         }
 
         private IEnumerable<Type> GetParentClassesAndSelf(Type childType)
