@@ -4,7 +4,7 @@ YetAnotherBot:
             ✔ Return registered pipelines @done(21-07-05 17:54)
             ✔ Return single pipeline @done(21-07-05 17:55)
             ✔ Create new piplines @done(21-07-05 19:41)
-            ☐ Save pipelines in file?
+            ✔ Save pipelines in file? @done(21-07-07 20:14)
             ☐ Edit pipelines
         ☐ EventReactorController
             ✔ Return available event reator configurations @done(21-07-05 18:26)
@@ -30,3 +30,8 @@ YetAnotherBot:
         ☐ Pipeline Edit view
             Some way of creating end editing new pipelines
         ☐ Stream overlay page (which we can use in OBS)
+    ☐ Twitch Plugin
+        ✔ Currently, there is now way of responding with predefined text in chat. @done(21-07-07 20:26)
+        ☐ Add new EventReactor to shout out a user using the command "!shoutout username"
+        ☐ Add permissions to commands
+            Currently, every user is allowed to execute every command. We also want be able to restrict commands and pipeline execution for certain user groups.
