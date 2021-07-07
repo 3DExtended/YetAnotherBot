@@ -17,13 +17,12 @@ namespace YAB.Plugins.Injectables
     public class EventSenderInstantExecuter : IEventSender
     {
         private readonly IList<IEventReactor> _allEventReactors;
-        private readonly IContainerAccessor _containerAccessor;
-
         private readonly ILogger _logger;
+        private readonly IPipelineStore _pipelineStore;
 
-        public EventSenderInstantExecuter(IContainerAccessor containerAccessor, ILogger logger, IList<IEventReactor> allEventReactors)
+        public EventSenderInstantExecuter(IPipelineStore pipelineStore, ILogger logger, IList<IEventReactor> allEventReactors)
         {
-            _containerAccessor = containerAccessor;
+            _pipelineStore = pipelineStore;
             _logger = logger;
             _allEventReactors = allEventReactors;
         }
@@ -35,12 +34,10 @@ namespace YAB.Plugins.Injectables
 
         public async Task SendEvent(IEventBase evt, CancellationToken cancellationToken)
         {
-            // load all pipelines
-            // load the store every time you try to send an event such that we can execute the newest pipelines.
-            var pipelineStore = _containerAccessor.Container.GetInstance<IPipelineStore>();
-
             // find pipelines for event
-            var pipelinesToExecute = pipelineStore.Pipelines.Where(p => p.EventType == evt.GetType());
+            Console.WriteLine($"Number of pipelines in executor: {_pipelineStore.Pipelines.Count}");
+            Console.WriteLine($"Event to execute pipelines for: {evt.GetType().FullName}");
+            var pipelinesToExecute = _pipelineStore.Pipelines.Where(p => p.EventType.Name == evt.GetType().Name);
 
             // execute all pipelines (should not be many...)
             foreach (var pipeline in pipelinesToExecute)

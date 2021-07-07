@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +7,6 @@ using Microsoft.OpenApi.Models;
 
 using SimpleInjector;
 
-using YAB.Core.Pipeline;
 using YAB.Plugins.Injectables;
 using YAB.Plugins.Injectables.Options;
 using YAB.Services.Common;
@@ -84,10 +81,11 @@ namespace YAB.Api
         {
             var containerAccessor = new ContainerAccessor(_container);
 
+            _container.RegisterInstance(new BotOptions());
             _container.RegisterInstance(new TwitchOptions());
             _container.RegisterInstance<IContainerAccessor>(containerAccessor);
             _container.RegisterInstance<IAvailablePluginsHelper>(new AvailablePluginsHelper());
-            _container.RegisterInstance<IPipelineStore>(new PipelineStore { Pipelines = new List<Pipeline> { } });
+            _container.RegisterSingleton<IPipelineStore, PipelineStore>();
             _container.RegisterSingleton(typeof(IEventSender), typeof(EventSenderInstantExecuter));
 
             _container.LoadAllPlugins();
