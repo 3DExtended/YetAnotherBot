@@ -1,0 +1,30 @@
+@import '../../../styles.css';
+
+button:focus {
+  border: none;
+  outline: none;
+  background: #F8F8F8;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+button.primary-button {
+  background-color: var(--primary-button-color);
+  filter: brightness(100%);
+}
+
+button.primary-button:hover {
+  background-color: var(--primary-button-color);
+  filter: var(--hover-background-color-brightness-filter);
+}
+
+button.secondary-button {
+  background-color: var(--secondary-button-color);
+  filter: brightness(100%);
+}
+
+button.secondary-button:hover {
+  background-color: var(--secondary-button-color);
+  filter: var(--hover-background-color-brightness-filter);
+}

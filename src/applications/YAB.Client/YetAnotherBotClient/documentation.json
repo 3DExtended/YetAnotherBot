@@ -1,13 +1,148 @@
 {
     "pipes": [],
-    "interfaces": [],
+    "interfaces": [
+        {
+            "name": "Employee",
+            "id": "interface-Employee-6995537ddda0209239c1d354cd9a559a",
+            "file": "src/stories/components/pipeline-graph/pipeline-graph.component.ts",
+            "type": "interface",
+            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\nimport { Edge, Node } from '@swimlane/ngx-graph';\nimport * as shape from 'd3-shape';\n\nexport interface Employee {\n  id: string;\n  name: string;\n  office: string;\n  role: string;\n  backgroundColor: string;\n  width: number;\n  height: number;\n  upperManagerId?: string;\n}\n\n@Component({\n  selector: 'app-pipeline-graph',\n  templateUrl: './pipeline-graph.component.html',\n  styleUrls: ['./pipeline-graph.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class PipelineGraphComponent implements OnInit {\n\n  @Input() employees: Employee[] = [];\n\n  public nodes: Node[] = [];\n  public links: Edge[] = [];\n  public layoutSettings = {\n    orientation: 'TB'\n  };\n  public curve: any = shape.curveNatural;\n\n  constructor() {\n    this.employees = [\n      {\n        id: '1',\n        name: 'Employee 1',\n        office: 'Office 1',\n        role: 'Manager',\n        backgroundColor: '#DC143C',\n        width: 180,\n        height: 100\n      },\n      {\n        id: '2',\n        name: 'Employee 2',\n        office: 'Office 2',\n        role: 'Engineer',\n        backgroundColor: '#00FFFF',\n        upperManagerId: '1',\n        width: 180,\n        height: 100\n      },\n      {\n        id: '3',\n        name: 'Employee 3',\n        office: 'Office 3',\n        role: 'Engineer',\n        backgroundColor: '#00FFFF',\n        upperManagerId: '1',\n        width: 180,\n        height: 100\n      },\n      {\n        id: '4',\n        name: 'Employee 4',\n        office: 'Office 4',\n        role: 'Engineer',\n        backgroundColor: '#00FFFF',\n        upperManagerId: '1',\n        width: 180,\n        height: 100\n      },\n      {\n        id: '5',\n        name: 'Employee 5',\n        office: 'Office 5',\n        role: 'Student',\n        backgroundColor: '#8A2BE2',\n        upperManagerId: '4',\n        width: 180,\n        height: 100\n      }\n    ];\n  }\n\n  public ngOnInit(): void {\n    for (const employee of this.employees) {\n      const node: Node = {\n        id: employee.id,\n        label: employee.name,\n        data: {\n          office: employee.office,\n          role: employee.role,\n          backgroundColor: employee.backgroundColor\n        },\n        dimension: { width: employee.width, height: employee.height }\n      };\n\n      this.nodes.push(node);\n    }\n\n    for (const employee of this.employees) {\n      if (!employee.upperManagerId) {\n        continue;\n      }\n\n      const edge: Edge = {\n        source: employee.upperManagerId,\n        target: employee.id,\n        label: '',\n        data: {\n          linkText: 'Manager of'\n        }\n      };\n\n      this.links.push(edge);\n    }\n  }\n\n  public getStyles(node: Node): any {\n    return {\n      'background-color': node.data.backgroundColor,\n\n    };\n  }\n}\n",
+            "properties": [
+                {
+                    "name": "backgroundColor",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                },
+                {
+                    "name": "height",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 12
+                },
+                {
+                    "name": "id",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
+                },
+                {
+                    "name": "office",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "role",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                },
+                {
+                    "name": "upperManagerId",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 13
+                },
+                {
+                    "name": "width",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 150,
+            "methods": []
+        },
+        {
+            "name": "LineGraphDataset",
+            "id": "interface-LineGraphDataset-31f3472917b13adaacdea10063ae2d4c",
+            "file": "src/stories/components/line-graph/line-graph-dataset.ts",
+            "type": "interface",
+            "sourceCode": "import { Color } from \"ng2-charts\";\r\n\r\nexport interface LineGraphDataset {\r\n  lines: LineGraphLine[];\r\n  xAxisLabels: string[];\r\n  showCharLegend: boolean;\r\n};\r\n\r\nexport interface LineGraphLine {\r\n  values: number[];\r\n  label: string;\r\n  lineColorSettings: Color;\r\n};\r\n",
+            "properties": [
+                {
+                    "name": "lines",
+                    "type": "LineGraphLine[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "showCharLegend",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                },
+                {
+                    "name": "xAxisLabels",
+                    "type": "string[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 150,
+            "methods": []
+        },
+        {
+            "name": "LineGraphLine",
+            "id": "interface-LineGraphLine-31f3472917b13adaacdea10063ae2d4c",
+            "file": "src/stories/components/line-graph/line-graph-dataset.ts",
+            "type": "interface",
+            "sourceCode": "import { Color } from \"ng2-charts\";\r\n\r\nexport interface LineGraphDataset {\r\n  lines: LineGraphLine[];\r\n  xAxisLabels: string[];\r\n  showCharLegend: boolean;\r\n};\r\n\r\nexport interface LineGraphLine {\r\n  values: number[];\r\n  label: string;\r\n  lineColorSettings: Color;\r\n};\r\n",
+            "properties": [
+                {
+                    "name": "label",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                },
+                {
+                    "name": "lineColorSettings",
+                    "type": "Color",
+                    "optional": false,
+                    "description": "",
+                    "line": 12
+                },
+                {
+                    "name": "values",
+                    "type": "number[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 150,
+            "methods": []
+        }
+    ],
     "injectables": [],
     "classes": [],
     "directives": [],
     "components": [
         {
             "name": "AppComponent",
-            "id": "component-AppComponent-6e838055c533cf7bd47d73daf2b5700e",
+            "id": "component-AppComponent-5dc6e601b9c40952c42cb13d074332fc",
             "file": "src/app/app.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -29,12 +164,23 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "graphData",
+                    "defaultValue": "{\n    lines: [\n      {\n        label: \"Test Graph\",\n        lineColorSettings: {\n          backgroundColor: \"rgba(255,0,0,0.3)\",\n          borderColor: \"black\"\n        },\n        values: [\n          5.0,\n          10.0,\n          2.0\n        ]\n      }\n    ],\n    showCharLegend: true,\n    xAxisLabels: [\"January\", \"February\", \"March\"]\n  }",
+                    "type": "object",
+                    "optional": false,
+                    "description": "",
+                    "line": 10,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
                     "name": "title",
                     "defaultValue": "'YetAnotherBotClient'",
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 10
+                    "line": 29
                 }
             ],
             "methodsClass": [],
@@ -43,7 +189,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class AppComponent {\n  title = 'YetAnotherBotClient';\n}\n",
+            "sourceCode": "import { Component, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class AppComponent {\n  public graphData = {\n    lines: [\n      {\n        label: \"Test Graph\",\n        lineColorSettings: {\n          backgroundColor: \"rgba(255,0,0,0.3)\",\n          borderColor: \"black\"\n        },\n        values: [\n          5.0,\n          10.0,\n          2.0\n        ]\n      }\n    ],\n    showCharLegend: true,\n    xAxisLabels: [\"January\", \"February\", \"March\"]\n  };\n\n  title = 'YetAnotherBotClient';\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -52,7 +198,7 @@
                 }
             ],
             "stylesData": "",
-            "templateData": "\n<app-bubble-with-icon [title]=\"'Hello'\" [message]=\"'message'\"></app-bubble-with-icon>\n"
+            "templateData": "<app-bubble-with-icon [title]=\"'Hello'\" [message]=\"'message'\"></app-bubble-with-icon>\n<app-line-graph [graphValues]=\"graphData\">\n\n</app-line-graph>\n"
         },
         {
             "name": "BubbleWithIconComponent",
@@ -158,8 +304,447 @@
             "templateData": "<div class=\"relative inline-flex rounded-md shadow-sm cursor-pointer\" (click)=\"onClickHandler($event)\">\n  <span class=\"flex absolute h-3 w-3 top-0 right-0 -mt-1 -mr-1\">\n    <span class=\"animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75\"></span>\n    <span class=\"relative inline-flex rounded-full h-3 w-3 bg-purple-500\"></span>\n  </span>\n\n\n  <div class=\" p-6 max-w-sm mx-auto rounded-xl shadow-md flex items-center space-x-4 bg-white dark:bg-gray-800\">\n    <div class=\"flex-shrink-0 bg-white dark:bg-gray-800\">\n      <div class=\"h-12 w-12 message-icon\" alt=\"ChitChat Logo\"></div>\n    </div>\n    <div>\n      <div class=\"text-xl font-medium dark:text-white text-black dark:text-white\">{{title}}</div>\n      <p class=\"dark:text-white text-gray-500 dark:text-white\">{{message}}</p>\n    </div>\n  </div>\n</div>\n"
         },
         {
+            "name": "ButtonComponent",
+            "id": "component-ButtonComponent-7f6440a4ddb89738a94cb8945f6d0381",
+            "file": "src/stories/components/button/button.component.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-button",
+            "styleUrls": [
+                "./button.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./button.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "label",
+                    "defaultValue": "\"\"",
+                    "line": 11,
+                    "type": "string"
+                },
+                {
+                    "name": "primary",
+                    "defaultValue": "true",
+                    "line": 13
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "clicked",
+                    "defaultValue": "new EventEmitter()",
+                    "line": 15,
+                    "type": "EventEmitter<void>"
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 19
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class ButtonComponent implements OnInit {\n\n  @Input() label: string = \"\";\n\n  @Input() primary = true;\n\n  @Output() clicked: EventEmitter<void> = new EventEmitter();\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import '../../../styles.css';\r\n\r\nbutton.primary-button {\r\n  background-color: var(--primary-button-color);\r\n  filter: brightness(100%);\r\n}\r\n\r\nbutton.primary-button:hover {\r\n  background-color: var(--primary-button-color);\r\n  filter: var(--hover-background-color-brightness-filter);\r\n}\r\n\r\nbutton.secondary-button {\r\n  background-color: var(--secondary-button-color);\r\n  filter: brightness(100%);\r\n}\r\n\r\nbutton.secondary-button:hover {\r\n  background-color: var(--secondary-button-color);\r\n  filter: var(--hover-background-color-brightness-filter);\r\n}\r\n",
+                    "styleUrl": "./button.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 15
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"inputWrapper\">\n  <button class=\"transition-all py-2 px-3 rounded transition duration-300\"\n    [ngClass]=\"{'primary-button':primary, 'secondary-button': !primary}\" (click)=\"clicked.next()\">{{label}}</button>\n</div>\n"
+        },
+        {
+            "name": "InputFieldComponent",
+            "id": "component-InputFieldComponent-ff13fdaf97373a739aba9be7336fe2ee",
+            "file": "src/stories/components/input-field/input-field.component.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-input-field",
+            "styleUrls": [
+                "./input-field.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./input-field.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "name",
+                    "defaultValue": "\"\"",
+                    "line": 21,
+                    "type": "string"
+                },
+                {
+                    "name": "placeholder",
+                    "defaultValue": "\"\"",
+                    "line": 22,
+                    "type": "string"
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "valueChanged",
+                    "defaultValue": "new EventEmitter()",
+                    "line": 24,
+                    "type": "EventEmitter<string>"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "_value",
+                    "defaultValue": "\"\"",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 10,
+                    "modifierKind": [
+                        112
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 28
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-input-field',\n  templateUrl: './input-field.component.html',\n  styleUrls: ['./input-field.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class InputFieldComponent implements OnInit {\n  private _value: string = \"\";\n\n  public get value(): string {\n    return this._value;\n  }\n\n  public set value(value: string) {\n    this._value = value;\n    this.valueChanged.next(value);\n  }\n\n  @Input() name: string = \"\";\n  @Input() placeholder: string = \"\";\n\n  @Output() valueChanged: EventEmitter<string> = new EventEmitter();\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import '../../../styles.css';\r\n\r\ninput:focus+label,\r\ninput:not(:placeholder-shown)+label {\r\n  top: 11px;\r\n  left: 26px;\r\n  padding-left: 5px;\r\n  padding-right: 5px;\r\n  padding-top: 0px;\r\n  padding-bottom: 0px;\r\n  margin: 0px;\r\n}\r\n\r\ninput:focus-within {}\r\n\r\nlabel,\r\ninput {\r\n  transition: all 0.3s;\r\n  position: absolute;\r\n}\r\n\r\nlabel {\r\n  top: 26px;\r\n  left: 17px;\r\n  margin-top: 0.5rem;\r\n  margin-right: 0.75rem;\r\n  margin-bottom: 0.5rem;\r\n  margin-left: 0.75rem;\r\n  pointer-events: none;\r\n}\r\n\r\n.inputWrapper {\r\n  padding-top: 10px;\r\n}\r\n",
+                    "styleUrl": "./input-field.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 24
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "accessors": {
+                "value": {
+                    "name": "value",
+                    "setSignature": {
+                        "name": "value",
+                        "type": "void",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "string"
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 16,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "string",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    },
+                    "getSignature": {
+                        "name": "value",
+                        "type": "string",
+                        "returnType": "string",
+                        "line": 12
+                    }
+                }
+            },
+            "templateData": "<div class=\"inputWrapper\">\n  <input class=\"w-full bg-white text-gray-800 dark:bg-gray-800 dark:text-white dark:ring-offset-blue-300\" type=\"text\"\n    [name]=\"name\" [(ngModel)]=\"value\" placeholder=\" \">\n  <label class=\"bg-white text-gray-800 dark:bg-gray-800 dark:text-white\" for=\"{{name}}\">{{placeholder}}</label>\n</div>\n"
+        },
+        {
+            "name": "LineGrpahComponent",
+            "id": "component-LineGrpahComponent-995f9831ba43d9e929c0fbf0ba0e1271",
+            "file": "src/stories/components/line-graph/line-graph.component.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-line-graph",
+            "styleUrls": [
+                "./line-graph.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./line-graph.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "graphValues",
+                    "line": 18,
+                    "type": ""
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "_graphValues",
+                    "defaultValue": "null",
+                    "type": "LineGraphDataset | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        112
+                    ]
+                },
+                {
+                    "name": "lineChartColors",
+                    "defaultValue": "[]",
+                    "type": "any[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 61,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "lineChartData",
+                    "defaultValue": "[]",
+                    "type": "ChartDataSets[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 35,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "lineChartLabels",
+                    "defaultValue": "[]",
+                    "type": "string[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 45,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "lineChartLegend",
+                    "defaultValue": "true",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 70,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "lineChartOptions",
+                    "defaultValue": "{}",
+                    "type": "ChartOptions",
+                    "optional": false,
+                    "description": "",
+                    "line": 54,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "lineChartPlugins",
+                    "defaultValue": "[]",
+                    "type": "any[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 77,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "lineChartType",
+                    "defaultValue": "\"line\"",
+                    "type": "ChartType",
+                    "optional": false,
+                    "description": "",
+                    "line": 75,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 32
+                },
+                {
+                    "name": "updateLineChartColors",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 62,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "updateLineChartData",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 36,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "updateLineChartLabels",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 46,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "updateLineChartLegend",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 71,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "updateLineChartOptions",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 55,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\nimport { ChartDataSets, ChartOptions, ChartType } from \"chart.js\";\nimport { LineGraphDataset } from './line-graph-dataset';\n\n@Component({\n  selector: 'app-line-graph',\n  templateUrl: './line-graph.component.html',\n  styleUrls: ['./line-graph.component.css'],\n  encapsulation: ViewEncapsulation.None,\n})\nexport class LineGrpahComponent implements OnInit {\n\n  private _graphValues: LineGraphDataset | null = null;\n  public get graphValues(): LineGraphDataset | null {\n    return this._graphValues;\n  }\n  @Input()\n  public set graphValues(value: LineGraphDataset | null) {\n    this._graphValues = value;\n    this.updateLineChartColors();\n    this.updateLineChartData();\n    this.updateLineChartLabels();\n    this.updateLineChartLegend();\n    this.updateLineChartOptions();\n    const temp = this._graphValues;\n    this._graphValues = null;\n    this._graphValues = temp;\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public lineChartData: ChartDataSets[] = [];\n  public updateLineChartData(): void {\n    if (!this.graphValues) {\n      this.lineChartData = [];\n    }\n\n    const result = this.graphValues?.lines.map(l => ({ data: l.values, label: l.label }));\n    this.lineChartData = result ?? [];\n  }\n\n  public lineChartLabels: string[] = [];\n  public updateLineChartLabels(): void {\n    if (!this.graphValues) {\n      this.lineChartLabels = [];\n    }\n\n    this.lineChartLabels = this.graphValues?.xAxisLabels ?? [];\n  }\n\n  public lineChartOptions: ChartOptions = {};\n  public updateLineChartOptions(): void {\n    this.lineChartOptions = {\n      responsive: false\n    };\n  }\n\n  public lineChartColors: any[] = [];\n  public updateLineChartColors(): void {\n    if (!this.graphValues) {\n      this.lineChartColors = [];\n    }\n\n    this.lineChartColors = this.graphValues?.lines.map(l => l.lineColorSettings) ?? [];\n  }\n\n  public lineChartLegend = true;\n  public updateLineChartLegend() {\n    this.lineChartLegend = this.graphValues ? this.graphValues.showCharLegend : false;\n  }\n\n  public lineChartType: ChartType = \"line\";\n\n  public lineChartPlugins: any[] = [];\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import '../../../styles.css';\r\n",
+                    "styleUrl": "./line-graph.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 28
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "accessors": {
+                "graphValues": {
+                    "name": "graphValues",
+                    "setSignature": {
+                        "name": "graphValues",
+                        "type": "void",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 18,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    },
+                    "getSignature": {
+                        "name": "graphValues",
+                        "type": "",
+                        "returnType": "LineGraphDataset | null",
+                        "line": 14
+                    }
+                }
+            },
+            "templateData": "<div style=\"display: block;\">\n  <canvas baseChart width=\"400\" height=\"400\" [datasets]=\"lineChartData\" [labels]=\"lineChartLabels\"\n    [options]=\"lineChartOptions\" [colors]=\"lineChartColors\" [legend]=\"lineChartLegend\" [chartType]=\"lineChartType\"\n    [plugins]=\"lineChartPlugins\">\n  </canvas>\n</div>\n"
+        },
+        {
             "name": "NavbarComponent",
-            "id": "component-NavbarComponent-0c0b5a6eea57fe7efa44285c451611cc",
+            "id": "component-NavbarComponent-aba405cc8c281c8d5d3e7280cc7ee5ab",
             "file": "src/stories/components/navbar/navbar.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -193,20 +778,42 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 13,
+                    "line": 41,
                     "modifierKind": [
                         114
+                    ]
+                },
+                {
+                    "name": "navbarElements",
+                    "defaultValue": "[\n    {\n      href: \"#\",\n      titleKey: 'Pricing',\n      showOn: () => { return !this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Features',\n      showOn: () => { return !this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Dashboard',\n      showOn: () => { return this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Pipelines',\n      showOn: () => { return this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Extensions',\n      showOn: () => { return this.loggedIn; }\n    },\n  ]",
+                    "type": "[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        112
                     ]
                 }
             ],
             "methodsClass": [
+                {
+                    "name": "getNavbarItemsToShow",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 48,
+                    "modifierKind": [
+                        114
+                    ]
+                },
                 {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 17
+                    "line": 45
                 },
                 {
                     "name": "onMobileMenuButtonClicked",
@@ -219,7 +826,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 20,
+                    "line": 52,
                     "modifierKind": [
                         114
                     ],
@@ -239,11 +846,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-navbar',\n  templateUrl: './navbar.component.html',\n  styleUrls: ['./navbar.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class NavbarComponent implements OnInit {\n\n  @Input() loggedIn: boolean = false;\n\n  public isMobileMenuShowing: boolean = false;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public onMobileMenuButtonClicked(event: MouseEvent) {\n    this.isMobileMenuShowing = !this.isMobileMenuShowing;\n  }\n\n}\n",
+            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-navbar',\n  templateUrl: './navbar.component.html',\n  styleUrls: ['./navbar.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class NavbarComponent implements OnInit {\n\n  @Input() loggedIn: boolean = false;\n\n  private navbarElements = [\n    {\n      href: \"#\",\n      titleKey: 'Pricing',\n      showOn: () => { return !this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Features',\n      showOn: () => { return !this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Dashboard',\n      showOn: () => { return this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Pipelines',\n      showOn: () => { return this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Extensions',\n      showOn: () => { return this.loggedIn; }\n    },\n  ];\n\n  public isMobileMenuShowing: boolean = false;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public getNavbarItemsToShow() {\n    return this.navbarElements.filter(e => e.showOn());\n  }\n\n  public onMobileMenuButtonClicked(event: MouseEvent) {\n    this.isMobileMenuShowing = !this.isMobileMenuShowing;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "@import '../../../styles.css';\r\n\r\n.message-icon {\r\n  /*background-color: #487dff;*/\r\n  /*-webkit-mask-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxzdmcgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZS8+PGcgZGF0YS1uYW1lPSJtYWlsIGVtYWlsIGUtbWFpbCBsZXR0ZXIiIGlkPSJtYWlsX2VtYWlsX2UtbWFpbF9sZXR0ZXIiPjxwYXRoIGQ9Ik0yOCwxM2ExLDEsMCwwLDAtMSwxdjhhMSwxLDAsMCwxLTEsMUg2YTEsMSwwLDAsMS0xLTFWMTRhMSwxLDAsMCwwLTIsMHY4YTMsMywwLDAsMCwuODgsMi4xMkEzLDMsMCwwLDAsNiwyNUgyNmEzLDMsMCwwLDAsMi4xMi0uODhBMywzLDAsMCwwLDI5LDIyVjE0QTEsMSwwLDAsMCwyOCwxM1oiLz48cGF0aCBkPSJNMTUuNCwxOC44YTEsMSwwLDAsMCwxLjIsMEwyOC40MSw5Ljk0YTEsMSwwLDAsMCwuMy0xLjIzLDMuMDYsMy4wNiwwLDAsMC0uNTktLjgzQTMsMywwLDAsMCwyNiw3SDZhMywzLDAsMCwwLTIuMTIuODgsMy4wNiwzLjA2LDAsMCwwLS41OS44MywxLDEsMCwwLDAsLjMsMS4yM1pNNiw5SDI2YS45LjksMCwwLDEsLjI4LDBMMTYsMTYuNzUsNS43Miw5QS45LjksMCwwLDEsNiw5WiIvPjwvZz48L3N2Zz4=');*/\r\n  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxzdmcgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZS8+PGcgZGF0YS1uYW1lPSJtYWlsIGVtYWlsIGUtbWFpbCBsZXR0ZXIiIGlkPSJtYWlsX2VtYWlsX2UtbWFpbF9sZXR0ZXIiPjxwYXRoIGQ9Ik0yOCwxM2ExLDEsMCwwLDAtMSwxdjhhMSwxLDAsMCwxLTEsMUg2YTEsMSwwLDAsMS0xLTFWMTRhMSwxLDAsMCwwLTIsMHY4YTMsMywwLDAsMCwuODgsMi4xMkEzLDMsMCwwLDAsNiwyNUgyNmEzLDMsMCwwLDAsMi4xMi0uODhBMywzLDAsMCwwLDI5LDIyVjE0QTEsMSwwLDAsMCwyOCwxM1oiLz48cGF0aCBkPSJNMTUuNCwxOC44YTEsMSwwLDAsMCwxLjIsMEwyOC40MSw5Ljk0YTEsMSwwLDAsMCwuMy0xLjIzLDMuMDYsMy4wNiwwLDAsMC0uNTktLjgzQTMsMywwLDAsMCwyNiw3SDZhMywzLDAsMCwwLTIuMTIuODgsMy4wNiwzLjA2LDAsMCwwLS41OS44MywxLDEsMCwwLDAsLjMsMS4yM1pNNiw5SDI2YS45LjksMCwwLDEsLjI4LDBMMTYsMTYuNzUsNS43Miw5QS45LjksMCwwLDEsNiw5WiIvPjwvZz48L3N2Zz4=');\r\n  filter: invert(37%) sepia(95%) saturate(1010%) hue-rotate(205deg) brightness(102%) contrast(104%);\r\n}\r\n",
+                    "data": "@import '../../../styles.css';\r\n",
                     "styleUrl": "./navbar.component.css"
                 }
             ],
@@ -252,12 +859,150 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 13
+                "line": 41
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<!-- navbar goes here -->\n<nav class=\"bg-gray-100\">\n  <div class=\"max-w-6xl mx-auto px-4\">\n    <div class=\"flex justify-between\">\n\n      <div class=\"flex space-x-4\">\n        <!-- logo -->\n        <div>\n          <a href=\"#\" class=\"flex items-center py-5 px-2 text-gray-700 hover:text-gray-900\">\n            <svg class=\"h-6 w-6 mr-1 text-blue-400\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\"\n              stroke=\"currentColor\">\n              <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                d=\"M12 19l9 2-9-18-9 18 9-2zm0 0v-8\" />\n            </svg>\n            <span class=\"font-bold\">Better Dev</span>\n          </a>\n        </div>\n\n        <!-- primary nav -->\n        <div class=\"hidden md:flex items-center space-x-1\">\n          <a href=\"#\" class=\"py-5 px-3 text-gray-700 hover:text-gray-900\">Features</a>\n          <a href=\"#\" class=\"py-5 px-3 text-gray-700 hover:text-gray-900\">Pricing</a>\n        </div>\n      </div>\n\n      <!-- secondary nav -->\n      <div class=\"hidden md:flex items-center space-x-1\">\n        <a href=\"\" class=\"py-5 px-3\">Login</a>\n        <a href=\"\"\n          class=\"py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300\">Signup</a>\n      </div>\n\n      <!-- mobile button goes here -->\n      <div class=\"md:hidden flex items-center\">\n        <button class=\"mobile-menu-button\" (click)=\"onMobileMenuButtonClicked($event)\">\n          <svg class=\"w-6 h-6\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\" />\n          </svg>\n        </button>\n      </div>\n\n    </div>\n  </div>\n\n  <!-- mobile menu -->\n  <div [ngClass]=\"{'mobile-menu':true, 'hidden':isMobileMenuShowing 'md:hidden':true}\">\n    <a href=\"#\" class=\"block py-2 px-4 text-sm hover:bg-gray-200\">Features</a>\n    <a href=\"#\" class=\"block py-2 px-4 text-sm hover:bg-gray-200\">Pricing</a>\n  </div>\n</nav>\n"
+            "templateData": "<!-- navbar goes here -->\n<nav class=\"bg-gray-100\">\n  <div class=\"max-w-6xl mx-auto px-4\">\n    <div class=\"flex justify-between\">\n\n      <div class=\"flex space-x-4\">\n        <!-- logo -->\n        <div>\n          <a href=\"#\" class=\"flex items-center py-5 px-2 text-gray-700 hover:text-gray-900\">\n            <svg class=\"h-6 w-6 mr-1 text-blue-400\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\"\n              stroke=\"currentColor\">\n              <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                d=\"M12 19l9 2-9-18-9 18 9-2zm0 0v-8\" />\n            </svg>\n            <span class=\"font-bold\">YetAnotherBot</span>\n          </a>\n        </div>\n\n        <!-- primary nav -->\n        <div class=\"hidden md:flex items-center space-x-1\">\n          <span *ngFor=\"let element of getNavbarItemsToShow()\">\n            <a href=\"{{element.href}}\" class=\"py-5 px-3 text-gray-700 hover:text-gray-900\">{{element.titleKey}}</a>\n          </span>\n        </div>\n      </div>\n\n      <!-- secondary nav -->\n      <div class=\"flex items-center space-x-1\">\n        <a *ngIf=\"!loggedIn\" href=\"\"\n          class=\"py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300\">Login</a>\n        <a *ngIf=\"!loggedIn\" href=\"\" class=\"hidden md:block py-5 px-3\">Signup</a>\n        <button class=\"md:hidden mobile-menu-button pl-3\" (click)=\"onMobileMenuButtonClicked($event)\">\n          <svg class=\"w-6 h-6\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\" />\n          </svg>\n        </button>\n      </div>\n    </div>\n  </div>\n\n  <!-- mobile menu -->\n  <div [ngClass]=\"{'mobile-menu':true, 'hidden':!isMobileMenuShowing, 'md:hidden':true}\">\n    <span *ngFor=\"let element of getNavbarItemsToShow()\">\n      <a href=\"{{element.href}}\" class=\"block py-2 px-4 text-sm hover:bg-gray-200\">{{element.titleKey}}</a>\n    </span>\n  </div>\n</nav>\n"
+        },
+        {
+            "name": "PipelineGraphComponent",
+            "id": "component-PipelineGraphComponent-6995537ddda0209239c1d354cd9a559a",
+            "file": "src/stories/components/pipeline-graph/pipeline-graph.component.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-pipeline-graph",
+            "styleUrls": [
+                "./pipeline-graph.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./pipeline-graph.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "employees",
+                    "defaultValue": "[]",
+                    "line": 24,
+                    "type": "Employee[]"
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "curve",
+                    "defaultValue": "shape.curveNatural",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 31,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "layoutSettings",
+                    "defaultValue": "{\n    orientation: 'TB'\n  }",
+                    "type": "object",
+                    "optional": false,
+                    "description": "",
+                    "line": 28,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "links",
+                    "defaultValue": "[]",
+                    "type": "Edge[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 27,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "nodes",
+                    "defaultValue": "[]",
+                    "type": "Node[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 26,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "getStyles",
+                    "args": [
+                        {
+                            "name": "node",
+                            "type": "Node"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 121,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "node",
+                            "type": "Node",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 87,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\nimport { Edge, Node } from '@swimlane/ngx-graph';\nimport * as shape from 'd3-shape';\n\nexport interface Employee {\n  id: string;\n  name: string;\n  office: string;\n  role: string;\n  backgroundColor: string;\n  width: number;\n  height: number;\n  upperManagerId?: string;\n}\n\n@Component({\n  selector: 'app-pipeline-graph',\n  templateUrl: './pipeline-graph.component.html',\n  styleUrls: ['./pipeline-graph.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class PipelineGraphComponent implements OnInit {\n\n  @Input() employees: Employee[] = [];\n\n  public nodes: Node[] = [];\n  public links: Edge[] = [];\n  public layoutSettings = {\n    orientation: 'TB'\n  };\n  public curve: any = shape.curveNatural;\n\n  constructor() {\n    this.employees = [\n      {\n        id: '1',\n        name: 'Employee 1',\n        office: 'Office 1',\n        role: 'Manager',\n        backgroundColor: '#DC143C',\n        width: 180,\n        height: 100\n      },\n      {\n        id: '2',\n        name: 'Employee 2',\n        office: 'Office 2',\n        role: 'Engineer',\n        backgroundColor: '#00FFFF',\n        upperManagerId: '1',\n        width: 180,\n        height: 100\n      },\n      {\n        id: '3',\n        name: 'Employee 3',\n        office: 'Office 3',\n        role: 'Engineer',\n        backgroundColor: '#00FFFF',\n        upperManagerId: '1',\n        width: 180,\n        height: 100\n      },\n      {\n        id: '4',\n        name: 'Employee 4',\n        office: 'Office 4',\n        role: 'Engineer',\n        backgroundColor: '#00FFFF',\n        upperManagerId: '1',\n        width: 180,\n        height: 100\n      },\n      {\n        id: '5',\n        name: 'Employee 5',\n        office: 'Office 5',\n        role: 'Student',\n        backgroundColor: '#8A2BE2',\n        upperManagerId: '4',\n        width: 180,\n        height: 100\n      }\n    ];\n  }\n\n  public ngOnInit(): void {\n    for (const employee of this.employees) {\n      const node: Node = {\n        id: employee.id,\n        label: employee.name,\n        data: {\n          office: employee.office,\n          role: employee.role,\n          backgroundColor: employee.backgroundColor\n        },\n        dimension: { width: employee.width, height: employee.height }\n      };\n\n      this.nodes.push(node);\n    }\n\n    for (const employee of this.employees) {\n      if (!employee.upperManagerId) {\n        continue;\n      }\n\n      const edge: Edge = {\n        source: employee.upperManagerId,\n        target: employee.id,\n        label: '',\n        data: {\n          linkText: 'Manager of'\n        }\n      };\n\n      this.links.push(edge);\n    }\n  }\n\n  public getStyles(node: Node): any {\n    return {\n      'background-color': node.data.backgroundColor,\n\n    };\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import '../../../styles.css';\r\n\r\n:host ::ng-deep {\r\n  display: block;\r\n  height: inherit;\r\n  width: inherit;\r\n}\r\n\r\n:host ::ng-deep .cardContainer {}\r\n\r\n:host ::ng-deep .cardContainer .name {\r\n  font-size: 24px;\r\n}\r\n\r\n:host ::ng-deep .cardContainer label {\r\n  display: block;\r\n  text-align: center;\r\n  font-size: 20px;\r\n  margin-top: 4px;\r\n  margin-bottom: 8px;\r\n}\r\n\r\n:host ::ng-deep .linkMidpoint ellipse {\r\n  fill: white;\r\n  stroke: black;\r\n  stroke-width: 1;\r\n}\r\n\r\n:host ::ng-deep .linkMidpoint text {\r\n  stroke: transparent;\r\n  fill: black;\r\n  text-anchor: middle;\r\n  font-size: 10px;\r\n}\r\n",
+                    "styleUrl": "./pipeline-graph.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 31
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<ngx-graph [links]=\"links\" [nodes]=\"nodes\" class=\"chart-container\" [layoutSettings]=\"layoutSettings\"\n  [draggingEnabled]=\"false\" [enableZoom]=\"true\">\n  <ng-template #defsTemplate>\n    <svg:marker id=\"arrow\" viewBox=\"0 -5 10 10\" refX=\"8\" refY=\"0\" markerWidth=\"4\" markerHeight=\"4\" orient=\"auto\">\n      <svg:path d=\"M0,-5L10,0L0,5\" class=\"arrow-head\" />\n    </svg:marker>\n  </ng-template>\n\n  <ng-template #nodeTemplate let-node>\n    <svg:g class=\"node\" xmlns=\"http://www.w3.org/2000/xhtml\">\n\n      <svg:foreignObject [attr.width]=\"node.dimension.width\" [attr.height]=\"node.dimension.height\">\n        <xhtml:div class=\"cardContainer\" xmlns=\"http://www.w3.org/1999/xhtml\"\n          style=\"justify-content: center;display: flex; height: 100%; width: 100%;\">\n          <app-bubble-with-icon style=\"margin: auto;\" [title]=\"'asdf'\"></app-bubble-with-icon>\n        </xhtml:div>\n      </svg:foreignObject>\n    </svg:g>\n  </ng-template>\n</ngx-graph>\n"
         }
     ],
     "modules": [
@@ -276,6 +1021,12 @@
                         },
                         {
                             "name": "BubbleWithIconComponent"
+                        },
+                        {
+                            "name": "InputFieldComponent"
+                        },
+                        {
+                            "name": "LineGrpahComponent"
                         }
                     ]
                 },
@@ -439,7 +1190,7 @@
                 "linktype": "component",
                 "name": "AppComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/2",
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -472,12 +1223,75 @@
                 "status": "low"
             },
             {
+                "filePath": "src/stories/components/button/button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ButtonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/components/input-field/input-field.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "InputFieldComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/components/line-graph/line-graph-dataset.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "LineGraphDataset",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/components/line-graph/line-graph-dataset.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "LineGraphLine",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/components/line-graph/line-graph.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "LineGrpahComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/17",
+                "status": "low"
+            },
+            {
                 "filePath": "src/stories/components/navbar/navbar.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "NavbarComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/8",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/components/pipeline-graph/pipeline-graph.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PipelineGraphComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/9",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/components/pipeline-graph/pipeline-graph.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "Employee",
+                "coveragePercent": 0,
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {

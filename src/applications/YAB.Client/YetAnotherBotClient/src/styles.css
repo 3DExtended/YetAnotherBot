@@ -1,4 +1,26 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --background-color-dark: #006E90;
+  --background-color-darker: #4B7F95;
+  --secondary-button-color: #41BBD9;
+  --primary-button-color: #A8CB67;
+  --highligh-color: #F18F01;
+  --hover-background-color-brightness-filter: brightness(110%);
+}
+
+.background {
+  background-color: var(--background-color-dark);
+  color: white;
+}
+
+.higher-background {
+  background-color: var(--background-color-darker);
+  color: white;
+}
+
+.highlight {
+  background-color: var(--highligh-color);
+}

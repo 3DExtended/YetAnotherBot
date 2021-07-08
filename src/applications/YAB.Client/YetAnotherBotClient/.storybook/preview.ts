@@ -2,6 +2,7 @@ import { setCompodocJson } from '@storybook/addon-docs/angular';
 // @ts-ignore
 // eslint-disable-next-line import/extensions, import/no-unresolved
 import docJson from '../documentation.json';
+import "./storybookjs.css";
 
 // remove ButtonComponent to test #12009
 const filtered = !docJson?.components

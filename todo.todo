@@ -20,6 +20,15 @@ YetAnotherBot:
             ✔ Add filtering of events for a given pipeline. @done(21-07-06 19:43)
             ☐ What about a pipeline that does not need filtering? Maybe add an empty group with an or and condition? 
     ☐ Frontend:
+        ☐ Design some pages
+            ✔ Login Page @done(21-07-08 17:51)
+            ☐ Dashboard / Status page bot 
+                Stats like how events have been processed
+                How many pipelines we have registered
+            ☐ Pipelines Overview
+            ☐ Pipeline Detailspage
+            ☐ Pipeline editor/create page
+            ☐ Register/Setup Page
         ☐ Login Page
         ☐ Status page for the bot
             Maybe show number of processed events, last executed pipelines and such
