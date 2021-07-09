@@ -1,5 +1,6 @@
 YetAnotherBot:
     ☐ API:
+        ☐ Setup cors correctly... for now, we should only be using the localhost origin
         ☐ Controller pipelines
             ✔ Return registered pipelines @done(21-07-05 17:54)
             ✔ Return single pipeline @done(21-07-05 17:55)
@@ -20,16 +21,9 @@ YetAnotherBot:
             ✔ Add filtering of events for a given pipeline. @done(21-07-06 19:43)
             ☐ What about a pipeline that does not need filtering? Maybe add an empty group with an or and condition? 
     ☐ Frontend:
-        ☐ Design some pages
-            ✔ Login Page @done(21-07-08 17:51)
-            ☐ Dashboard / Status page bot 
-                Stats like how events have been processed
-                How many pipelines we have registered
-            ☐ Pipelines Overview
-            ☐ Pipeline Detailspage
-            ☐ Pipeline editor/create page
-            ☐ Register/Setup Page
         ☐ Login Page
+            ☐ Background image lazy loading
+            ☐ Background image compression 
         ☐ Status page for the bot
             Maybe show number of processed events, last executed pipelines and such
         ☐ Pipeline Overview page

@@ -1,4 +1,5 @@
 <div class="inputWrapper">
-  <button class="transition-all py-2 px-3 rounded transition"
-    [ngClass]="{'primary-button':primary, 'secondary-button': !primary}" (click)="clicked.next()">{{label}}</button>
+  <button class="transition-all py-2 px-3 rounded transition" [disabled]="disabled"
+    [ngClass]="{'primary-button':primary, 'secondary-button': !primary, 'big-button': bigButton}"
+    (click)="clicked.next()">{{label}}</button>
 </div>

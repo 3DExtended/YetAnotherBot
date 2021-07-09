@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,6 +12,7 @@ import { LineGrpahComponent } from 'src/stories/components/line-graph/line-graph
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
 
 
 @NgModule({
@@ -20,11 +22,13 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
     LineGrpahComponent,
     InputFieldComponent,
     LoginPageComponent,
-    ButtonComponent
+    ButtonComponent,
+    DashboardPageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     ChartsModule,
     NgxGraphModule,
     FormsModule,

@@ -19,6 +19,13 @@ button.primary-button:hover {
   filter: var(--hover-background-color-brightness-filter);
 }
 
+.big-button {
+  padding: 9px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-size: 21px;
+}
+
 button.secondary-button {
   background-color: var(--secondary-button-color);
   filter: brightness(100%);
@@ -27,4 +34,14 @@ button.secondary-button {
 button.secondary-button:hover {
   background-color: var(--secondary-button-color);
   filter: var(--hover-background-color-brightness-filter);
+}
+
+button:disabled {
+  filter: saturate(0);
+  cursor: default;
+}
+
+button:disabled:hover {
+  filter: saturate(0);
+  cursor: default;
 }

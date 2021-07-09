@@ -12,6 +12,10 @@ export class ButtonComponent implements OnInit {
 
   @Input() primary = true;
 
+  @Input() disabled = false;
+
+  @Input() bigButton = false;
+
   @Output() clicked: EventEmitter<void> = new EventEmitter();
 
   constructor() { }

@@ -13,12 +13,12 @@ namespace YAB.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class BotStatusController : ControllerBase
     {
         private readonly IContainerAccessor _containerAccessor;
         private readonly IPipelineStore _pipelineStore;
 
-        public AuthController(IContainerAccessor containerAccessor, IPipelineStore pipelineStore)
+        public BotStatusController(IContainerAccessor containerAccessor, IPipelineStore pipelineStore)
         {
             _containerAccessor = containerAccessor;
             _pipelineStore = pipelineStore;

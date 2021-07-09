@@ -1,7 +1,7 @@
 <div class="componentWrapper">
   <div class="inputWrapper">
-    <input class="w-full bg-white text-gray-800 dark:bg-gray-800 dark:text-white dark:ring-offset-blue-300" type="text"
-      [name]="name" [(ngModel)]="value" placeholder=" ">
+    <input class="w-full bg-white text-gray-800 dark:bg-gray-800 dark:text-white dark:ring-offset-blue-300"
+      type="{{inputType}}" [name]="name" [(ngModel)]="value" placeholder=" ">
     <label class="bg-white text-gray-800 dark:bg-gray-800 dark:text-white" for="{{name}}">{{placeholder}}</label>
   </div>
 </div>

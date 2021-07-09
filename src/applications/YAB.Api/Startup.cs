@@ -36,6 +36,8 @@ namespace YAB.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "YAB.Api v1"));
             }
 
+            app.UseCors(opt => opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -53,7 +55,7 @@ namespace YAB.Api
         {
             // neccessary in order to inject IContainerAccessor into controller
             services.AddSingleton(typeof(IContainerAccessor), new ContainerAccessor(_container));
-
+            services.AddCors();
             services
                 .AddControllers()
                 .AddNewtonsoftJson(opt =>

@@ -1,8 +1,17 @@
 <div class="absolute table left-0 top-0 w-full h-full">
   <div class="align-middle table-cell">
-    <div class="m-auto w-6/12 h-1/2" style="background-color: red;">
-      <app-input-field [placeholder]="'Password'"></app-input-field>
-      <app-button [label]="'Login'" [primary]="true"></app-button>
+    <div class="m-auto w-6/12 h-auto login-content-wrapper">
+      <h1 class="headerline">YetAnotherBot</h1>
+      <div class="text">
+        <span>Automate your workflows from one place!</span>
+      </div>
+      <app-input-field class="w-full" [placeholder]="'Password'" [inputType]="'password'"
+        (valueChanged)="password = $event"></app-input-field>
+      <app-button [label]="'Login'" [primary]="true" class="text-right ml-auto" [bigButton]="true" (clicked)="login()"
+        [disabled]="!password">
+      </app-button>
     </div>
   </div>
 </div>
+
+<div class="backgroundimage"></div>

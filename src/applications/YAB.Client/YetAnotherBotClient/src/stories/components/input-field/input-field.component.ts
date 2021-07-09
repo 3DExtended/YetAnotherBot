@@ -21,6 +21,8 @@ export class InputFieldComponent implements OnInit {
   @Input() name: string = "";
   @Input() placeholder: string = "";
 
+  @Input() inputType = "text";
+
   @Output() valueChanged: EventEmitter<string> = new EventEmitter();
 
   constructor() { }
