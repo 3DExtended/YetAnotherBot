@@ -9,10 +9,12 @@ import { BubbleWithIconComponent } from 'src/stories/components/bubble-with-icon
 import { ButtonComponent } from 'src/stories/components/button/button.component';
 import { InputFieldComponent } from 'src/stories/components/input-field/input-field.component';
 import { LineGrpahComponent } from 'src/stories/components/line-graph/line-graph.component';
+import { LogoComponent } from 'src/stories/components/logo/logo.component';
+import { NavbarComponent } from 'src/stories/components/navbar/navbar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.co
     InputFieldComponent,
     LoginPageComponent,
     ButtonComponent,
-    DashboardPageComponent
+    DashboardPageComponent,
+    LogoComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

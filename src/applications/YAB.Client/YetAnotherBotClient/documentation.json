@@ -136,7 +136,64 @@
             "methods": []
         }
     ],
-    "injectables": [],
+    "injectables": [
+        {
+            "name": "LoginService",
+            "id": "injectable-LoginService-ba4e352fafbb3e1456333feb3af3226d",
+            "file": "src/app/services/login.service.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "Login",
+                    "args": [
+                        {
+                            "name": "password",
+                            "type": "string"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<any>",
+                    "typeParameters": [],
+                    "line": 13,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "password",
+                            "type": "string",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "description": "",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { Observable } from 'rxjs';\nimport { environment } from 'src/environments/environment';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class LoginService {\n\n  constructor(private readonly _httpClient: HttpClient) { }\n\n  public Login(password: string): Observable<any> {\n    return this._httpClient.post(environment.baseUrl + \"api/login\", { password: password });\n    // .pipe(map(res => res['payload']),\n    //   catchError(err => {\n    //     console.log('caught mapping error and rethrowing', err);\n    //     return throwError(err);\n    //   }),\n    //   finalize(() => console.log(\"first finalize() block executed\")),\n    //   catchError(err => {\n    //     console.log('caught rethrown error, providing fallback value');\n    //     return of([]);\n    //   }),\n    //   finalize(() => console.log(\"second finalize() block executed\")));\n  }\n}\n\n\n\n\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "_httpClient",
+                        "type": "HttpClient"
+                    }
+                ],
+                "line": 9,
+                "jsdoctags": [
+                    {
+                        "name": "_httpClient",
+                        "type": "HttpClient",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        }
+    ],
     "classes": [],
     "directives": [],
     "components": [
@@ -198,7 +255,7 @@
                 }
             ],
             "stylesData": "",
-            "templateData": "<app-bubble-with-icon [title]=\"'Hello'\" [message]=\"'message'\"></app-bubble-with-icon>\n<app-line-graph [graphValues]=\"graphData\">\n\n</app-line-graph>\n"
+            "templateData": "<router-outlet></router-outlet>\n"
         },
         {
             "name": "BubbleWithIconComponent",
@@ -305,7 +362,7 @@
         },
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-7f6440a4ddb89738a94cb8945f6d0381",
+            "id": "component-ButtonComponent-99fbfab7aa3e59de56c0dda92c29e029",
             "file": "src/stories/components/button/button.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -325,6 +382,16 @@
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "bigButton",
+                    "defaultValue": "false",
+                    "line": 17
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "line": 15
+                },
+                {
                     "name": "label",
                     "defaultValue": "\"\"",
                     "line": 11,
@@ -340,7 +407,7 @@
                 {
                     "name": "clicked",
                     "defaultValue": "new EventEmitter()",
-                    "line": 15,
+                    "line": 19,
                     "type": "EventEmitter<void>"
                 }
             ],
@@ -352,7 +419,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 19
+                    "line": 23
                 }
             ],
             "hostBindings": [],
@@ -360,11 +427,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class ButtonComponent implements OnInit {\n\n  @Input() label: string = \"\";\n\n  @Input() primary = true;\n\n  @Output() clicked: EventEmitter<void> = new EventEmitter();\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n}\n",
+            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class ButtonComponent implements OnInit {\n\n  @Input() label: string = \"\";\n\n  @Input() primary = true;\n\n  @Input() disabled = false;\n\n  @Input() bigButton = false;\n\n  @Output() clicked: EventEmitter<void> = new EventEmitter();\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "@import '../../../styles.css';\r\n\r\nbutton.primary-button {\r\n  background-color: var(--primary-button-color);\r\n  filter: brightness(100%);\r\n}\r\n\r\nbutton.primary-button:hover {\r\n  background-color: var(--primary-button-color);\r\n  filter: var(--hover-background-color-brightness-filter);\r\n}\r\n\r\nbutton.secondary-button {\r\n  background-color: var(--secondary-button-color);\r\n  filter: brightness(100%);\r\n}\r\n\r\nbutton.secondary-button:hover {\r\n  background-color: var(--secondary-button-color);\r\n  filter: var(--hover-background-color-brightness-filter);\r\n}\r\n",
+                    "data": "@import '../../../styles.css';\r\n\r\nbutton:focus {\r\n  border: none;\r\n  outline: none;\r\n  background: #F8F8F8;\r\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);\r\n  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);\r\n  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);\r\n}\r\n\r\nbutton.primary-button {\r\n  background-color: var(--primary-button-color);\r\n  filter: brightness(100%);\r\n}\r\n\r\nbutton.primary-button:hover {\r\n  background-color: var(--primary-button-color);\r\n  filter: var(--hover-background-color-brightness-filter);\r\n}\r\n\r\n.big-button {\r\n  padding: 9px;\r\n  padding-left: 16px;\r\n  padding-right: 16px;\r\n  font-size: 21px;\r\n}\r\n\r\nbutton.secondary-button {\r\n  background-color: var(--secondary-button-color);\r\n  filter: brightness(100%);\r\n}\r\n\r\nbutton.secondary-button:hover {\r\n  background-color: var(--secondary-button-color);\r\n  filter: var(--hover-background-color-brightness-filter);\r\n}\r\n\r\nbutton:disabled {\r\n  filter: saturate(0);\r\n  cursor: default;\r\n}\r\n\r\nbutton:disabled:hover {\r\n  filter: saturate(0);\r\n  cursor: default;\r\n}\r\n",
                     "styleUrl": "./button.component.css"
                 }
             ],
@@ -373,16 +440,72 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 15
+                "line": 19
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"inputWrapper\">\n  <button class=\"transition-all py-2 px-3 rounded transition duration-300\"\n    [ngClass]=\"{'primary-button':primary, 'secondary-button': !primary}\" (click)=\"clicked.next()\">{{label}}</button>\n</div>\n"
+            "templateData": "<div class=\"inputWrapper\">\n  <button class=\"transition-all py-2 px-3 rounded transition\" [disabled]=\"disabled\"\n    [ngClass]=\"{'primary-button':primary, 'secondary-button': !primary, 'big-button': bigButton}\"\n    (click)=\"clicked.next()\">{{label}}</button>\n</div>\n"
+        },
+        {
+            "name": "DashboardPageComponent",
+            "id": "component-DashboardPageComponent-ccccad7615d2ae40093f6047c58e345f",
+            "file": "src/app/pages/dashboard-page/dashboard-page.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-dashboard-page",
+            "styleUrls": [
+                "./dashboard-page.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./dashboard-page.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-dashboard-page',\n  templateUrl: './dashboard-page.component.html',\n  styleUrls: ['./dashboard-page.component.css']\n})\nexport class DashboardPageComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./dashboard-page.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"h-screen w-full flex flex-col\">\n  <div class=\"statusBarContainer w-full\" style=\"background-color: gray; height: 50px;\"></div>\n  <div class=\"content w-full grid h-full\" style=\"grid-template-columns: 100px auto;\">\n    <div class=\"navbar h-full\" style=\"background-color: green;\">\n    </div>\n    <div class=\"dashboard h-full\" style=\"background-color: blue;\"></div>\n  </div>\n</div>\n"
         },
         {
             "name": "InputFieldComponent",
-            "id": "component-InputFieldComponent-ff13fdaf97373a739aba9be7336fe2ee",
+            "id": "component-InputFieldComponent-532397af033c72c64dc9142178005375",
             "file": "src/stories/components/input-field/input-field.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -402,6 +525,11 @@
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "inputType",
+                    "defaultValue": "\"text\"",
+                    "line": 24
+                },
+                {
                     "name": "name",
                     "defaultValue": "\"\"",
                     "line": 21,
@@ -418,7 +546,7 @@
                 {
                     "name": "valueChanged",
                     "defaultValue": "new EventEmitter()",
-                    "line": 24,
+                    "line": 26,
                     "type": "EventEmitter<string>"
                 }
             ],
@@ -442,7 +570,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 28
+                    "line": 30
                 }
             ],
             "hostBindings": [],
@@ -450,11 +578,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-input-field',\n  templateUrl: './input-field.component.html',\n  styleUrls: ['./input-field.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class InputFieldComponent implements OnInit {\n  private _value: string = \"\";\n\n  public get value(): string {\n    return this._value;\n  }\n\n  public set value(value: string) {\n    this._value = value;\n    this.valueChanged.next(value);\n  }\n\n  @Input() name: string = \"\";\n  @Input() placeholder: string = \"\";\n\n  @Output() valueChanged: EventEmitter<string> = new EventEmitter();\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n}\n",
+            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-input-field',\n  templateUrl: './input-field.component.html',\n  styleUrls: ['./input-field.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class InputFieldComponent implements OnInit {\n  private _value: string = \"\";\n\n  public get value(): string {\n    return this._value;\n  }\n\n  public set value(value: string) {\n    this._value = value;\n    this.valueChanged.next(value);\n  }\n\n  @Input() name: string = \"\";\n  @Input() placeholder: string = \"\";\n\n  @Input() inputType = \"text\";\n\n  @Output() valueChanged: EventEmitter<string> = new EventEmitter();\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "@import '../../../styles.css';\r\n\r\ninput:focus+label,\r\ninput:not(:placeholder-shown)+label {\r\n  top: 11px;\r\n  left: 26px;\r\n  padding-left: 5px;\r\n  padding-right: 5px;\r\n  padding-top: 0px;\r\n  padding-bottom: 0px;\r\n  margin: 0px;\r\n}\r\n\r\ninput:focus-within {}\r\n\r\nlabel,\r\ninput {\r\n  transition: all 0.3s;\r\n  position: absolute;\r\n}\r\n\r\nlabel {\r\n  top: 26px;\r\n  left: 17px;\r\n  margin-top: 0.5rem;\r\n  margin-right: 0.75rem;\r\n  margin-bottom: 0.5rem;\r\n  margin-left: 0.75rem;\r\n  pointer-events: none;\r\n}\r\n\r\n.inputWrapper {\r\n  padding-top: 10px;\r\n}\r\n",
+                    "data": "@import '../../../styles.css';\r\n\r\ninput:focus+label,\r\ninput:not(:placeholder-shown)+label {\r\n  top: -3px;\r\n  left: 11px;\r\n  padding-left: 5px;\r\n  padding-right: 5px;\r\n  padding-top: 0px;\r\n  padding-bottom: 0px;\r\n  margin: 0px;\r\n}\r\n\r\ninput:focus-within {}\r\n\r\nlabel,\r\ninput {\r\n  transition: all 0.3s;\r\n  position: absolute;\r\n}\r\n\r\nlabel {\r\n  top: 10px;\r\n  left: 5px;\r\n  margin-top: 0.5rem;\r\n  margin-right: 0.75rem;\r\n  margin-bottom: 0.5rem;\r\n  margin-left: 0.75rem;\r\n  pointer-events: none;\r\n}\r\n\r\n.inputWrapper {\r\n  padding-top: 10px;\r\n  position: relative;\r\n  height: 55px;\r\n}\r\n\r\n.componentWrapper {\r\n  position: relative;\r\n  padding-bottom: 9px;\r\n}\r\n",
                     "styleUrl": "./input-field.component.css"
                 }
             ],
@@ -463,7 +591,7 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 24
+                "line": 26
             },
             "implements": [
                 "OnInit"
@@ -500,7 +628,7 @@
                     }
                 }
             },
-            "templateData": "<div class=\"inputWrapper\">\n  <input class=\"w-full bg-white text-gray-800 dark:bg-gray-800 dark:text-white dark:ring-offset-blue-300\" type=\"text\"\n    [name]=\"name\" [(ngModel)]=\"value\" placeholder=\" \">\n  <label class=\"bg-white text-gray-800 dark:bg-gray-800 dark:text-white\" for=\"{{name}}\">{{placeholder}}</label>\n</div>\n"
+            "templateData": "<div class=\"componentWrapper\">\n  <div class=\"inputWrapper\">\n    <input class=\"w-full bg-white text-gray-800 dark:bg-gray-800 dark:text-white dark:ring-offset-blue-300\"\n      type=\"{{inputType}}\" [name]=\"name\" [(ngModel)]=\"value\" placeholder=\" \">\n    <label class=\"bg-white text-gray-800 dark:bg-gray-800 dark:text-white\" for=\"{{name}}\">{{placeholder}}</label>\n  </div>\n</div>\n"
         },
         {
             "name": "LineGrpahComponent",
@@ -741,6 +869,122 @@
                 }
             },
             "templateData": "<div style=\"display: block;\">\n  <canvas baseChart width=\"400\" height=\"400\" [datasets]=\"lineChartData\" [labels]=\"lineChartLabels\"\n    [options]=\"lineChartOptions\" [colors]=\"lineChartColors\" [legend]=\"lineChartLegend\" [chartType]=\"lineChartType\"\n    [plugins]=\"lineChartPlugins\">\n  </canvas>\n</div>\n"
+        },
+        {
+            "name": "LoginPageComponent",
+            "id": "component-LoginPageComponent-1a7cbd452827cf12d66304e1161a7de1",
+            "file": "src/app/pages/login-page/login-page.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-login-page",
+            "styleUrls": [
+                "./login-page.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./login-page.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "password",
+                    "defaultValue": "null",
+                    "type": "string | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "login",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 21,
+                    "modifierKind": [
+                        114,
+                        120
+                    ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 18
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { ActivatedRoute, Router } from '@angular/router';\nimport { LoginService } from 'src/app/services/login.service';\n\n@Component({\n  selector: 'app-login-page',\n  templateUrl: './login-page.component.html',\n  styleUrls: ['./login-page.component.css']\n})\nexport class LoginPageComponent implements OnInit {\n\n  public password: string | null = null;\n  constructor(private readonly _loginService: LoginService,\n    private readonly _activatedRoute: ActivatedRoute,\n    private readonly _router: Router\n  ) { }\n\n  ngOnInit(): void {\n  }\n\n  public async login() {\n    console.log(\"login clicked\");\n    await this._loginService.Login(this.password ?? \"\").toPromise()\n      .then(async r => {\n        // successfully logged in?\n\n        console.log(r);\n\n        // open the status page of the frontend\n        await this._router.navigateByUrl(\"/dashboard\");\n        await this._router.navigate([\"/dashboard\"]);\n      });\n  }\n\n  /**\n   * - click on login should call a login controller (use env. file for storing the url)\n   * - we want dont need an access token for now (since you ll be hosting this yourself at first)\n   *\n   */\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import '../../../styles.css';\r\n\r\n\r\n.backgroundimage {\r\n  background: url(\"./../../../assets/images/backgroundimages/Im7lZjxeLhg.jpg\");\r\n  background-repeat: no-repeat;\r\n  background-attachment: fixed;\r\n  background-position: center;\r\n  background-size: cover;\r\n  position: absolute;\r\n  top: 0px;\r\n  left: 0px;\r\n  width: 100%;\r\n  height: 100%;\r\n  z-index: -1;\r\n  filter: blur(4px);\r\n}\r\n\r\n.text {\r\n  font-size: 31px;\r\n  color: #ececec;\r\n  text-align: center;\r\n  padding-bottom: 15px;\r\n}\r\n\r\n.headerline {\r\n  color: #ececec;\r\n  font-size: 5vw;\r\n  font-weight: 800;\r\n  text-shadow: 3px 4px 4px rgb(0 0 0 / 47%);\r\n  font-family: 'Lobster', cursive;\r\n  padding-bottom: 6px\r\n}\r\n\r\n.login-content-wrapper {\r\n  background-color: #95b1ff52;\r\n  border-radius: 24px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  padding-bottom: 15px;\r\n  padding: 25px;\r\n  place-items: center;\r\n}\r\n",
+                    "styleUrl": "./login-page.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "_loginService",
+                        "type": "LoginService"
+                    },
+                    {
+                        "name": "_activatedRoute",
+                        "type": "ActivatedRoute"
+                    },
+                    {
+                        "name": "_router",
+                        "type": "Router"
+                    }
+                ],
+                "line": 12,
+                "jsdoctags": [
+                    {
+                        "name": "_loginService",
+                        "type": "LoginService",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "_activatedRoute",
+                        "type": "ActivatedRoute",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "_router",
+                        "type": "Router",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"absolute table left-0 top-0 w-full h-full\">\n  <div class=\"align-middle table-cell\">\n    <div class=\"m-auto w-6/12 h-auto login-content-wrapper\">\n      <h1 class=\"headerline\">YetAnotherBot</h1>\n      <div class=\"text\">\n        <span>Automate your workflows from one place!</span>\n      </div>\n      <app-input-field class=\"w-full\" [placeholder]=\"'Password'\" [inputType]=\"'password'\"\n        (valueChanged)=\"password = $event\"></app-input-field>\n      <app-button [label]=\"'Login'\" [primary]=\"true\" class=\"text-right ml-auto\" [bigButton]=\"true\" (clicked)=\"login()\"\n        [disabled]=\"!password\">\n      </app-button>\n    </div>\n  </div>\n</div>\n\n<div class=\"backgroundimage\"></div>\n"
         },
         {
             "name": "NavbarComponent",
@@ -1023,10 +1267,19 @@
                             "name": "BubbleWithIconComponent"
                         },
                         {
+                            "name": "ButtonComponent"
+                        },
+                        {
+                            "name": "DashboardPageComponent"
+                        },
+                        {
                             "name": "InputFieldComponent"
                         },
                         {
                             "name": "LineGrpahComponent"
+                        },
+                        {
+                            "name": "LoginPageComponent"
                         }
                     ]
                 },
@@ -1110,7 +1363,7 @@
                 "subtype": "variable",
                 "file": "src/environments/environment.ts",
                 "type": "object",
-                "defaultValue": "{\n  production: false\n}"
+                "defaultValue": "{\n  production: false,\n  baseUrl: \"https://localhost:5001/\"\n}"
             },
             {
                 "name": "require",
@@ -1158,7 +1411,7 @@
                     "subtype": "variable",
                     "file": "src/environments/environment.ts",
                     "type": "object",
-                    "defaultValue": "{\n  production: false\n}"
+                    "defaultValue": "{\n  production: false,\n  baseUrl: \"https://localhost:5001/\"\n}"
                 }
             ]
         },
@@ -1175,7 +1428,21 @@
                 "name": "routes",
                 "filename": "src/app/app-routing.module.ts",
                 "module": "AppRoutingModule",
-                "children": [],
+                "children": [
+                    {
+                        "path": "",
+                        "redirectTo": "/login",
+                        "pathMatch": "full"
+                    },
+                    {
+                        "path": "login",
+                        "component": "LoginPageComponent"
+                    },
+                    {
+                        "path": "dashboard",
+                        "component": "DashboardPageComponent"
+                    }
+                ],
                 "kind": "module"
             }
         ]
@@ -1189,6 +1456,33 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "AppComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/dashboard-page/dashboard-page.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DashboardPageComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/login-page/login-page.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "LoginPageComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/services/login.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "LoginService",
                 "coveragePercent": 0,
                 "coverageCount": "0/3",
                 "status": "low"
@@ -1228,7 +1522,7 @@
                 "linktype": "component",
                 "name": "ButtonComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/8",
                 "status": "low"
             },
             {
@@ -1237,7 +1531,7 @@
                 "linktype": "component",
                 "name": "InputFieldComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/8",
                 "status": "low"
             },
             {

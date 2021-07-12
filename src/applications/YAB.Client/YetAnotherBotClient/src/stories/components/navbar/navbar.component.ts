@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -8,33 +8,21 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  @Input() loggedIn: boolean = false;
-
   private navbarElements = [
     {
-      href: "#",
-      titleKey: 'Pricing',
-      showOn: () => { return !this.loggedIn; }
-    },
-    {
-      href: "#",
-      titleKey: 'Features',
-      showOn: () => { return !this.loggedIn; }
-    },
-    {
-      href: "#",
+      href: "#/dashboard",
       titleKey: 'Dashboard',
-      showOn: () => { return this.loggedIn; }
+      showOn: () => { return true; }
     },
     {
-      href: "#",
+      href: "#/pipelines",
       titleKey: 'Pipelines',
-      showOn: () => { return this.loggedIn; }
+      showOn: () => { return true; }
     },
     {
-      href: "#",
+      href: "#/extensions",
       titleKey: 'Extensions',
-      showOn: () => { return this.loggedIn; }
+      showOn: () => { return true; }
     },
   ];
 
@@ -52,5 +40,4 @@ export class NavbarComponent implements OnInit {
   public onMobileMenuButtonClicked(event: MouseEvent) {
     this.isMobileMenuShowing = !this.isMobileMenuShowing;
   }
-
 }

@@ -1,11 +1,10 @@
 import { Meta, Story } from '@storybook/angular';
-import { NavbarComponent } from './navbar.component';
+import { LogoComponent } from './logo.component';
 
 export default {
-  title: "Basics / Essentials / Navbar",
-  component: NavbarComponent
+  title: "Basics / Essentials / Logo",
+  component: LogoComponent
 } as Meta;
-
 
 export const Basic: Story = () => ({
   props: {},

@@ -1,1 +1,11 @@
-<p>dashboard-page works!</p>
+<div class="h-screen w-full flex flex-col">
+  <div class="statusBarContainer w-full px-2" style="background-color: gray; height: 65px;">
+    <app-logo></app-logo>
+  </div>
+  <div class="content w-full grid h-full" style="grid-template-columns: auto 1fr;">
+    <div class="navbar h-full">
+      <app-navbar></app-navbar>
+    </div>
+    <div class="dashboard h-full" style="background-color: blue;"></div>
+  </div>
+</div>
