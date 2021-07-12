@@ -46,7 +46,7 @@ namespace YAB.Api.BackgroundTasks
                         {
                             Console.WriteLine(ex);
                         }
-                    }, _cancellationToken));
+                    }));
             }
         }
 

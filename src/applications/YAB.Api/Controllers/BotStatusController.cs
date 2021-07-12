@@ -51,13 +51,13 @@ namespace YAB.Api.Controllers
             return true;
         }
 
-        [HttpPost("bot/start")]
+        [HttpPost("start")]
         public void StartBot()
         {
             _backgroundTasksManager.Value.StartBot();
         }
 
-        [HttpPost("bot/stop")]
+        [HttpPost("stop")]
         public void StopBot()
         {
             _backgroundTasksManager.Value.StopBot();

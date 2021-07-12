@@ -1,6 +1,9 @@
 <div class="h-screen w-full flex flex-col">
-  <div class="statusBarContainer w-full px-2" style="background-color: gray; height: 65px;">
-    <app-logo></app-logo>
+  <div class="w-full">
+    <div class="statusBarContainer w-full px-2 grid grid-cols-2" style="background-color: gray; height: 65px; ">
+      <app-logo></app-logo>
+      <app-bot-status-indicator class="self-end h-full" style="text-align: right;"></app-bot-status-indicator>
+    </div>
   </div>
   <div class="content w-full grid h-full" style="grid-template-columns: auto 1fr;">
     <div class="navbar h-full">

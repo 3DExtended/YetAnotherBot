@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { ChartsModule } from 'ng2-charts';
+import { BotStatusIndicatorComponent } from 'src/stories/components/bot-status-indicator/bot-status-indicator.component';
 import { BubbleWithIconComponent } from 'src/stories/components/bubble-with-icon/bubble-with-icon.component';
 import { ButtonComponent } from 'src/stories/components/button/button.component';
 import { InputFieldComponent } from 'src/stories/components/input-field/input-field.component';
@@ -27,7 +28,8 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
     ButtonComponent,
     DashboardPageComponent,
     LogoComponent,
-    NavbarComponent
+    NavbarComponent,
+    BotStatusIndicatorComponent
   ],
   imports: [
     BrowserModule,
