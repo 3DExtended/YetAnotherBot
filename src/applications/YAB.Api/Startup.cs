@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 
 using SimpleInjector;
 
+using YAB.Api.BackgroundTasks;
 using YAB.Plugins.Injectables;
 using YAB.Plugins.Injectables.Options;
 using YAB.Services.Common;
@@ -85,6 +86,11 @@ namespace YAB.Api
 
             _container.RegisterInstance(new BotOptions());
             _container.RegisterInstance(new TwitchOptions());
+            // _container.RegisterSingleton<IBackgroundTasksManager, BackgroundTasksManager>();
+            _container.Register<BackgroundTasksManager>(Lifestyle.Singleton);
+
+            _container.RegisterInstance(new Lazy<IBackgroundTasksManager>(() => (IBackgroundTasksManager)_container.GetInstance(typeof(BackgroundTasksManager))));
+
             _container.RegisterInstance<IContainerAccessor>(containerAccessor);
             _container.RegisterInstance<IAvailablePluginsHelper>(new AvailablePluginsHelper());
             _container.RegisterSingleton<IPipelineStore, PipelineStore>();

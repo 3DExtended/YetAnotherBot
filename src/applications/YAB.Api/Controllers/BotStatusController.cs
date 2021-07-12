@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 
-using Microsoft.AspNetCore.Mvc;
-
-using YAB.Plugins;
+using YAB.Api.BackgroundTasks;
 using YAB.Plugins.Injectables;
 using YAB.Plugins.Injectables.Options;
 
@@ -15,56 +10,25 @@ namespace YAB.Api.Controllers
     [ApiController]
     public class BotStatusController : ControllerBase
     {
+        private readonly Plugins.Injectables.Lazy<IBackgroundTasksManager> _backgroundTasksManager;
         private readonly IContainerAccessor _containerAccessor;
-        private readonly IPipelineStore _pipelineStore;
 
-        public BotStatusController(IContainerAccessor containerAccessor, IPipelineStore pipelineStore)
+        public BotStatusController(IContainerAccessor containerAccessor, Plugins.Injectables.Lazy<IBackgroundTasksManager> backgroundTasksManager)
         {
             _containerAccessor = containerAccessor;
-            _pipelineStore = pipelineStore;
+            _backgroundTasksManager = backgroundTasksManager;
         }
 
-        [HttpGet("setup/twitch")]
-        public async Task<bool> LoadSecretsAsync(string botPassword, CancellationToken cancellationToken)
+        [HttpGet("status")]
+        public bool IsBotRunning()
         {
-            var options = _containerAccessor.Container.GetInstance<TwitchOptions>();
-            options.Load(botPassword);
-
-            var botOptions = _containerAccessor.Container.GetInstance<BotOptions>();
-            botOptions.Load(string.Empty);
-
-            try
-            {
-                await _pipelineStore.LoadPipelinesAsync(cancellationToken).ConfigureAwait(false);
-            }
-            catch
-            {
-            }
-
-            // TODO figure out where we want to locate this code and where we get a cancellation token from.
-            var backgroundTasks = _containerAccessor.Container.GetAllInstances<IBackgroundTask>().ToList();
-            foreach (var backgroundTask in backgroundTasks)
-            {
-                _ = Task.Run(async () =>
-                  {
-                      try
-                      {
-                          await backgroundTask.InitializeAsync(default);
-                          await backgroundTask.RunUntilCancelledAsync(default);
-                      }
-                      catch (Exception ex)
-                      {
-                          Console.WriteLine(ex);
-                      }
-                  });
-            }
-
-            return true;
+            return _backgroundTasksManager.Value.IsRunning;
         }
 
         [HttpPost("setup/bot")]
         public bool SetBotOptions(string pipelineConfigurationPath)
         {
+            // TODO move this method inside a setup controller
             var botOptions = _containerAccessor.Container.GetInstance<BotOptions>();
             botOptions.PipelineConfigurationPath = pipelineConfigurationPath;
             botOptions.Save(string.Empty);
@@ -75,6 +39,7 @@ namespace YAB.Api.Controllers
         [HttpPost("setup/twitch")]
         public bool SetTwitchClientSecretsAsync(string botPassword, string twitchBotToken, string twitchBotUsername, string twitchChannelToJoin, string pipelineConfigurationPath)
         {
+            // TODO move this method inside a setup controller
             var options = _containerAccessor.Container.GetInstance<TwitchOptions>();
 
             options.TwitchBotToken = twitchBotToken;
@@ -84,6 +49,18 @@ namespace YAB.Api.Controllers
             options.Save(botPassword);
 
             return true;
+        }
+
+        [HttpPost("bot/start")]
+        public void StartBot()
+        {
+            _backgroundTasksManager.Value.StartBot();
+        }
+
+        [HttpPost("bot/stop")]
+        public void StopBot()
+        {
+            _backgroundTasksManager.Value.StopBot();
         }
     }
 }
