@@ -1,0 +1,62 @@
+@import '../../../styles.css';
+
+.switchWrapper {
+  --toggle-width: 2em;
+  --toggle-switch-button-size-offset: 3px;
+
+  --toggle-height: calc(var(--toggle-width) / 2);
+  --toggle-border-radius: calc(var(--toggle-height) / 2);
+
+  --toggle-switch-button-size: calc(var(--toggle-height) + 2 * var(--toggle-switch-button-size-offset));
+  --toggle-switch-button-border-radius: calc(var(--toggle-switch-button-size) / 2);
+
+  margin: var(--toggle-switch-button-size-offset);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.toggle {
+  /* TODO style this toggle using the font size (so "em" instead of "px")  */
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+
+  position: relative;
+
+  display: inline-block;
+  cursor: pointer;
+}
+
+.toggleInput {
+  display: none;
+}
+
+.toggleFill {
+  position: relative;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  border-radius: var(--toggle-border-radius);
+  background-color: #a4d8df;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4) inset;
+  transition: background-color 0.2s;
+}
+
+.toggleFill::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--toggle-switch-button-size-offset)*-1);
+  left: calc(var(--toggle-switch-button-size-offset)*-1);
+  width: var(--toggle-switch-button-size);
+  height: var(--toggle-switch-button-size);
+  background-color: #b7b7b7;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  border-radius: var(--toggle-switch-button-border-radius);
+  transition: transform 0.2s;
+}
+
+.toggleInput:checked~.toggleFill {
+  background-color: #28a745;
+}
+
+.toggleInput:checked~.toggleFill::after {
+  transform: translateX(calc(var(--toggle-height)));
+}

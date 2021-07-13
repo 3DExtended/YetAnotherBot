@@ -138,6 +138,70 @@
     ],
     "injectables": [
         {
+            "name": "BotStatusService",
+            "id": "injectable-BotStatusService-914d9d8345d1dd8fbba89d6c5a33cade",
+            "file": "src/app/services/bot-status.service.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "IsBotRunning",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<any>",
+                    "typeParameters": [],
+                    "line": 28,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "StartBot",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<any>",
+                    "typeParameters": [],
+                    "line": 13,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "StopBot",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<any>",
+                    "typeParameters": [],
+                    "line": 43,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "description": "",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { Observable } from 'rxjs';\nimport { environment } from 'src/environments/environment';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class BotStatusService {\n\n  constructor(private readonly _httpClient: HttpClient) { }\n\n  public StartBot(): Observable<any> {\n    return this._httpClient.post(environment.baseUrl + \"api/botstatus/start\", {});\n    // .pipe(map(res => res['payload']),\n    //   catchError(err => {\n    //     console.log('caught mapping error and rethrowing', err);\n    //     return throwError(err);\n    //   }),\n    //   finalize(() => console.log(\"first finalize() block executed\")),\n    //   catchError(err => {\n    //     console.log('caught rethrown error, providing fallback value');\n    //     return of([]);\n    //   }),\n    //   finalize(() => console.log(\"second finalize() block executed\")));\n  }\n\n  public IsBotRunning(): Observable<any> {\n    return this._httpClient.get(environment.baseUrl + \"api/botstatus/status\");\n    // .pipe(map(res => res['payload']),\n    //   catchError(err => {\n    //     console.log('caught mapping error and rethrowing', err);\n    //     return throwError(err);\n    //   }),\n    //   finalize(() => console.log(\"first finalize() block executed\")),\n    //   catchError(err => {\n    //     console.log('caught rethrown error, providing fallback value');\n    //     return of([]);\n    //   }),\n    //   finalize(() => console.log(\"second finalize() block executed\")));\n  }\n\n  public StopBot(): Observable<any> {\n    return this._httpClient.post(environment.baseUrl + \"api/botstatus/stop\", {});\n    // .pipe(map(res => res['payload']),\n    //   catchError(err => {\n    //     console.log('caught mapping error and rethrowing', err);\n    //     return throwError(err);\n    //   }),\n    //   finalize(() => console.log(\"first finalize() block executed\")),\n    //   catchError(err => {\n    //     console.log('caught rethrown error, providing fallback value');\n    //     return of([]);\n    //   }),\n    //   finalize(() => console.log(\"second finalize() block executed\")));\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "_httpClient",
+                        "type": "HttpClient"
+                    }
+                ],
+                "line": 9,
+                "jsdoctags": [
+                    {
+                        "name": "_httpClient",
+                        "type": "HttpClient",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
             "name": "LoginService",
             "id": "injectable-LoginService-ba4e352fafbb3e1456333feb3af3226d",
             "file": "src/app/services/login.service.ts",
@@ -256,6 +320,137 @@
             ],
             "stylesData": "",
             "templateData": "<router-outlet></router-outlet>\n"
+        },
+        {
+            "name": "BotStatusIndicatorComponent",
+            "id": "component-BotStatusIndicatorComponent-31abecf6644a084ebef9d250b90c7348",
+            "file": "src/stories/components/bot-status-indicator/bot-status-indicator.component.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-bot-status-indicator",
+            "styleUrls": [
+                "./bot-status-indicator.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./bot-status-indicator.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "botIsRunning",
+                    "defaultValue": "false",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 15
+                },
+                {
+                    "name": "reloadBotStatusForEver",
+                    "args": [
+                        {
+                            "name": "refreshRate",
+                            "type": "number"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 33,
+                    "modifierKind": [
+                        112
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "refreshRate",
+                            "type": "number",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "toggleTheBotState",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 19,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "updateBotStatus",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 40,
+                    "modifierKind": [
+                        112
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit, ViewEncapsulation } from '@angular/core';\nimport { forkJoin } from 'rxjs';\nimport { BotStatusService } from 'src/app/services/bot-status.service';\n\n@Component({\n  selector: 'app-bot-status-indicator',\n  templateUrl: './bot-status-indicator.component.html',\n  styleUrls: ['./bot-status-indicator.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class BotStatusIndicatorComponent implements OnInit {\n  public botIsRunning = false;\n  constructor(private readonly _botStatusService: BotStatusService) { }\n\n  ngOnInit(): void {\n    this.reloadBotStatusForEver(1000);\n  }\n\n  public toggleTheBotState() {\n    if (this.botIsRunning) {\n      this._botStatusService.StopBot()\n        .subscribe(() => {\n          this.botIsRunning = false;\n        });\n    } else {\n      this._botStatusService.StartBot()\n        .subscribe(() => {\n          this.botIsRunning = true;\n        });\n    }\n  }\n\n  private reloadBotStatusForEver(refreshRate: number) {\n    setTimeout(() => {\n      this.updateBotStatus();\n      this.reloadBotStatusForEver(refreshRate);\n    }, refreshRate);\n  }\n\n  private updateBotStatus() {\n    const botStatusLoader = this._botStatusService.IsBotRunning();\n    forkJoin([botStatusLoader]).subscribe(res => {\n      this.botIsRunning = res[0];\n    });\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import '../../../styles.css';\r\n",
+                    "styleUrl": "./bot-status-indicator.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "_botStatusService",
+                        "type": "BotStatusService"
+                    }
+                ],
+                "line": 12,
+                "jsdoctags": [
+                    {
+                        "name": "_botStatusService",
+                        "type": "BotStatusService",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<span class=\"font-bold\" (click)=\"toggleTheBotState()\">{{botIsRunning}}</span>\n"
         },
         {
             "name": "BubbleWithIconComponent",
@@ -501,7 +696,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"h-screen w-full flex flex-col\">\n  <div class=\"statusBarContainer w-full\" style=\"background-color: gray; height: 50px;\"></div>\n  <div class=\"content w-full grid h-full\" style=\"grid-template-columns: 100px auto;\">\n    <div class=\"navbar h-full\" style=\"background-color: green;\">\n    </div>\n    <div class=\"dashboard h-full\" style=\"background-color: blue;\"></div>\n  </div>\n</div>\n"
+            "templateData": "<div class=\"h-screen w-full flex flex-col\">\n  <div class=\"w-full\">\n    <div class=\"statusBarContainer w-full px-2 grid grid-cols-2\" style=\"background-color: gray; height: 65px; \">\n      <app-logo></app-logo>\n      <app-bot-status-indicator class=\"self-end h-full\" style=\"text-align: right;\"></app-bot-status-indicator>\n    </div>\n  </div>\n  <div class=\"content w-full grid h-full\" style=\"grid-template-columns: auto 1fr;\">\n    <div class=\"navbar h-full\">\n      <app-navbar></app-navbar>\n    </div>\n    <div class=\"dashboard h-full\" style=\"background-color: blue;\"></div>\n  </div>\n</div>\n"
         },
         {
             "name": "InputFieldComponent",
@@ -987,8 +1182,54 @@
             "templateData": "<div class=\"absolute table left-0 top-0 w-full h-full\">\n  <div class=\"align-middle table-cell\">\n    <div class=\"m-auto w-6/12 h-auto login-content-wrapper\">\n      <h1 class=\"headerline\">YetAnotherBot</h1>\n      <div class=\"text\">\n        <span>Automate your workflows from one place!</span>\n      </div>\n      <app-input-field class=\"w-full\" [placeholder]=\"'Password'\" [inputType]=\"'password'\"\n        (valueChanged)=\"password = $event\"></app-input-field>\n      <app-button [label]=\"'Login'\" [primary]=\"true\" class=\"text-right ml-auto\" [bigButton]=\"true\" (clicked)=\"login()\"\n        [disabled]=\"!password\">\n      </app-button>\n    </div>\n  </div>\n</div>\n\n<div class=\"backgroundimage\"></div>\n"
         },
         {
+            "name": "LogoComponent",
+            "id": "component-LogoComponent-4e9820381522975f8f9ba1b1eec9e20d",
+            "file": "src/stories/components/logo/logo.component.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-logo",
+            "styleUrls": [
+                "./logo.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./logo.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-logo',\n  templateUrl: './logo.component.html',\n  styleUrls: ['./logo.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class LogoComponent {\n  constructor() { }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import '../../../styles.css';\r\n",
+                    "styleUrl": "./logo.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 9
+            },
+            "templateData": "<div class=\"h-full\" style=\"width: fit-content;\">\n  <a href=\"#\" class=\"flex items-center text-gray-700 hover:text-gray-900 h-full my-auto\t\" style=\"font-size: 1.6em;\">\n    <svg class=\"mr-1 text-blue-400\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\"\n      style=\"width: 1.75em; height: 1.75em\" stroke=\"currentColor\">\n      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 19l9 2-9-18-9 18 9-2zm0 0v-8\" />\n    </svg>\n    <span class=\"font-bold\">YetAnotherBot</span>\n  </a>\n</div>\n"
+        },
+        {
             "name": "NavbarComponent",
-            "id": "component-NavbarComponent-aba405cc8c281c8d5d3e7280cc7ee5ab",
+            "id": "component-NavbarComponent-aa928bbe3b2a574d434249ae0294ee43",
             "file": "src/stories/components/navbar/navbar.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -1006,14 +1247,7 @@
                 "./navbar.component.html"
             ],
             "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "loggedIn",
-                    "defaultValue": "false",
-                    "line": 11,
-                    "type": "boolean"
-                }
-            ],
+            "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [
                 {
@@ -1022,18 +1256,18 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 41,
+                    "line": 29,
                     "modifierKind": [
                         114
                     ]
                 },
                 {
                     "name": "navbarElements",
-                    "defaultValue": "[\n    {\n      href: \"#\",\n      titleKey: 'Pricing',\n      showOn: () => { return !this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Features',\n      showOn: () => { return !this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Dashboard',\n      showOn: () => { return this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Pipelines',\n      showOn: () => { return this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Extensions',\n      showOn: () => { return this.loggedIn; }\n    },\n  ]",
+                    "defaultValue": "[\n    {\n      href: \"#/dashboard\",\n      titleKey: 'Dashboard',\n      showOn: () => { return true; }\n    },\n    {\n      href: \"#/pipelines\",\n      titleKey: 'Pipelines',\n      showOn: () => { return true; }\n    },\n    {\n      href: \"#/extensions\",\n      titleKey: 'Extensions',\n      showOn: () => { return true; }\n    },\n  ]",
                     "type": "[]",
                     "optional": false,
                     "description": "",
-                    "line": 13,
+                    "line": 11,
                     "modifierKind": [
                         112
                     ]
@@ -1046,7 +1280,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 36,
                     "modifierKind": [
                         114
                     ]
@@ -1057,7 +1291,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 45
+                    "line": 33
                 },
                 {
                     "name": "onMobileMenuButtonClicked",
@@ -1070,7 +1304,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 52,
+                    "line": 40,
                     "modifierKind": [
                         114
                     ],
@@ -1090,7 +1324,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-navbar',\n  templateUrl: './navbar.component.html',\n  styleUrls: ['./navbar.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class NavbarComponent implements OnInit {\n\n  @Input() loggedIn: boolean = false;\n\n  private navbarElements = [\n    {\n      href: \"#\",\n      titleKey: 'Pricing',\n      showOn: () => { return !this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Features',\n      showOn: () => { return !this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Dashboard',\n      showOn: () => { return this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Pipelines',\n      showOn: () => { return this.loggedIn; }\n    },\n    {\n      href: \"#\",\n      titleKey: 'Extensions',\n      showOn: () => { return this.loggedIn; }\n    },\n  ];\n\n  public isMobileMenuShowing: boolean = false;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public getNavbarItemsToShow() {\n    return this.navbarElements.filter(e => e.showOn());\n  }\n\n  public onMobileMenuButtonClicked(event: MouseEvent) {\n    this.isMobileMenuShowing = !this.isMobileMenuShowing;\n  }\n\n}\n",
+            "sourceCode": "import { Component, OnInit, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-navbar',\n  templateUrl: './navbar.component.html',\n  styleUrls: ['./navbar.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class NavbarComponent implements OnInit {\n\n  private navbarElements = [\n    {\n      href: \"#/dashboard\",\n      titleKey: 'Dashboard',\n      showOn: () => { return true; }\n    },\n    {\n      href: \"#/pipelines\",\n      titleKey: 'Pipelines',\n      showOn: () => { return true; }\n    },\n    {\n      href: \"#/extensions\",\n      titleKey: 'Extensions',\n      showOn: () => { return true; }\n    },\n  ];\n\n  public isMobileMenuShowing: boolean = false;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public getNavbarItemsToShow() {\n    return this.navbarElements.filter(e => e.showOn());\n  }\n\n  public onMobileMenuButtonClicked(event: MouseEvent) {\n    this.isMobileMenuShowing = !this.isMobileMenuShowing;\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1103,12 +1337,12 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 41
+                "line": 29
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<!-- navbar goes here -->\n<nav class=\"bg-gray-100\">\n  <div class=\"max-w-6xl mx-auto px-4\">\n    <div class=\"flex justify-between\">\n\n      <div class=\"flex space-x-4\">\n        <!-- logo -->\n        <div>\n          <a href=\"#\" class=\"flex items-center py-5 px-2 text-gray-700 hover:text-gray-900\">\n            <svg class=\"h-6 w-6 mr-1 text-blue-400\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\"\n              stroke=\"currentColor\">\n              <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                d=\"M12 19l9 2-9-18-9 18 9-2zm0 0v-8\" />\n            </svg>\n            <span class=\"font-bold\">YetAnotherBot</span>\n          </a>\n        </div>\n\n        <!-- primary nav -->\n        <div class=\"hidden md:flex items-center space-x-1\">\n          <span *ngFor=\"let element of getNavbarItemsToShow()\">\n            <a href=\"{{element.href}}\" class=\"py-5 px-3 text-gray-700 hover:text-gray-900\">{{element.titleKey}}</a>\n          </span>\n        </div>\n      </div>\n\n      <!-- secondary nav -->\n      <div class=\"flex items-center space-x-1\">\n        <a *ngIf=\"!loggedIn\" href=\"\"\n          class=\"py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300\">Login</a>\n        <a *ngIf=\"!loggedIn\" href=\"\" class=\"hidden md:block py-5 px-3\">Signup</a>\n        <button class=\"md:hidden mobile-menu-button pl-3\" (click)=\"onMobileMenuButtonClicked($event)\">\n          <svg class=\"w-6 h-6\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\" />\n          </svg>\n        </button>\n      </div>\n    </div>\n  </div>\n\n  <!-- mobile menu -->\n  <div [ngClass]=\"{'mobile-menu':true, 'hidden':!isMobileMenuShowing, 'md:hidden':true}\">\n    <span *ngFor=\"let element of getNavbarItemsToShow()\">\n      <a href=\"{{element.href}}\" class=\"block py-2 px-4 text-sm hover:bg-gray-200\">{{element.titleKey}}</a>\n    </span>\n  </div>\n</nav>\n"
+            "templateData": "<!-- navbar goes here -->\n<nav class=\"bg-gray-100 h-full\" style=\"width: fit-content; padding-top: 12px;\">\n  <div class=\"mx-auto px-4 h-full\">\n    <div class=\"h-full\">\n\n      <div class=\"space-x-4\">\n\n        <!-- primary nav -->\n        <div class=\"items-center h-full grid gap-y-2\">\n          <div *ngFor=\"let element of getNavbarItemsToShow()\" class=\"flex\">\n            <a href=\"{{element.href}}\"\n              class=\"py-2 px-3 text-gray-700 hover:text-gray-900 text-2xl\">{{element.titleKey}}</a>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!-- mobile menu -->\n  <!-- <div [ngClass]=\"{'mobile-menu':true, 'hidden':!isMobileMenuShowing, 'md:hidden':true}\">\n    <span *ngFor=\"let element of getNavbarItemsToShow()\">\n      <a href=\"{{element.href}}\" class=\"block py-2 px-4 text-sm hover:bg-gray-200\">{{element.titleKey}}</a>\n    </span>\n  </div> -->\n</nav>\n"
         },
         {
             "name": "PipelineGraphComponent",
@@ -1247,6 +1481,128 @@
                 "OnInit"
             ],
             "templateData": "<ngx-graph [links]=\"links\" [nodes]=\"nodes\" class=\"chart-container\" [layoutSettings]=\"layoutSettings\"\n  [draggingEnabled]=\"false\" [enableZoom]=\"true\">\n  <ng-template #defsTemplate>\n    <svg:marker id=\"arrow\" viewBox=\"0 -5 10 10\" refX=\"8\" refY=\"0\" markerWidth=\"4\" markerHeight=\"4\" orient=\"auto\">\n      <svg:path d=\"M0,-5L10,0L0,5\" class=\"arrow-head\" />\n    </svg:marker>\n  </ng-template>\n\n  <ng-template #nodeTemplate let-node>\n    <svg:g class=\"node\" xmlns=\"http://www.w3.org/2000/xhtml\">\n\n      <svg:foreignObject [attr.width]=\"node.dimension.width\" [attr.height]=\"node.dimension.height\">\n        <xhtml:div class=\"cardContainer\" xmlns=\"http://www.w3.org/1999/xhtml\"\n          style=\"justify-content: center;display: flex; height: 100%; width: 100%;\">\n          <app-bubble-with-icon style=\"margin: auto;\" [title]=\"'asdf'\"></app-bubble-with-icon>\n        </xhtml:div>\n      </svg:foreignObject>\n    </svg:g>\n  </ng-template>\n</ngx-graph>\n"
+        },
+        {
+            "name": "ToggleSwitchComponent",
+            "id": "component-ToggleSwitchComponent-3070b53b88557b7d12b3bf06ea95104a",
+            "file": "src/stories/components/toggle-switch/toggle-switch.component.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-toggle-switch",
+            "styleUrls": [
+                "./toggle-switch.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./toggle-switch.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "defaultState",
+                    "defaultValue": "false",
+                    "line": 12,
+                    "type": "boolean"
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "\"\"",
+                    "line": 11,
+                    "type": "string"
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "valueChanged",
+                    "defaultValue": "new EventEmitter()",
+                    "line": 15,
+                    "type": "EventEmitter<boolean>"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "_value",
+                    "defaultValue": "false",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        112
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 30
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-toggle-switch',\n  templateUrl: './toggle-switch.component.html',\n  styleUrls: ['./toggle-switch.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class ToggleSwitchComponent implements OnInit {\n\n  @Input() label: string = \"\";\n  @Input() defaultState: boolean = false;\n\n\n  @Output() valueChanged: EventEmitter<boolean> = new EventEmitter();\n\n  private _value: boolean = false;\n\n  public get value(): boolean {\n    return this._value;\n  }\n\n  public set value(value: boolean) {\n    this._value = value;\n    this.valueChanged.next(value);\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n    this.value = this.defaultState;\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import '../../../styles.css';\r\n",
+                    "styleUrl": "./toggle-switch.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 26
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "accessors": {
+                "value": {
+                    "name": "value",
+                    "setSignature": {
+                        "name": "value",
+                        "type": "void",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "boolean"
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 23,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "boolean",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    },
+                    "getSignature": {
+                        "name": "value",
+                        "type": "boolean",
+                        "returnType": "boolean",
+                        "line": 19
+                    }
+                }
+            },
+            "templateData": "<div class=\"switchWrapper\">\n  <label class=\"toggle\" for=\"toggleSwitch\">\n    <input class=\"toggleInput\" name=\"\" type=\"checkbox\" id=\"toggleSwitch\" [(ngModel)]=\"value\">\n    <div class=\"toggleFill\"></div>\n  </label>\n</div>\n"
         }
     ],
     "modules": [
@@ -1262,6 +1618,9 @@
                     "elements": [
                         {
                             "name": "AppComponent"
+                        },
+                        {
+                            "name": "BotStatusIndicatorComponent"
                         },
                         {
                             "name": "BubbleWithIconComponent"
@@ -1280,6 +1639,15 @@
                         },
                         {
                             "name": "LoginPageComponent"
+                        },
+                        {
+                            "name": "LogoComponent"
+                        },
+                        {
+                            "name": "NavbarComponent"
+                        },
+                        {
+                            "name": "ToggleSwitchComponent"
                         }
                     ]
                 },
@@ -1353,17 +1721,17 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.prod.ts",
+                "file": "src/environments/environment.ts",
                 "type": "object",
-                "defaultValue": "{\n  production: true\n}"
+                "defaultValue": "{\n  production: false,\n  baseUrl: \"https://localhost:5001/\"\n}"
             },
             {
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.ts",
+                "file": "src/environments/environment.prod.ts",
                 "type": "object",
-                "defaultValue": "{\n  production: false,\n  baseUrl: \"https://localhost:5001/\"\n}"
+                "defaultValue": "{\n  production: true\n}"
             },
             {
                 "name": "require",
@@ -1394,16 +1762,6 @@
                     "type": "literal type"
                 }
             ],
-            "src/environments/environment.prod.ts": [
-                {
-                    "name": "environment",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/environments/environment.prod.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  production: true\n}"
-                }
-            ],
             "src/environments/environment.ts": [
                 {
                     "name": "environment",
@@ -1412,6 +1770,16 @@
                     "file": "src/environments/environment.ts",
                     "type": "object",
                     "defaultValue": "{\n  production: false,\n  baseUrl: \"https://localhost:5001/\"\n}"
+                }
+            ],
+            "src/environments/environment.prod.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.prod.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  production: true\n}"
                 }
             ]
         },
@@ -1441,6 +1809,10 @@
                     {
                         "path": "dashboard",
                         "component": "DashboardPageComponent"
+                    },
+                    {
+                        "path": "**",
+                        "redirectTo": "login"
                     }
                 ],
                 "kind": "module"
@@ -1479,6 +1851,15 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/services/bot-status.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "BotStatusService",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/services/login.service.ts",
                 "type": "injectable",
                 "linktype": "injectable",
@@ -1505,6 +1886,15 @@
                 "name": "environment",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/components/bot-status-indicator/bot-status-indicator.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "BotStatusIndicatorComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
@@ -1562,12 +1952,21 @@
                 "status": "low"
             },
             {
+                "filePath": "src/stories/components/logo/logo.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "LogoComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
                 "filePath": "src/stories/components/navbar/navbar.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "NavbarComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/8",
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
@@ -1586,6 +1985,15 @@
                 "name": "Employee",
                 "coveragePercent": 0,
                 "coverageCount": "0/9",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/components/toggle-switch/toggle-switch.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ToggleSwitchComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
