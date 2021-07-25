@@ -12,6 +12,7 @@ import { InputFieldComponent } from 'src/stories/components/input-field/input-fi
 import { LineGrpahComponent } from 'src/stories/components/line-graph/line-graph.component';
 import { LogoComponent } from 'src/stories/components/logo/logo.component';
 import { NavbarComponent } from 'src/stories/components/navbar/navbar.component';
+import { TableComponent } from 'src/stories/components/table/table.component';
 import { ToggleSwitchComponent } from 'src/stories/components/toggle-switch/toggle-switch.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,7 +32,8 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
     LogoComponent,
     NavbarComponent,
     BotStatusIndicatorComponent,
-    ToggleSwitchComponent
+    ToggleSwitchComponent,
+    TableComponent
   ],
   imports: [
     BrowserModule,
