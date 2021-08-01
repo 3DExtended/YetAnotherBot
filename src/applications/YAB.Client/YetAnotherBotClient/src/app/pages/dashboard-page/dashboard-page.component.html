@@ -9,6 +9,9 @@
     <div class="navbar h-full">
       <app-navbar></app-navbar>
     </div>
-    <div class="dashboard h-full" style="background-color: blue;"></div>
+    <div class="dashboard h-full p-4 overflow-auto" style="background-color: rgb(190, 190, 190);">
+      <app-table [data]="pipelineTableConfiguration">
+      </app-table>
+    </div>
   </div>
 </div>

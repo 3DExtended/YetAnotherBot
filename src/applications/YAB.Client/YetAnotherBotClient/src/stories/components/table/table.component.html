@@ -31,7 +31,11 @@
       <tr *ngFor="let row of data.dataItems" class="custom-table-row">
         <td *ngFor="let column of data.columns; let index=index; let last = last"
           class="pl-2 py-1 border-r border-b border-t-0 border-l-0">
-          <div class="custom-table-column overflow-hidden  text-left overflow-hidden overflow-ellipsis"
+          <div *ngIf="column.singleLineRow" class="custom-table-column text-left break-words"
+            [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+            {{row[column.selector]}}
+          </div>
+          <div *ngIf="!column.singleLineRow" class="custom-table-column text-left overflow-hidden overflow-ellipsis"
             [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
             {{row[column.selector]}}
           </div>

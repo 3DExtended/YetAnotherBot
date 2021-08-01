@@ -62,7 +62,7 @@ export class BotStatusIndicatorComponent implements OnInit, OnDestroy {
   private updateBotStatus() {
     const botStatusLoader = this._botStatusService.IsBotRunning();
     forkJoin([botStatusLoader]).subscribe(res => {
-      this.botIsRunning = res[0];
+      this.botIsRunning = res[0].data;
       if (this.toggle) {
         this.toggle.value = this.botIsRunning;
       }

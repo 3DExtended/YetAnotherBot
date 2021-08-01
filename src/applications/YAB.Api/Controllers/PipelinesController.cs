@@ -96,9 +96,9 @@ namespace YAB.Api.Controllers
         }
 
         [HttpPost("savelocally")]
-        public async Task<IActionResult> SavePipelinesToDisk(CancellationToken cancellation)
+        public async Task<IActionResult> SavePipelinesToDisk(CancellationToken cancellationToken)
         {
-            await _pipelineStore.SavePipelinesAsync(cancellation).ConfigureAwait(false);
+            await _pipelineStore.SavePipelinesAsync(cancellationToken).ConfigureAwait(false);
             return Ok();
         }
     }

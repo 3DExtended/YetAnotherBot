@@ -2,9 +2,9 @@
 {
     public enum FilterOperator
     {
-        Contains,
-        NotContains,
-        Equals,
-        NotEquals
+        Contains = 0,
+        NotContains = 1,
+        Equals = 2,
+        NotEquals = 3
     }
 }

@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ErrorHandledResult } from '../shared/errorHandledResult';
+import { errorHandler } from '../shared/errorHandler';
 
 @Injectable({
   providedIn: 'root'
@@ -11,47 +13,14 @@ export class BotStatusService {
   constructor(private readonly _httpClient: HttpClient) { }
 
   public StartBot(): Observable<any> {
-    return this._httpClient.post(environment.baseUrl + "api/botstatus/start", {});
-    // .pipe(map(res => res['payload']),
-    //   catchError(err => {
-    //     console.log('caught mapping error and rethrowing', err);
-    //     return throwError(err);
-    //   }),
-    //   finalize(() => console.log("first finalize() block executed")),
-    //   catchError(err => {
-    //     console.log('caught rethrown error, providing fallback value');
-    //     return of([]);
-    //   }),
-    //   finalize(() => console.log("second finalize() block executed")));
+    return this._httpClient.post<any>(environment.baseUrl + "api/botstatus/start", { observe: 'response' }).pipe(errorHandler());
   }
 
-  public IsBotRunning(): Observable<any> {
-    return this._httpClient.get(environment.baseUrl + "api/botstatus/status");
-    // .pipe(map(res => res['payload']),
-    //   catchError(err => {
-    //     console.log('caught mapping error and rethrowing', err);
-    //     return throwError(err);
-    //   }),
-    //   finalize(() => console.log("first finalize() block executed")),
-    //   catchError(err => {
-    //     console.log('caught rethrown error, providing fallback value');
-    //     return of([]);
-    //   }),
-    //   finalize(() => console.log("second finalize() block executed")));
+  public IsBotRunning(): Observable<ErrorHandledResult<boolean>> {
+    return this._httpClient.get<boolean>(environment.baseUrl + "api/botstatus/status", { observe: 'response' }).pipe(errorHandler());
   }
 
-  public StopBot(): Observable<any> {
-    return this._httpClient.post(environment.baseUrl + "api/botstatus/stop", {});
-    // .pipe(map(res => res['payload']),
-    //   catchError(err => {
-    //     console.log('caught mapping error and rethrowing', err);
-    //     return throwError(err);
-    //   }),
-    //   finalize(() => console.log("first finalize() block executed")),
-    //   catchError(err => {
-    //     console.log('caught rethrown error, providing fallback value');
-    //     return of([]);
-    //   }),
-    //   finalize(() => console.log("second finalize() block executed")));
+  public StopBot(): Observable<ErrorHandledResult<any>> {
+    return this._httpClient.post<any>(environment.baseUrl + "api/botstatus/stop", { observe: 'response' }).pipe(errorHandler());
   }
 }

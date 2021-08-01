@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 export interface TableColumn {
   title: string;
+  singleLineRow: boolean;
   selector: string;
   widthInPixels: number;
   sort: 'asc' | 'desc' | null
