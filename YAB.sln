@@ -25,6 +25,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{85D1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchBotPlugin", "extensions\TwitchBotPlugin\TwitchBotPlugin.csproj", "{89A439A6-A976-4F69-93ED-B1636CAC50E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAB.ApiWithFrontend", "src\applications\YAB.ApiWithFrontend\YAB.ApiWithFrontend.csproj", "{065BE4D4-56F1-4817-A2E9-0330CBE252FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAB.DeleteMe", "src\applications\YAB.DeleteMe\YAB.DeleteMe.csproj", "{435B80C3-3884-46D2-B556-7EBF35D683EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{89A439A6-A976-4F69-93ED-B1636CAC50E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89A439A6-A976-4F69-93ED-B1636CAC50E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89A439A6-A976-4F69-93ED-B1636CAC50E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{065BE4D4-56F1-4817-A2E9-0330CBE252FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{065BE4D4-56F1-4817-A2E9-0330CBE252FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{065BE4D4-56F1-4817-A2E9-0330CBE252FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{065BE4D4-56F1-4817-A2E9-0330CBE252FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{435B80C3-3884-46D2-B556-7EBF35D683EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{435B80C3-3884-46D2-B556-7EBF35D683EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{435B80C3-3884-46D2-B556-7EBF35D683EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{435B80C3-3884-46D2-B556-7EBF35D683EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +88,8 @@ Global
 		{420BD09D-FBD5-4614-94E5-C422BBD10661} = {54AD8A7E-E840-44A3-A5DF-6D6246A06DCA}
 		{0562CCB3-EEFD-45F7-B1B9-ADF3F0D6F0A9} = {0A750672-B2E9-4011-A69C-66082B34BD0F}
 		{89A439A6-A976-4F69-93ED-B1636CAC50E0} = {85D1172C-0C25-4717-84D7-BA1A858AB082}
+		{065BE4D4-56F1-4817-A2E9-0330CBE252FD} = {54AD8A7E-E840-44A3-A5DF-6D6246A06DCA}
+		{435B80C3-3884-46D2-B556-7EBF35D683EA} = {54AD8A7E-E840-44A3-A5DF-6D6246A06DCA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF5317AD-B66F-45CE-B71D-D88FEAC09F21}
