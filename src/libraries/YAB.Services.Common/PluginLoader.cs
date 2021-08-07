@@ -20,6 +20,11 @@ namespace YAB.Services.Common
         {
             Console.WriteLine(Directory.GetCurrentDirectory());
             var pluginFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + PluginsDirectory, "*.dll", SearchOption.AllDirectories);
+            pluginFiles = pluginFiles
+                .Where(f => !f.Contains("\\YAB"))
+                .Where(f => f.Split("\\ref\\").Count() == 1)
+                .Where(f => !f.Split("\\").Last().Contains("_")) // exclude random guid dlls...
+                .ToArray();
 
             var loadedAssemblies = new List<Assembly>();
 
@@ -62,7 +67,8 @@ namespace YAB.Services.Common
                             loadedAssemblies.Add(asm);
                         }
 
-                        var modules = asm.GetExportedTypes().Where(t => !t.IsAbstract && !t.IsGenericType && typeof(IPluginModule).IsAssignableFrom(t));
+                        var modules = asm.GetExportedTypes()
+                            .Where(t => !t.IsAbstract && !t.IsGenericType && typeof(IPluginModule).IsAssignableFrom(t));
                         foreach (var module in modules)
                         {
                             var moduleInstance = (IPluginModule)Activator.CreateInstance(module);
