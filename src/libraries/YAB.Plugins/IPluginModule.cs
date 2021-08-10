@@ -1,5 +1,7 @@
 ﻿using System;
 
+using YAB.Plugins.Injectables.Options;
+
 namespace YAB.Plugins
 {
     public interface IPluginModule
@@ -21,5 +23,11 @@ namespace YAB.Plugins
         /// </summary>
         /// <param name="registerer">Call this action for each of your events.</param>
         public void RegisterPluginEvents(Action<Type> registerer);
+
+        /// <summary>
+        /// Please register all the options for this plugin that are required to run the plugin.
+        /// </summary>
+        /// <param name="registerer">Call this action for each of your options.</param>
+        public void RegisterPluginOptions(Action<IOptions> registerer);
     }
 }

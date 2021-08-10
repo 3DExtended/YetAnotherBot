@@ -9,6 +9,7 @@ using SimpleInjector;
 using YAB.Core.EventReactor;
 using YAB.Core.Events;
 using YAB.Plugins;
+using YAB.Plugins.Injectables.Options;
 
 namespace YAB.Services.Common
 {
@@ -19,6 +20,9 @@ namespace YAB.Services.Common
         public static void LoadAllPlugins(this Container container)
         {
             Console.WriteLine(Directory.GetCurrentDirectory());
+
+            Directory.CreateDirectory(Directory.GetCurrentDirectory() + PluginsDirectory);
+
             var pluginFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + PluginsDirectory, "*.dll", SearchOption.AllDirectories);
             pluginFiles = pluginFiles
                 .Where(f => !f.Contains("\\YAB"))
@@ -29,6 +33,7 @@ namespace YAB.Services.Common
             var loadedAssemblies = new List<Assembly>();
 
             var loadedEvents = new List<Type>();
+            var loadedOptions = new List<IOptions> { new BotOptions() };
             var loadedEventReactors = new List<Type>();
             var loadedBackgroundTasks = new List<Type>();
 
@@ -89,6 +94,12 @@ namespace YAB.Services.Common
                                 container.Register(t);
                                 loadedEvents.Add(t);
                             });
+
+                            moduleInstance.RegisterPluginOptions((t) =>
+                            {
+                                container.RegisterInstance(t.GetType(), t);
+                                loadedOptions.Add(t);
+                            });
                         }
                     }
                 }
@@ -102,6 +113,7 @@ namespace YAB.Services.Common
             container.Collection.Register(typeof(IBackgroundTask), loadedBackgroundTasks);
             container.Collection.Register(typeof(IEventReactor), loadedEventReactors);
             container.Collection.Register(typeof(IEventBase), loadedEvents);
+            container.Collection.Register(typeof(IOptions), loadedOptions);
         }
     }
 }

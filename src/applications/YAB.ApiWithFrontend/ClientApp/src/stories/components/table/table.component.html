@@ -1,0 +1,47 @@
+<div class="custom-table-wrapper" (mousemove)="generalResizeHandlerMouseMove($event)"
+  (mouseup)="generalResizeHandlerResetHandler()">
+  <table class="custom-table border-l">
+    <thead class="custom-table-header ">
+      <tr>
+        <th *ngFor="let column of data.columns; let index=index" class="custom-table-column-header text-left p-0">
+          <div class="column-header-wrapper grid pr-0  border border-r-0 border-l-0">
+            <p class="flex cursor-pointer" (mousedown)="toggleSorting($event, column)">
+              <span [ngStyle]="{'width': (column.widthInPixels - 15) + 'px'}"
+                class="py-1 pl-2 overflow-hidden overflow-ellipsis ">{{column.title}}</span>
+
+              <svg *ngIf="column.sort === 'asc'" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 self-center"
+                fill="none" viewBox="0 0 24 24" stroke="#444444">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17l-4 4m0 0l-4-4m4 4V3" />
+              </svg>
+
+              <svg *ngIf="column.sort === 'desc'" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 self-center"
+                fill="none" viewBox="0 0 24 24" stroke="#444444">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7l4-4m0 0l4 4m-4-4v18" />
+              </svg>
+
+            </p>
+            <span class="resize-handler border-r " (mousedown)="resizeHandlerClickHandler($event, true, column)"
+              (mouseup)="resizeHandlerClickHandler($event, false, column)"></span>
+          </div>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody class="custom-table-body">
+      <tr *ngFor="let row of data.dataItems" class="custom-table-row">
+        <td *ngFor="let column of data.columns; let index=index; let last = last"
+          class="pl-2 py-1 border-r border-b border-t-0 border-l-0">
+          <div *ngIf="column.singleLineRow" class="custom-table-column text-left break-words"
+            [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+            {{row[column.selector]}}
+          </div>
+          <div *ngIf="!column.singleLineRow" class="custom-table-column text-left overflow-hidden overflow-ellipsis"
+            [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+            {{row[column.selector]}}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>

@@ -1,0 +1,41 @@
+@import '../../../styles.css';
+
+input:focus+label,
+input:not(:placeholder-shown)+label {
+  top: -3px;
+  left: 11px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin: 0px;
+}
+
+input:focus-within {}
+
+label,
+input {
+  transition: all 0.3s;
+  position: absolute;
+}
+
+label {
+  top: 10px;
+  left: 5px;
+  margin-top: 0.5rem;
+  margin-right: 0.75rem;
+  margin-bottom: 0.5rem;
+  margin-left: 0.75rem;
+  pointer-events: none;
+}
+
+.inputWrapper {
+  padding-top: 10px;
+  position: relative;
+  height: 55px;
+}
+
+.componentWrapper {
+  position: relative;
+  padding-bottom: 9px;
+}

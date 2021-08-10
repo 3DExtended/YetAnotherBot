@@ -1,0 +1,17 @@
+<div class="relative inline-flex rounded-md shadow-sm cursor-pointer" (click)="onClickHandler($event)">
+  <span class="flex absolute h-3 w-3 top-0 right-0 -mt-1 -mr-1">
+    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+    <span class="relative inline-flex rounded-full h-3 w-3 bg-purple-500"></span>
+  </span>
+
+
+  <div class=" p-6 max-w-sm mx-auto rounded-xl shadow-md flex items-center space-x-4 bg-white dark:bg-gray-800">
+    <div class="flex-shrink-0 bg-white dark:bg-gray-800">
+      <div class="h-12 w-12 message-icon" alt="ChitChat Logo"></div>
+    </div>
+    <div>
+      <div class="text-xl font-medium dark:text-white text-black dark:text-white">{{title}}</div>
+      <p class="dark:text-white text-gray-500 dark:text-white">{{message}}</p>
+    </div>
+  </div>
+</div>
