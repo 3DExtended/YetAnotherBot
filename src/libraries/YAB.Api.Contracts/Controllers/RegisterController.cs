@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using YAB.Api.Contracts.Extensions;
 using YAB.Api.Contracts.Models.Plugins.OptionDescriptions;
+using YAB.Api.Contracts.Models.Plugins.OptionDescriptions.UpdateRequest;
 using YAB.Plugins.Injectables;
 using YAB.Plugins.Injectables.Options;
 
@@ -64,15 +65,6 @@ namespace YAB.Api.Contracts.Controllers
             return Task.FromResult((IActionResult)Ok(result));
         }
 
-        /*
-         Register endpoint for saving all options and loading them.
-
-        Endpoint for getting all registered extensions.
-        Endpoint for registering a custom extension
-        Endpoint for loading an extension (downloading a folder into extensions folder)
-            this would probably require restarting the API...
-         */
-
         [HttpPost()]
         public async Task<IActionResult> RegisterAsync(string botPassword, CancellationToken cancellationToken)
         {
@@ -96,5 +88,41 @@ namespace YAB.Api.Contracts.Controllers
 
             return Ok();
         }
+
+        [HttpPost("options")]
+        public Task<IActionResult> UpdateOptionsAsync([FromBody] List<OptionsUpdateDto> optionUpdateRequests, string botPassword, CancellationToken cancellationToken)
+        {
+            foreach (var option in _optionsToLoad)
+            {
+                var updateRequestForOption = optionUpdateRequests.SingleOrDefault(u => u.OptionFullName == option.GetType().FullName);
+                if (updateRequestForOption == null)
+                {
+                    continue;
+                }
+
+                foreach (var propertyUpdate in updateRequestForOption.UpdatedProperties)
+                {
+                    var propertyInfo = option.GetType().GetProperty(propertyUpdate.PropertyName);
+                    if (propertyInfo == null)
+                    {
+                        return Task.FromResult((IActionResult)NotFound());
+                    }
+
+                    var propertyValue = propertyInfo.PropertyType.FromStringifiedValue(propertyUpdate.StringifiedPropertyValue);
+                    propertyInfo.SetValue(option, propertyValue);
+                }
+
+                option.Save(botPassword);
+            }
+
+            return Task.FromResult((IActionResult)Ok());
+        }
+
+        /*
+        Endpoint for getting all registered extensions.
+        Endpoint for registering a custom extension
+        Endpoint for loading an extension (downloading a folder into extensions folder)
+            this would probably require restarting the API...
+         */
     }
 }

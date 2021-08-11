@@ -6,6 +6,34 @@ namespace YAB.Api.Contracts.Extensions
 {
     public static class TypeExtensions
     {
+        public static object FromStringifiedValue(this Type type, string value)
+        {
+            if (type == typeof(int))
+            {
+                return int.Parse(value);
+            }
+            else if (type == typeof(double))
+            {
+                return double.Parse(value);
+            }
+            else if (type == typeof(float))
+            {
+                return float.Parse(value);
+            }
+            else if (type == typeof(char))
+            {
+                return char.Parse(value);
+            }
+            else if (type == typeof(string))
+            {
+                return value;
+            }
+            else
+            {
+                throw new NotImplementedException($"Could not translate value {value} to {type.FullName}.");
+            }
+        }
+
         public static PropertyValueTypeDto GetValueType(this Type type)
         {
             if (type == typeof(int))

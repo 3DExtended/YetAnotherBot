@@ -36,21 +36,6 @@ namespace YAB.Api.Contracts.Controllers
             return true;
         }
 
-        /*[HttpPost("setup/twitch")]
-        public bool SetTwitchClientSecretsAsync(string botPassword, string twitchBotToken, string twitchBotUsername, string twitchChannelToJoin, string pipelineConfigurationPath)
-        {
-            // TODO move this method inside a setup controller
-            var options = _containerAccessor.Container.GetInstance<TwitchOptions>();
-
-            options.TwitchBotToken = twitchBotToken;
-            options.TwitchBotUsername = twitchBotUsername;
-            options.TwitchChannelToJoin = twitchChannelToJoin;
-
-            options.Save(botPassword);
-
-            return true;
-        }*/
-
         [HttpPost("start")]
         public void StartBot()
         {
