@@ -337,3 +337,5 @@ desktop.ini
 /src/applications/YAB.Api/*.encjson
 /*.encjson
 /registeredPipelines.json
+/plugin-repos
+/plugins

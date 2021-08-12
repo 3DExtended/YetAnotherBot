@@ -1,0 +1,34 @@
+@import '../../../styles.css';
+
+:host ::ng-deep {
+  display: block;
+  height: inherit;
+  width: inherit;
+}
+
+:host ::ng-deep .cardContainer {}
+
+:host ::ng-deep .cardContainer .name {
+  font-size: 24px;
+}
+
+:host ::ng-deep .cardContainer label {
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+:host ::ng-deep .linkMidpoint ellipse {
+  fill: white;
+  stroke: black;
+  stroke-width: 1;
+}
+
+:host ::ng-deep .linkMidpoint text {
+  stroke: transparent;
+  fill: black;
+  text-anchor: middle;
+  font-size: 10px;
+}

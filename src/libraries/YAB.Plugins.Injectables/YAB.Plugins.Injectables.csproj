@@ -16,4 +16,10 @@
     <ProjectReference Include="..\YAB.Core\YAB.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\..\..\plugins.json" Link="plugins.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace YAB.Plugins.Injectables.Options
 {
-    public abstract class Options<T>
+    public abstract class Options<T> : IOptions
         where T : Options<T>, new()
     {
         [JsonIgnore]
@@ -29,6 +29,10 @@ namespace YAB.Plugins.Injectables.Options
                 {
                     prop.SetValue(this, prop.GetValue(loadedSettings));
                 }
+            }
+            else
+            {
+                throw new FileNotFoundException($"Could not load file for {this.GetType().Name}. Did you register this option yet?");
             }
         }
 

@@ -1,3 +1,5 @@
+using System.Web.Mvc;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +9,7 @@ using Microsoft.OpenApi.Models;
 
 using SimpleInjector;
 
-using YAB.Api.BackgroundTasks;
+using YAB.Api.Contracts.BackgroundTasks;
 using YAB.Plugins.Injectables;
 using YAB.Plugins.Injectables.Options;
 using YAB.Services.Common;
@@ -54,6 +56,8 @@ namespace YAB.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ControllerBuilder.Current.DefaultNamespaces.Add("YAB.Api.Contracts.Controllers");
+
             // neccessary in order to inject IContainerAccessor into controller
             services.AddSingleton(typeof(IContainerAccessor), new ContainerAccessor(_container));
             services.AddCors();
@@ -85,8 +89,7 @@ namespace YAB.Api
             var containerAccessor = new ContainerAccessor(_container);
 
             _container.RegisterInstance(new BotOptions());
-            _container.RegisterInstance(new TwitchOptions());
-            // _container.RegisterSingleton<IBackgroundTasksManager, BackgroundTasksManager>();
+            // _container.RegisterInstance(new TwitchOptions());
             _container.Register<BackgroundTasksManager>(Lifestyle.Singleton);
 
             _container.RegisterInstance(new Lazy<IBackgroundTasksManager>(() => (IBackgroundTasksManager)_container.GetInstance(typeof(BackgroundTasksManager))));

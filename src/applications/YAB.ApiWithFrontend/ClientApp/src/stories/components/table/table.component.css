@@ -1,0 +1,25 @@
+@import '../../../styles.css';
+
+.custom-table-row:nth-child(2n) {
+  background-color: #e4e4e47a;
+}
+
+tbody.custom-table-body>tr.custom-table-row:hover {
+  background-color: #d4d4d4;
+}
+
+.resize-handler {
+  cursor: col-resize;
+}
+
+.resize-handler:hover {
+  border-color: lightskyblue;
+}
+
+.column-header-wrapper {
+  grid-template-columns: auto 2px;
+}
+
+.custom-table-column {
+  /* height: calc(1em + 8px); */
+}
