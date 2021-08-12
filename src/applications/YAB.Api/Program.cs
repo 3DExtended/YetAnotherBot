@@ -11,7 +11,10 @@ namespace YAB.Api
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.AddConsole();
+                    logging
+                       .AddFilter("Microsoft", LogLevel.None)
+                       .AddFilter("System", LogLevel.None)
+                       .AddConsole();
                     logging.AddDebug();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

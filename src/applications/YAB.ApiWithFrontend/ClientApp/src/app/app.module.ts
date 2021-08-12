@@ -21,6 +21,11 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
 export function getBaseUrl(): string {
+
+  if (window.location.origin.includes("4200")) {
+    return "https://localhost:5001/"
+  }
+
   return window.location.origin + "/";
 }
 

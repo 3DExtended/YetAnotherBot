@@ -13,6 +13,7 @@
   margin: var(--toggle-switch-button-size-offset);
   display: inline-block;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .toggle {

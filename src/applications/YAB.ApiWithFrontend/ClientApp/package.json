@@ -8,7 +8,9 @@
     "build:ssr": "ng run yet-another-bot-client:server:dev",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "docs:json": "compodoc -p ./tsconfig.doc.json -e json -d .",
+    "storybook": "npm run docs:json && start-storybook -p 9001 -c .storybook"
   },
   "private": true,
   "dependencies": {

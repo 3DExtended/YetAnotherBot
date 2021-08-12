@@ -55,7 +55,13 @@ namespace YAB.Plugins.Injectables
                     var typeOfHandler = interfaceWithHandlerDetails.GetGenericArguments()[0];
                     var handlerInstance = (dynamic)_allEventReactors.Single(r => r.GetType().Name == typeOfHandler.Name);
 
-                    var interfaceGenericArguments = ((Type)(handlerInstance.GetType())).GetInterfaces().Single(i => i.IsGenericType && i.GetGenericArguments().Length == 2 && GetParentClassesAndSelf(evt.GetType()).Any(t => t.FullName.Contains(i.GetGenericArguments()[1].Name))).GetGenericArguments();
+                    var interfaceGenericArguments = ((Type)(handlerInstance.GetType()))
+                        .GetInterfaces()
+                        .Single(i => i.IsGenericType
+                            && i.GetGenericArguments().Length == 2
+                            && GetParentClassesAndSelf(evt.GetType())
+                        .Any(t => t.FullName.Contains(i.GetGenericArguments()[1].Name)))
+                        .GetGenericArguments();
                     var correctConfigurationType = interfaceGenericArguments[0];
                     var correctEventType = interfaceGenericArguments[1];
                     var castMethodToCorrectEventType = GetType().GetMethods().Single(m => m.Name.Contains("CastObject")).MakeGenericMethod(correctEventType);
@@ -148,10 +154,22 @@ namespace YAB.Plugins.Injectables
         {
             AppDomain root = AppDomain.CurrentDomain;
 
-            var parentTypes = root.GetAssemblies()
-                .Where(a => !a.IsDynamic)
-                .SelectMany(a => a.GetExportedTypes())
-                .Where(t => childType.IsSubclassOf(t) || t == childType);
+            var assembliesToSearchParentClassIn = root.GetAssemblies()
+                            .Where(a => !a.IsDynamic);
+
+            List<Type> parentTypes = new List<Type>();
+
+            foreach (var assembly in assembliesToSearchParentClassIn)
+            {
+                try
+                {
+                    var parents = assembly
+                        .GetExportedTypes()
+                        .Where(t => childType.IsSubclassOf(t) || t == childType);
+                    parentTypes.AddRange(parents);
+                }
+                catch { }
+            }
 
             Console.WriteLine("Check parent classes");
             Console.WriteLine(childType.FullName);

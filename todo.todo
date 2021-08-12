@@ -1,5 +1,7 @@
 YetAnotherBot:
     ☐ API:
+        ☐ Update all plugins on startup 
+        ☐ Update main application on startup
         ☐ Setup cors correctly... for now, we should only be using the localhost origin
         ☐ Controller pipelines
             ✔ Return registered pipelines @done(21-07-05 17:54)
@@ -13,10 +15,10 @@ YetAnotherBot:
                 Maybe its a good idea to keep every property a string value. Thus, the frontend would know what to send and the backend knows what to expect.
                     Downside is that we have to parse ints and other values in the event reactors of every pluging but maybe thats a tradeoff we are okay with
         ☐ Authentication 
-        ☐ Bot Status Controller 
-            ☐ Start the bot
-            ☐ End the bot
-            ☐ Reload (for registering new pipelines) 
+        ✔ Bot Status Controller @done(21-08-12 19:59)
+            ✔ Start the bot @done(21-08-12 19:59)
+            ✔ End the bot @done(21-08-12 19:59)
+            ✔ Reload (for registering new pipelines) @done(21-08-12 19:59)
         ☐ Pipelines
             ✔ Add filtering of events for a given pipeline. @done(21-07-06 19:43)
             ☐ What about a pipeline that does not need filtering? Maybe add an empty group with an or and condition? 
@@ -49,3 +51,4 @@ YetAnotherBot:
         ☐ add run commercial command
         ☐ Add permissions to commands
         Currently, every user is allowed to execute every command. We also want be able to restrict commands and pipeline execution for certain user groups.
+

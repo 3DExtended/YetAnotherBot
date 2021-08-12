@@ -1,5 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subject, timer } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { BotStatusService } from 'src/app/services/bot-status.service';
 import { ToggleSwitchComponent } from '../toggle-switch/toggle-switch.component';
 
@@ -9,24 +11,18 @@ import { ToggleSwitchComponent } from '../toggle-switch/toggle-switch.component'
   styleUrls: ['./bot-status-indicator.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class BotStatusIndicatorComponent implements OnInit, OnDestroy {
+export class BotStatusIndicatorComponent implements OnInit {
   public botIsRunning = false;
 
   @ViewChild(ToggleSwitchComponent) toggle: ToggleSwitchComponent | undefined;
 
-  private setTimeoutHandler: any = null;
-  constructor(private readonly _botStatusService: BotStatusService) { }
+  constructor(private readonly _botStatusService: BotStatusService,
+    private readonly _router: Router) { }
 
   ngOnInit(): void {
     this.reloadBotStatusForEver(1000);
   }
 
-  ngOnDestroy(): void {
-    if (this.setTimeoutHandler) {
-      clearTimeout(this.setTimeoutHandler);
-      this.setTimeoutHandler = null;
-    }
-  }
 
   public toggleTheBotState(newBotStatus: boolean) {
     if (newBotStatus === this.botIsRunning) {
@@ -52,20 +48,30 @@ export class BotStatusIndicatorComponent implements OnInit, OnDestroy {
     }
   }
 
-  private reloadBotStatusForEver(refreshRate: number) {
-    this.setTimeoutHandler = setTimeout(() => {
-      this.updateBotStatus();
-      this.reloadBotStatusForEver(refreshRate);
-    }, refreshRate);
-  }
+  private errorRefreshingBotStatus: Subject<boolean> = new Subject<boolean>();
 
-  private updateBotStatus() {
-    const botStatusLoader = this._botStatusService.IsBotRunning();
-    forkJoin([botStatusLoader]).subscribe(res => {
-      this.botIsRunning = res[0].data;
-      if (this.toggle) {
-        this.toggle.value = this.botIsRunning;
-      }
-    });
+  private reloadBotStatusForEver(refreshRate: number) {
+    timer(0, refreshRate).pipe(
+      takeUntil(this.errorRefreshingBotStatus),
+      map(_ => {
+        return this._botStatusService.IsBotRunning();
+      })
+    )
+      .subscribe({
+        next: status => {
+          status.subscribe(async (res) => {
+            if (!res.successful) {
+              this.errorRefreshingBotStatus.next(false);
+
+              await this._router.navigateByUrl("/login");
+              return;
+            }
+            this.botIsRunning = res.data;
+            if (this.toggle) {
+              this.toggle.value = this.botIsRunning;
+            }
+          });
+        }
+      });
   }
 }

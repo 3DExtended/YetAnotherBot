@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc;
 
 using YAB.Api.Contracts.BackgroundTasks;
 using YAB.Plugins.Injectables;
@@ -37,15 +40,17 @@ namespace YAB.Api.Contracts.Controllers
         }
 
         [HttpPost("start")]
-        public void StartBot()
+        public async Task<IActionResult> StartBotAsync(CancellationToken cancellationToken)
         {
-            _backgroundTasksManager.Value.StartBot();
+            await _backgroundTasksManager.Value.StartBotAsync(cancellationToken);
+            return Ok();
         }
 
         [HttpPost("stop")]
-        public void StopBot()
+        public async Task<IActionResult> StopBotAsync(CancellationToken cancellationToken)
         {
-            _backgroundTasksManager.Value.StopBot();
+            await _backgroundTasksManager.Value.StopBotAsync(cancellationToken);
+            return Ok();
         }
     }
 }

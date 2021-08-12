@@ -11,7 +11,6 @@ export class ToggleSwitchComponent implements OnInit {
   @Input() label: string = "";
   @Input() defaultState: boolean = false;
 
-
   @Output() valueChanged: EventEmitter<boolean> = new EventEmitter();
 
   private _value: boolean = false;
@@ -20,6 +19,7 @@ export class ToggleSwitchComponent implements OnInit {
     return this._value;
   }
 
+  @Input()
   public set value(newValue: boolean) {
     this._value = newValue;
     console.log(newValue);

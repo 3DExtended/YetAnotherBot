@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,8 +8,9 @@ using YAB.Plugins;
 
 namespace YAB.Api.Contracts.BackgroundTasks
 {
-    public class BackgroundTasksManager : IBackgroundTasksManager, IDisposable
+    public class BackgroundTasksManager : IBackgroundTasksManager, IAsyncDisposable, IDisposable
     {
+        private static SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly IEnumerable<IBackgroundTask> _backgroundTasks;
 
         private CancellationToken _cancellationToken;
@@ -27,37 +29,104 @@ namespace YAB.Api.Contracts.BackgroundTasks
 
         public void Dispose()
         {
-            StopBot();
+            StopBotAsync().Wait();
         }
 
-        public void StartBot()
+        public async ValueTask DisposeAsync()
         {
-            foreach (var backgroundTask in _backgroundTasks)
+            await StopBotAsync();
+        }
+
+        public async Task StartBotAsync(CancellationToken cancellationToken = default)
+        {
+            await _semaphoreSlim.WaitAsync(cancellationToken).ConfigureAwait(false);
+            try
             {
-                _runningTasks.Add(_taskFactory.StartNew(
-                    async () =>
-                    {
-                        try
+                foreach (var backgroundTask in _backgroundTasks)
+                {
+                    _runningTasks.Add(_taskFactory.StartNew(
+                        async () =>
                         {
-                            await backgroundTask.InitializeAsync(_cancellationToken);
-                            await backgroundTask.RunUntilCancelledAsync(_cancellationToken);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex);
-                        }
-                    }));
+                            try
+                            {
+                                await backgroundTask.InitializeAsync(_cancellationToken);
+                                await backgroundTask.RunUntilCancelledAsync(_cancellationToken);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex);
+                            }
+                        }));
+                }
+            }
+            finally
+            {
+                if (_semaphoreSlim.CurrentCount == 0)
+                {
+                    _semaphoreSlim.Release();
+                }
             }
         }
 
-        public void StopBot()
+        public async Task StopBotAsync(CancellationToken cancellationToken = default)
         {
-            _cancellationTokenSource.Cancel();
-            _runningTasks.Clear();
+            await _semaphoreSlim.WaitAsync(cancellationToken).ConfigureAwait(false);
 
-            _cancellationTokenSource = new CancellationTokenSource();
-            _cancellationToken = _cancellationTokenSource.Token;
-            _taskFactory = new TaskFactory(_cancellationToken);
+            try
+            {
+                _cancellationTokenSource.Cancel();
+
+                while (_runningTasks.Any(t => IsTaskStillRunning(t)))
+                {
+                    await Task.Delay(100).ConfigureAwait(false);
+
+                    //_runningTasks
+                    //    .Where(t => IsTaskStillRunning(t))
+                    //    .ToList()
+                    //    .ForEach(t => t.Dispose());
+                    
+                    _runningTasks = _runningTasks
+                        .Where(t => IsTaskStillRunning(t))
+                        .ToList();
+
+                    if (_runningTasks.Count > 0)
+                    {
+                        Console.WriteLine("OHOH");
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                _runningTasks = _runningTasks
+                    .Where(t => IsTaskStillRunning(t))
+                    .ToList();
+                
+                if (_runningTasks.Count > 0)
+                {
+                    Console.WriteLine("OHOH");
+                }
+                
+                _cancellationTokenSource = new CancellationTokenSource();
+                _cancellationToken = _cancellationTokenSource.Token;
+                _taskFactory = new TaskFactory(_cancellationToken);
+            }
+            finally
+            {
+                if (_semaphoreSlim.CurrentCount == 0)
+                {
+                    _semaphoreSlim.Release();
+                }
+            }
+        }
+
+        private static bool IsTaskStillRunning(Task t)
+        {
+            return t.Status == TaskStatus.Created
+                || t.Status == TaskStatus.Running
+                || t.Status == TaskStatus.WaitingForActivation
+                || t.Status == TaskStatus.WaitingForChildrenToComplete
+                || t.Status == TaskStatus.WaitingToRun;
         }
     }
 }
