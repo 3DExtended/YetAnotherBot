@@ -33,8 +33,8 @@ namespace YAB.Api.Contracts.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public Task<SupportedPlugins> GetAsync(CancellationToken cancellationToken)
+        [HttpGet("officiallysupported")]
+        public Task<SupportedPlugins> GetOfficiallySupportedPluginsAsync(CancellationToken cancellationToken)
         {
             return _availablePluginsHelper.GetSupportedPlugins(cancellationToken);
         }

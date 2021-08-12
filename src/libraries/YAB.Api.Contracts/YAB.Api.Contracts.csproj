@@ -12,6 +12,7 @@
     <ProjectReference Include="..\YAB.Core.Pipelines\YAB.Core.Pipelines.csproj" />
     <ProjectReference Include="..\YAB.Plugins.Injectables\YAB.Plugins.Injectables.csproj" />
     <ProjectReference Include="..\YAB.Plugins\YAB.Plugins.csproj" />
+    <ProjectReference Include="..\YAB.Services.Common\YAB.Services.Common.csproj" />
   </ItemGroup>
 
 </Project>

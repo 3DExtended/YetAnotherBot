@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,6 +15,7 @@ using YAB.Api.Contracts.Models.Plugins.OptionDescriptions;
 using YAB.Api.Contracts.Models.Plugins.OptionDescriptions.UpdateRequest;
 using YAB.Plugins.Injectables;
 using YAB.Plugins.Injectables.Options;
+using YAB.Services.Common;
 
 namespace YAB.Api.Contracts.Controllers
 {
@@ -17,15 +23,57 @@ namespace YAB.Api.Contracts.Controllers
     [ApiController]
     public class RegisterController : ControllerBase
     {
+        private readonly IAvailablePluginsHelper _availablePluginsHelper;
         private readonly IContainerAccessor _containerAccessor;
         private readonly IEnumerable<IOptions> _optionsToLoad;
         private readonly IPipelineStore _pipelineStore;
 
-        public RegisterController(IContainerAccessor containerAccessor, IPipelineStore pipelineStore, IEnumerable<IOptions> optionsToLoad)
+        public RegisterController(IContainerAccessor containerAccessor, IPipelineStore pipelineStore, IEnumerable<IOptions> optionsToLoad, IAvailablePluginsHelper availablePluginsHelper)
         {
             _containerAccessor = containerAccessor;
             _pipelineStore = pipelineStore;
             _optionsToLoad = optionsToLoad;
+            _availablePluginsHelper = availablePluginsHelper;
+        }
+
+        [HttpPost("addplugin")]
+        public async Task<IActionResult> AddExtensionAsync(string extensionName, CancellationToken cancellationToken)
+        {
+            // first check if there is a definition in the plugins file for this extension
+            var allPlugins = await _availablePluginsHelper.GetSupportedPlugins(cancellationToken).ConfigureAwait(false);
+            var pluginToLoad = allPlugins.Plugins.SingleOrDefault(p => p.PluginName == extensionName);
+            if (pluginToLoad == null)
+            {
+                return NotFound();
+            }
+
+            if (string.IsNullOrEmpty(pluginToLoad.RepositoryUrl))
+            {
+                return BadRequest();
+            }
+
+            // load zip file from url
+            WebClient client = new WebClient();
+            var pathForPlugin = Directory.GetCurrentDirectory() + PluginLoader.PluginsDirectory + pluginToLoad.PluginName.ToLower().Replace(" ", string.Empty) + "/";
+
+            Directory.CreateDirectory(pathForPlugin);
+            await client.DownloadFileTaskAsync(new Uri(pluginToLoad.DllPath), pathForPlugin + "newextension.zip").ConfigureAwait(false);
+
+            ZipFile.ExtractToDirectory(pathForPlugin + "newextension.zip", pathForPlugin, true);
+
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            // close the current application process
+            Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                // var appExePath = Process.GetCurrentProcess().MainModule.FileName;
+
+                // we have to kill the API in order to let the new instance of this load the new plugins
+                Process.GetCurrentProcess().Kill();
+            });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+            return Ok();
         }
 
         [HttpGet("optionsToFill")]
@@ -117,12 +165,5 @@ namespace YAB.Api.Contracts.Controllers
 
             return Task.FromResult((IActionResult)Ok());
         }
-
-        /*
-        Endpoint for getting all registered extensions.
-        Endpoint for registering a custom extension
-        Endpoint for loading an extension (downloading a folder into extensions folder)
-            this would probably require restarting the API...
-         */
     }
 }

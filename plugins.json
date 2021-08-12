@@ -1,7 +1,7 @@
 {
-    "plugins": [{
-        "PluginName": "TwitchBotPlugin",
-        "DllPath": "K:/Projekte/YetAnotherBot/extensions/TwitchBotPlugin/bin/Debug/net5.0/",
-        "RepositoryUrl": ""
-    }]
+  "plugins": [{
+    "PluginName": "UtilsPlugin",
+    "DllPath": "https://github.com/3DExtended/YAB-UtilsPlugin/releases/latest/download/UtilsPlugin.zip",
+    "RepositoryUrl": "https://github.com/3DExtended/YAB-UtilsPlugin"
+  }]
 }

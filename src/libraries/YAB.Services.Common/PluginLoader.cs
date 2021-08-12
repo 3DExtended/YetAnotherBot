@@ -15,7 +15,7 @@ namespace YAB.Services.Common
 {
     public static class PluginLoader
     {
-        private const string PluginsDirectory = "/extensions/";
+        public static string PluginsDirectory = "/plugins/";
 
         public static void LoadAllPlugins(this Container container)
         {
