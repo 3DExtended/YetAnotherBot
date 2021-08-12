@@ -23,7 +23,7 @@ WORKDIR /src
 COPY ["src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.csproj", "src/applications/YAB.ApiWithFrontend/"]
 RUN dotnet restore "src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.csproj"
 COPY . .
-WORKDIR "/src/src/applications/YAB.ApiWithFrontend"
+WORKDIR "/src/applications/YAB.ApiWithFrontend"
 RUN dotnet build "YAB.ApiWithFrontend.csproj" -c Release -o /app/build
 
 FROM build AS publish
@@ -31,5 +31,6 @@ RUN dotnet publish "YAB.ApiWithFrontend.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
+VOLUME /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "YAB.ApiWithFrontend.dll"]
