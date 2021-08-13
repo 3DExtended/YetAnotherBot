@@ -1,11 +1,33 @@
 @import '../../../styles.css';
 
 .custom-table-row:nth-child(2n) {
-  background-color: #e4e4e47a;
+  /* background-color: #e4e4e47a; */
+}
+
+/* width */
+.custom-table-block-scrollable::-webkit-scrollbar {
+  height: 10px;
+}
+
+/* Track */
+.custom-table-block-scrollable::-webkit-scrollbar-track {
+  border-radius: 5px;
+  height: 10px;
+}
+
+/* Handle */
+.custom-table-block-scrollable::-webkit-scrollbar-thumb {
+  background: #bcbac5;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.custom-table-block-scrollable::-webkit-scrollbar-thumb:hover {
+  background: #84828a;
 }
 
 tbody.custom-table-body>tr.custom-table-row:hover {
-  background-color: #d4d4d4;
+  background-color: #ebebeb;
 }
 
 .resize-handler {

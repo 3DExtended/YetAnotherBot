@@ -26,6 +26,9 @@ export class TableComponent implements OnInit {
   }
 
   @Input()
+  public title: string = "";
+
+  @Input()
   public set data(value: { columns: TableColumn[]; dataItems: TableRow[]; }) {
     this._data = value;
     this._data.columns.forEach(c => {

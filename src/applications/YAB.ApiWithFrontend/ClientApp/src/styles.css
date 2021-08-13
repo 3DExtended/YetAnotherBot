@@ -11,6 +11,10 @@
   --hover-background-color-brightness-filter: brightness(110%);
 }
 
+body {
+  background-color: #f3f3f7;
+}
+
 .background {
   background-color: var(--background-color-dark);
   color: white;

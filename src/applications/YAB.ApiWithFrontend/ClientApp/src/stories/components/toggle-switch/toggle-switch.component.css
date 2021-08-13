@@ -36,8 +36,8 @@
   width: var(--toggle-width);
   height: var(--toggle-height);
   border-radius: var(--toggle-border-radius);
-  background-color: #a4d8df;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4) inset;
+  background-color: #cfe4ff;
+  box-shadow: 0 0 0.2em rgb(0 0 0 / 25%) inset;
   transition: background-color 0.2s;
 }
 
@@ -48,14 +48,14 @@
   left: calc(var(--toggle-switch-button-size-offset)*-1);
   width: var(--toggle-switch-button-size);
   height: var(--toggle-switch-button-size);
-  background-color: #b7b7b7;
+  background-color: #60a5fa;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   border-radius: var(--toggle-switch-button-border-radius);
   transition: transform 0.2s;
 }
 
 .toggleInput:checked~.toggleFill {
-  background-color: #28a745;
+  background-color: #60ea77;
 }
 
 .toggleInput:checked~.toggleFill::after {
