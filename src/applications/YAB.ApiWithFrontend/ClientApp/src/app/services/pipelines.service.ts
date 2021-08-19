@@ -31,10 +31,8 @@ export const FilterOperator = {
 }
 
 export const LogicalOperator = {
-  "contains": 0,
-  "notContains": 1,
-  "equals": 2,
-  "notEquals": 3
+  "and": 0,
+  "or": 1,
 }
 
 export interface IFilterBase {

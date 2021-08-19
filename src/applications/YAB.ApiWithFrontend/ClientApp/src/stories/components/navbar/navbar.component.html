@@ -1,5 +1,5 @@
 <!-- navbar goes here -->
-<nav class="bg-gray-100 " style="width: fit-content; padding-top: 12px;">
+<nav class="bg-gray-100 " style="width: fit-content; padding-top: 32px;">
   <div class="mx-auto  h-full">
     <div class="h-full">
 
@@ -8,7 +8,7 @@
         <!-- primary nav -->
         <div class="items-center h-full grid gap-y-2">
           <div *ngFor="let element of getNavbarItemsToShow()" class="flex">
-            <a href="{{element.href}}" class="py-2 text-gray-700 hover:text-gray-900 text-2xl">{{element.titleKey}}</a>
+            <a href="{{element.href}}" class="py-2 text-gray-700 hover:text-gray-900 text-xl">{{element.titleKey}}</a>
           </div>
         </div>
       </div>

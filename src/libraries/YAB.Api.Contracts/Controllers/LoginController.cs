@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,9 +41,9 @@ namespace YAB.Api.Contracts.Controllers
 
                 await _pipelineStore.LoadPipelinesAsync(cancellationToken).ConfigureAwait(false);
             }
-            catch
+            catch (Exception ex)
             {
-                return NotFound();
+                return NotFound(ex);
             }
 
             return Ok();

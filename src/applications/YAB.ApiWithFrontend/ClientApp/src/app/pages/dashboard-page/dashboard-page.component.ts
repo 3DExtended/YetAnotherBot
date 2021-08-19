@@ -14,7 +14,7 @@ import { TableColumn, TableRow } from 'src/stories/components/table/table.compon
 })
 export class DashboardPageComponent implements OnInit {
 
-  private refreshRateOfEventsInMs = 1000;
+  private refreshRateOfEventsInMs = 5000;
 
   public eventGraphValues: LineGraphDataset = {
     lines: [],
