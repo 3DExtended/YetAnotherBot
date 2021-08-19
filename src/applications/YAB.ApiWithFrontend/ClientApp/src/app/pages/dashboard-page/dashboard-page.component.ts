@@ -17,23 +17,7 @@ export class DashboardPageComponent implements OnInit {
   private refreshRateOfEventsInMs = 1000;
 
   public eventGraphValues: LineGraphDataset = {
-    lines: [
-      {
-        label: "Events in past 24h",
-        lineColorSettings: {
-          backgroundColor: "rgba(96,165,250,1)",
-          borderColor: "black"
-        },
-        values: [
-          0, 0, 0, 0,
-          0, 0, 0, 0,
-          0, 0, 0, 0,
-          0, 0, 0, 0,
-          0, 0, 0, 0,
-          0, 0, 0, 0,
-        ]
-      },
-    ],
+    lines: [],
     xAxisLabels: [
       "-23h", "-22h", "-21h", "-20h",
       "-19h", "-18h", "-17h", "-16h",
@@ -116,34 +100,72 @@ export class DashboardPageComponent implements OnInit {
               now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
 
             // group events into hours
-            const groupsByHours: { [key: string]: any[] } = {};
+            let didEventChartChange = false;
+
+            const groupsByEventType: { [key: string]: EventLoggingEntryDto[] } = {};
 
             this.past24HourEvents.$values.forEach(event => {
-              const differenceInHoursToNow = Math.abs((new Date(event.timeOfEvent)).getTime() - utc_timestamp) / 36e5;
-              const hourString = "-" + parseInt(differenceInHoursToNow.toString(), 10) + "h";
-              if (hourString in groupsByHours) {
-                groupsByHours[hourString].push(event);
+              if (event.eventName in groupsByEventType) {
+                groupsByEventType[event.eventName].push(event);
               } else {
-                groupsByHours[hourString] = [event];
+                groupsByEventType[event.eventName] = [event];
               }
             });
 
-            let somethingChanged = false;
+            Object.entries(groupsByEventType).forEach((groupEntry: [string, EventLoggingEntryDto[]], index: number, _) => {
+              const groupsByHours: { [key: string]: any[] } = {};
 
-            this.eventGraphValues.lines[0].values = this.eventGraphValues.xAxisLabels.map((label: string, index: number, array: string[]) => {
-              let numberOfEventsForLabel = 0;
-              if (label in groupsByHours) {
-                numberOfEventsForLabel = groupsByHours[label].length;
+
+              groupEntry[1].forEach(event => {
+                const differenceInHoursToNow = Math.abs((new Date(event.timeOfEvent)).getTime() - utc_timestamp) / 36e5;
+                const hourString = "-" + parseInt(differenceInHoursToNow.toString(), 10) + "h";
+                if (hourString in groupsByHours) {
+                  groupsByHours[hourString].push(event);
+                } else {
+                  groupsByHours[hourString] = [event];
+                }
+              });
+
+              if (this.eventGraphValues.lines.length <= index) {
+                let colorEnergy = 511;
+                const red = parseInt((Math.random() * 255).toString(), 10);
+                colorEnergy -= red;
+                const green = parseInt((Math.random() * 255).toString(), 10);
+                colorEnergy -= green;
+                const blue = colorEnergy;
+
+                this.eventGraphValues.lines.push({
+                  label: groupEntry[0],
+                  lineColorSettings: {
+                    backgroundColor: "rgba(" + red + "," + green + "," + blue + ",1)",
+                    borderColor: "black"
+                  },
+                  values: [
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                  ]
+                });
               }
 
-              if (this.eventGraphValues.lines[0].values[index] !== numberOfEventsForLabel) {
-                somethingChanged = true;
-              }
+              this.eventGraphValues.lines[index].values = this.eventGraphValues.xAxisLabels.map((label: string, indexOfLabel: number, array: string[]) => {
+                let numberOfEventsForLabel = 0;
+                if (label in groupsByHours) {
+                  numberOfEventsForLabel = groupsByHours[label].length;
+                }
 
-              return numberOfEventsForLabel;
+                if (this.eventGraphValues.lines[index].values[indexOfLabel] !== numberOfEventsForLabel) {
+                  didEventChartChange = true;
+                }
+
+                return numberOfEventsForLabel;
+              });
             });
 
-            if (somethingChanged) {
+            if (didEventChartChange) {
               this.eventGraphValues = { ...this.eventGraphValues };
             }
           });
