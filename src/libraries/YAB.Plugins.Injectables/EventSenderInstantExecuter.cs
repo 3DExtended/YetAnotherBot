@@ -44,6 +44,10 @@ namespace YAB.Plugins.Injectables
             var pipelinesToExecute = _pipelineStore.Pipelines
                 .Where(p => p.EventType.Name == evt.GetType().Name);
 
+            _logger.LogInformation($"Found {pipelinesToExecute.Count()} pipelines to execute for event of type {evt.GetType().Name}.");
+
+            var eventParentClasses = GetParentClassesAndSelf(evt.GetType()).Select((value, index) => new { value, index }).ToList();
+
             // execute all pipelines (should not be many...)
             foreach (var pipeline in pipelinesToExecute)
             {
@@ -51,6 +55,7 @@ namespace YAB.Plugins.Injectables
                 {
                     continue;
                 }
+                _logger.LogInformation($"Event fulfills filter of pipeline and has {pipeline.PipelineHandlerConfigurations.Count} configurations to execute.");
 
                 // foreach configuration of this pipeline, get the instance of the reactor from the container and execute it
                 foreach (var configuration in pipeline.PipelineHandlerConfigurations)
@@ -60,13 +65,20 @@ namespace YAB.Plugins.Injectables
                     var typeOfHandler = interfaceWithHandlerDetails.GetGenericArguments()[0];
                     var handlerInstance = (dynamic)_allEventReactors.Single(r => r.GetType().Name == typeOfHandler.Name);
 
-                    var interfaceGenericArguments = ((Type)(handlerInstance.GetType()))
+                    IEnumerable<Type> handlerInterfacesWithTwoGenericArguments = ((Type)(handlerInstance.GetType()))
                         .GetInterfaces()
-                        .Single(i => i.IsGenericType
-                            && i.GetGenericArguments().Length == 2
-                            && GetParentClassesAndSelf(evt.GetType())
-                        .Any(t => t.FullName.Contains(i.GetGenericArguments()[1].Name)))
+                        .Where(i => i.IsGenericType && i.GetGenericArguments().Length == 2);
+
+                    var highestInterfaceByInheritanceOrder = handlerInterfacesWithTwoGenericArguments
+                        .Select(i => eventParentClasses.FirstOrDefault(t => t.value.FullName.Contains(i.GetGenericArguments()[1].FullName)))
+                        .Where(i => i != null)
+                        .OrderBy(i => i.index)
+                        .First();
+
+                    var interfaceGenericArguments = handlerInterfacesWithTwoGenericArguments
+                        .First(i => highestInterfaceByInheritanceOrder.value.FullName.Contains(i.GetGenericArguments()[1].FullName))
                         .GetGenericArguments();
+
                     var correctConfigurationType = interfaceGenericArguments[0];
                     var correctEventType = interfaceGenericArguments[1];
                     var castMethodToCorrectEventType = GetType().GetMethods().Single(m => m.Name.Contains("CastObject")).MakeGenericMethod(correctEventType);
@@ -84,7 +96,7 @@ namespace YAB.Plugins.Injectables
                     var runAsyncMethod = ((Type)(handlerInstance.GetType()))
                         .GetMethods()
                         .Single(m => m.Name.Contains("RunAsync")
-                            && m.GetParameters()[1].ParameterType.FullName.Contains(correctEventType.Name));
+                            && m.GetParameters()[1].ParameterType.FullName.Contains(correctEventType.FullName));
                     await runAsyncMethod.Invoke(handlerInstance, new[] { mapper.Map(configuration, configuration.GetType(), correctConfigurationType), (object)evt, cancellationToken }).ConfigureAwait(false);
                 }
             }
@@ -157,26 +169,29 @@ namespace YAB.Plugins.Injectables
 
         private IEnumerable<Type> GetParentClassesAndSelf(Type childType)
         {
-            AppDomain root = AppDomain.CurrentDomain;
+            //AppDomain root = AppDomain.CurrentDomain;
 
-            var assembliesToSearchParentClassIn = root.GetAssemblies()
-                            .Where(a => !a.IsDynamic);
+            //var assembliesToSearchParentClassIn = root.GetAssemblies()
+            //                .Where(a => !a.IsDynamic);
 
-            List<Type> parentTypes = new List<Type>();
+            //List<Type> parentTypes = new List<Type>();
 
-            foreach (var assembly in assembliesToSearchParentClassIn)
-            {
-                try
-                {
-                    var parents = assembly
-                        .GetExportedTypes()
-                        .Where(t => childType.IsSubclassOf(t) || t == childType);
-                    parentTypes.AddRange(parents);
-                }
-                catch { }
-            }
+            //foreach (var assembly in assembliesToSearchParentClassIn)
+            //{
+            //    try
+            //    {
+            //        var parents = assembly
+            //            .GetExportedTypes()
+            //            .Where(t => childType.IsSubclassOf(t) || t == childType);
+            //        parentTypes.AddRange(parents);
+            //    }
+            //    catch { }
+            //}
 
-            return parentTypes;
+            //return parentTypes;
+
+            for (var current = childType; current != null; current = current.BaseType)
+                yield return current;
         }
     }
 }
