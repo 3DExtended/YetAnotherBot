@@ -23,7 +23,6 @@ export class BotStatusIndicatorComponent implements OnInit {
     this.reloadBotStatusForEver(1000);
   }
 
-
   public toggleTheBotState(newBotStatus: boolean) {
     if (newBotStatus === this.botIsRunning) {
       return;

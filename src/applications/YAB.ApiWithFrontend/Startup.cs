@@ -122,6 +122,7 @@ namespace YAB.ApiWithFrontend
             _container.RegisterInstance<IContainerAccessor>(containerAccessor);
             _container.RegisterInstance<IAvailablePluginsHelper>(new AvailablePluginsHelper());
             _container.RegisterSingleton<IPipelineStore, PipelineStore>();
+            _container.RegisterSingleton<IFrontendLogging, FrontendLogging>();
             _container.RegisterSingleton(typeof(IEventSender), typeof(EventSenderInstantExecuter));
 
             _container.LoadAllPlugins();

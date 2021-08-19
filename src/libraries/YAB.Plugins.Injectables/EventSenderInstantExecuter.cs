@@ -17,14 +17,16 @@ namespace YAB.Plugins.Injectables
     public class EventSenderInstantExecuter : IEventSender
     {
         private readonly IList<IEventReactor> _allEventReactors;
+        private readonly IFrontendLogging _frontendLogging;
         private readonly ILogger _logger;
         private readonly IPipelineStore _pipelineStore;
 
-        public EventSenderInstantExecuter(IPipelineStore pipelineStore, ILogger logger, IList<IEventReactor> allEventReactors)
+        public EventSenderInstantExecuter(IPipelineStore pipelineStore, ILogger logger, IList<IEventReactor> allEventReactors, IFrontendLogging frontendLogging)
         {
             _pipelineStore = pipelineStore;
             _logger = logger;
             _allEventReactors = allEventReactors;
+            _frontendLogging = frontendLogging;
         }
 
         public static T CastObject<T>(object obj) where T : class
@@ -34,10 +36,13 @@ namespace YAB.Plugins.Injectables
 
         public async Task SendEvent(IEventBase evt, CancellationToken cancellationToken)
         {
+            await _frontendLogging
+                .RegisterEventAsync(evt.GetType().Name, "BackgroundEvents", cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+
             // find pipelines for event
-            Console.WriteLine($"Number of pipelines in executor: {_pipelineStore.Pipelines.Count}");
-            Console.WriteLine($"Event to execute pipelines for: {evt.GetType().FullName}");
-            var pipelinesToExecute = _pipelineStore.Pipelines.Where(p => p.EventType.Name == evt.GetType().Name);
+            var pipelinesToExecute = _pipelineStore.Pipelines
+                .Where(p => p.EventType.Name == evt.GetType().Name);
 
             // execute all pipelines (should not be many...)
             foreach (var pipeline in pipelinesToExecute)
@@ -170,10 +175,6 @@ namespace YAB.Plugins.Injectables
                 }
                 catch { }
             }
-
-            Console.WriteLine("Check parent classes");
-            Console.WriteLine(childType.FullName);
-            Console.WriteLine(string.Join(", ", parentTypes.Select(t => t.FullName)));
 
             return parentTypes;
         }

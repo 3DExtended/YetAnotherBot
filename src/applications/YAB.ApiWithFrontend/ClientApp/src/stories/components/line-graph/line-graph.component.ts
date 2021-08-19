@@ -14,6 +14,13 @@ export class LineGrpahComponent implements OnInit {
   public get graphValues(): LineGraphDataset | null {
     return this._graphValues;
   }
+
+  @Input()
+  height: number = 400;
+
+  @Input()
+  lineChartType: ChartType = "line";
+
   @Input()
   public set graphValues(value: LineGraphDataset | null) {
     this._graphValues = value;
@@ -54,7 +61,9 @@ export class LineGrpahComponent implements OnInit {
   public lineChartOptions: ChartOptions = {};
   public updateLineChartOptions(): void {
     this.lineChartOptions = {
-      responsive: false
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] }
     };
   }
 
@@ -69,10 +78,10 @@ export class LineGrpahComponent implements OnInit {
 
   public lineChartLegend = true;
   public updateLineChartLegend() {
-    this.lineChartLegend = this.graphValues ? this.graphValues.showCharLegend : false;
+    this.lineChartLegend = this.graphValues ? this.graphValues.showChartLegend : false;
   }
 
-  public lineChartType: ChartType = "line";
+
 
   public lineChartPlugins: any[] = [];
 

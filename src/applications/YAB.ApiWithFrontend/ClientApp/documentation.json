@@ -88,6 +88,56 @@
             "methods": []
         },
         {
+            "name": "EventLoggingEntryDto",
+            "id": "interface-EventLoggingEntryDto-fd9314e6398188ff7f1f3801bd16ce9d",
+            "file": "src/app/services/event.service.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { HttpClient, HttpResponse } from '@angular/common/http';\nimport { Inject, Injectable } from '@angular/core';\nimport { Observable } from 'rxjs';\nimport { ErrorHandledResult } from '../shared/errorHandledResult';\nimport { errorHandler } from '../shared/errorHandler';\nimport { List } from './pipelines.service';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class EventService {\n\n  constructor(private readonly _httpClient: HttpClient,\n    @Inject('API_BASE_URL') private readonly baseUrl: string) { }\n\n  public EventsOfPast24Hours(): Observable<ErrorHandledResult<List<EventLoggingEntryDto>>> {\n    return this._httpClient.get<HttpResponse<List<EventLoggingEntryDto>>>(this.baseUrl + \"api/botevents/past24hours\")\n      .pipe(errorHandler<List<EventLoggingEntryDto>>());;\n  }\n}\n\nexport interface EventLoggingEntryDto {\n  EventDescription: string;\n\n  EventGroup: string;\n\n  EventName: string;\n\n  TimeOfEvent: Date;\n}\n",
+            "properties": [
+                {
+                    "name": "EventDescription",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 23
+                },
+                {
+                    "name": "EventGroup",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 25
+                },
+                {
+                    "name": "EventName",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 27
+                },
+                {
+                    "name": "TimeOfEvent",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Date",
+                    "optional": false,
+                    "description": "",
+                    "line": 29
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 163,
+            "methods": []
+        },
+        {
             "name": "IEventReactorConfiguration",
             "id": "interface-IEventReactorConfiguration-94ad5c3cabab7aafa7af82d4067f2496",
             "file": "src/app/services/pipelines.service.ts",
@@ -301,7 +351,7 @@
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Color } from \"ng2-charts\";\r\n\r\nexport interface LineGraphDataset {\r\n  lines: LineGraphLine[];\r\n  xAxisLabels: string[];\r\n  showCharLegend: boolean;\r\n};\r\n\r\nexport interface LineGraphLine {\r\n  values: number[];\r\n  label: string;\r\n  lineColorSettings: Color;\r\n};\r\n",
+            "sourceCode": "import { Color } from \"ng2-charts\";\r\n\r\nexport interface LineGraphDataset {\r\n  lines: LineGraphLine[];\r\n  xAxisLabels: string[];\r\n  showChartLegend: boolean;\r\n};\r\n\r\nexport interface LineGraphLine {\r\n  values: number[];\r\n  label: string;\r\n  lineColorSettings: Color;\r\n};\r\n",
             "properties": [
                 {
                     "name": "lines",
@@ -313,7 +363,7 @@
                     "line": 4
                 },
                 {
-                    "name": "showCharLegend",
+                    "name": "showChartLegend",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "boolean",
@@ -342,7 +392,7 @@
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Color } from \"ng2-charts\";\r\n\r\nexport interface LineGraphDataset {\r\n  lines: LineGraphLine[];\r\n  xAxisLabels: string[];\r\n  showCharLegend: boolean;\r\n};\r\n\r\nexport interface LineGraphLine {\r\n  values: number[];\r\n  label: string;\r\n  lineColorSettings: Color;\r\n};\r\n",
+            "sourceCode": "import { Color } from \"ng2-charts\";\r\n\r\nexport interface LineGraphDataset {\r\n  lines: LineGraphLine[];\r\n  xAxisLabels: string[];\r\n  showChartLegend: boolean;\r\n};\r\n\r\nexport interface LineGraphLine {\r\n  values: number[];\r\n  label: string;\r\n  lineColorSettings: Color;\r\n};\r\n",
             "properties": [
                 {
                     "name": "label",
@@ -410,12 +460,12 @@
         },
         {
             "name": "TableColumn",
-            "id": "interface-TableColumn-d907411e9e3e271b8611e1418f9e14c0",
+            "id": "interface-TableColumn-07a4b4c8c106052f89846370802976bd",
             "file": "src/stories/components/table/table.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\n\nexport interface TableColumn {\n  title: string;\n  singleLineRow: boolean;\n  selector: string;\n  widthInPixels: number;\n  sort: 'asc' | 'desc' | null\n}\n\nexport interface TableRow {\n  [key: string]: string;\n}\n\n@Component({\n  selector: 'app-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class TableComponent implements OnInit {\n  private _data: { columns: TableColumn[]; dataItems: TableRow[]; } = { columns: [], dataItems: [] };\n\n  public get data(): { columns: TableColumn[]; dataItems: TableRow[]; } {\n    return this._data;\n  }\n\n  @Input()\n  public set data(value: { columns: TableColumn[]; dataItems: TableRow[]; }) {\n    this._data = value;\n    this._data.columns.forEach(c => {\n      const castedColumn = c as any;\n      castedColumn.widthBeforeResizing = c.widthInPixels;\n    })\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public toggleSorting(event: MouseEvent, column: TableColumn) {\n    event.preventDefault();\n\n    this._data.columns.forEach(c => {\n      if (c.selector === column.selector) {\n        if (c.sort === null || c.sort === 'desc') {\n          c.sort = 'asc';\n        } else {\n          c.sort = 'desc'\n        }\n      } else {\n        c.sort = null;\n      }\n    });\n\n    const sortColumn = this._data.columns.filter(c => c.sort !== null);\n    const sortedData = { columns: this._data.columns, dataItems: [...this._data.dataItems] };\n    if (sortColumn) {\n      sortedData.dataItems = sortedData.dataItems.sort((a, b) => {\n        if (a[sortColumn[0].selector] < b[sortColumn[0].selector]) {\n          return sortColumn[0].sort === 'asc' ? -1 : 1;\n        } else {\n          return sortColumn[0].sort === 'asc' ? 1 : -1;\n        }\n      });\n    }\n\n    this.data = sortedData;\n  }\n\n  public resizeHandlerClickHandler(event: MouseEvent, mouseDown: boolean, column: TableColumn | any) {\n    event.preventDefault();\n    column['isResizing'] = mouseDown;\n    column['clickedX'] = event.x;\n    column['widthBeforeResizing'] = column.widthInPixels;\n  }\n\n  public generalResizeHandlerMouseMove(event: MouseEvent) {\n    const resizingColumns = this.data.columns.filter(c => (c as any)['isResizing']);\n    if (resizingColumns.length > 1 || event.buttons === 0) {\n      this.generalResizeHandlerResetHandler();\n    }\n    if (resizingColumns.length === 1) {\n      this.resizeHandlerMouseMove(event, resizingColumns[0]);\n    }\n  }\n\n  public generalResizeHandlerResetHandler() {\n    this.data.columns.forEach(column => {\n      (column as any)['isResizing'] = false;\n    });\n  }\n\n  public resizeHandlerMouseMove(event: MouseEvent, column: TableColumn | any) {\n    if (event.buttons === 0) {\n      column['isResizing'] = false;\n    }\n\n    if (column['isResizing']) {\n      if (event.type === \"mousemove\") {\n        column.widthInPixels = event.x - column['clickedX'] + column['widthBeforeResizing'];\n      }\n    }\n  }\n}\n",
+            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\n\nexport interface TableColumn {\n  title: string;\n  singleLineRow: boolean;\n  selector: string;\n  widthInPixels: number;\n  sort: 'asc' | 'desc' | null\n}\n\nexport interface TableRow {\n  [key: string]: string;\n}\n\n@Component({\n  selector: 'app-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class TableComponent implements OnInit {\n  private _data: { columns: TableColumn[]; dataItems: TableRow[]; } = { columns: [], dataItems: [] };\n\n  public get data(): { columns: TableColumn[]; dataItems: TableRow[]; } {\n    return this._data;\n  }\n\n  @Input()\n  public title: string = \"\";\n\n  @Input()\n  public set data(value: { columns: TableColumn[]; dataItems: TableRow[]; }) {\n    this._data = value;\n    this._data.columns.forEach(c => {\n      const castedColumn = c as any;\n      castedColumn.widthBeforeResizing = c.widthInPixels;\n    })\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public toggleSorting(event: MouseEvent, column: TableColumn) {\n    event.preventDefault();\n\n    this._data.columns.forEach(c => {\n      if (c.selector === column.selector) {\n        if (c.sort === null || c.sort === 'desc') {\n          c.sort = 'asc';\n        } else {\n          c.sort = 'desc'\n        }\n      } else {\n        c.sort = null;\n      }\n    });\n\n    const sortColumn = this._data.columns.filter(c => c.sort !== null);\n    const sortedData = { columns: this._data.columns, dataItems: [...this._data.dataItems] };\n    if (sortColumn) {\n      sortedData.dataItems = sortedData.dataItems.sort((a, b) => {\n        if (a[sortColumn[0].selector] < b[sortColumn[0].selector]) {\n          return sortColumn[0].sort === 'asc' ? -1 : 1;\n        } else {\n          return sortColumn[0].sort === 'asc' ? 1 : -1;\n        }\n      });\n    }\n\n    this.data = sortedData;\n  }\n\n  public resizeHandlerClickHandler(event: MouseEvent, mouseDown: boolean, column: TableColumn | any) {\n    event.preventDefault();\n    column['isResizing'] = mouseDown;\n    column['clickedX'] = event.x;\n    column['widthBeforeResizing'] = column.widthInPixels;\n  }\n\n  public generalResizeHandlerMouseMove(event: MouseEvent) {\n    const resizingColumns = this.data.columns.filter(c => (c as any)['isResizing']);\n    if (resizingColumns.length > 1 || event.buttons === 0) {\n      this.generalResizeHandlerResetHandler();\n    }\n    if (resizingColumns.length === 1) {\n      this.resizeHandlerMouseMove(event, resizingColumns[0]);\n    }\n  }\n\n  public generalResizeHandlerResetHandler() {\n    this.data.columns.forEach(column => {\n      (column as any)['isResizing'] = false;\n    });\n  }\n\n  public resizeHandlerMouseMove(event: MouseEvent, column: TableColumn | any) {\n    if (event.buttons === 0) {\n      column['isResizing'] = false;\n    }\n\n    if (column['isResizing']) {\n      if (event.type === \"mousemove\") {\n        column.widthInPixels = event.x - column['clickedX'] + column['widthBeforeResizing'];\n      }\n    }\n  }\n}\n",
             "properties": [
                 {
                     "name": "selector",
@@ -469,16 +519,16 @@
         },
         {
             "name": "TableRow",
-            "id": "interface-TableRow-d907411e9e3e271b8611e1418f9e14c0",
+            "id": "interface-TableRow-07a4b4c8c106052f89846370802976bd",
             "file": "src/stories/components/table/table.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\n\nexport interface TableColumn {\n  title: string;\n  singleLineRow: boolean;\n  selector: string;\n  widthInPixels: number;\n  sort: 'asc' | 'desc' | null\n}\n\nexport interface TableRow {\n  [key: string]: string;\n}\n\n@Component({\n  selector: 'app-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class TableComponent implements OnInit {\n  private _data: { columns: TableColumn[]; dataItems: TableRow[]; } = { columns: [], dataItems: [] };\n\n  public get data(): { columns: TableColumn[]; dataItems: TableRow[]; } {\n    return this._data;\n  }\n\n  @Input()\n  public set data(value: { columns: TableColumn[]; dataItems: TableRow[]; }) {\n    this._data = value;\n    this._data.columns.forEach(c => {\n      const castedColumn = c as any;\n      castedColumn.widthBeforeResizing = c.widthInPixels;\n    })\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public toggleSorting(event: MouseEvent, column: TableColumn) {\n    event.preventDefault();\n\n    this._data.columns.forEach(c => {\n      if (c.selector === column.selector) {\n        if (c.sort === null || c.sort === 'desc') {\n          c.sort = 'asc';\n        } else {\n          c.sort = 'desc'\n        }\n      } else {\n        c.sort = null;\n      }\n    });\n\n    const sortColumn = this._data.columns.filter(c => c.sort !== null);\n    const sortedData = { columns: this._data.columns, dataItems: [...this._data.dataItems] };\n    if (sortColumn) {\n      sortedData.dataItems = sortedData.dataItems.sort((a, b) => {\n        if (a[sortColumn[0].selector] < b[sortColumn[0].selector]) {\n          return sortColumn[0].sort === 'asc' ? -1 : 1;\n        } else {\n          return sortColumn[0].sort === 'asc' ? 1 : -1;\n        }\n      });\n    }\n\n    this.data = sortedData;\n  }\n\n  public resizeHandlerClickHandler(event: MouseEvent, mouseDown: boolean, column: TableColumn | any) {\n    event.preventDefault();\n    column['isResizing'] = mouseDown;\n    column['clickedX'] = event.x;\n    column['widthBeforeResizing'] = column.widthInPixels;\n  }\n\n  public generalResizeHandlerMouseMove(event: MouseEvent) {\n    const resizingColumns = this.data.columns.filter(c => (c as any)['isResizing']);\n    if (resizingColumns.length > 1 || event.buttons === 0) {\n      this.generalResizeHandlerResetHandler();\n    }\n    if (resizingColumns.length === 1) {\n      this.resizeHandlerMouseMove(event, resizingColumns[0]);\n    }\n  }\n\n  public generalResizeHandlerResetHandler() {\n    this.data.columns.forEach(column => {\n      (column as any)['isResizing'] = false;\n    });\n  }\n\n  public resizeHandlerMouseMove(event: MouseEvent, column: TableColumn | any) {\n    if (event.buttons === 0) {\n      column['isResizing'] = false;\n    }\n\n    if (column['isResizing']) {\n      if (event.type === \"mousemove\") {\n        column.widthInPixels = event.x - column['clickedX'] + column['widthBeforeResizing'];\n      }\n    }\n  }\n}\n",
+            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\n\nexport interface TableColumn {\n  title: string;\n  singleLineRow: boolean;\n  selector: string;\n  widthInPixels: number;\n  sort: 'asc' | 'desc' | null\n}\n\nexport interface TableRow {\n  [key: string]: string;\n}\n\n@Component({\n  selector: 'app-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class TableComponent implements OnInit {\n  private _data: { columns: TableColumn[]; dataItems: TableRow[]; } = { columns: [], dataItems: [] };\n\n  public get data(): { columns: TableColumn[]; dataItems: TableRow[]; } {\n    return this._data;\n  }\n\n  @Input()\n  public title: string = \"\";\n\n  @Input()\n  public set data(value: { columns: TableColumn[]; dataItems: TableRow[]; }) {\n    this._data = value;\n    this._data.columns.forEach(c => {\n      const castedColumn = c as any;\n      castedColumn.widthBeforeResizing = c.widthInPixels;\n    })\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public toggleSorting(event: MouseEvent, column: TableColumn) {\n    event.preventDefault();\n\n    this._data.columns.forEach(c => {\n      if (c.selector === column.selector) {\n        if (c.sort === null || c.sort === 'desc') {\n          c.sort = 'asc';\n        } else {\n          c.sort = 'desc'\n        }\n      } else {\n        c.sort = null;\n      }\n    });\n\n    const sortColumn = this._data.columns.filter(c => c.sort !== null);\n    const sortedData = { columns: this._data.columns, dataItems: [...this._data.dataItems] };\n    if (sortColumn) {\n      sortedData.dataItems = sortedData.dataItems.sort((a, b) => {\n        if (a[sortColumn[0].selector] < b[sortColumn[0].selector]) {\n          return sortColumn[0].sort === 'asc' ? -1 : 1;\n        } else {\n          return sortColumn[0].sort === 'asc' ? 1 : -1;\n        }\n      });\n    }\n\n    this.data = sortedData;\n  }\n\n  public resizeHandlerClickHandler(event: MouseEvent, mouseDown: boolean, column: TableColumn | any) {\n    event.preventDefault();\n    column['isResizing'] = mouseDown;\n    column['clickedX'] = event.x;\n    column['widthBeforeResizing'] = column.widthInPixels;\n  }\n\n  public generalResizeHandlerMouseMove(event: MouseEvent) {\n    const resizingColumns = this.data.columns.filter(c => (c as any)['isResizing']);\n    if (resizingColumns.length > 1 || event.buttons === 0) {\n      this.generalResizeHandlerResetHandler();\n    }\n    if (resizingColumns.length === 1) {\n      this.resizeHandlerMouseMove(event, resizingColumns[0]);\n    }\n  }\n\n  public generalResizeHandlerResetHandler() {\n    this.data.columns.forEach(column => {\n      (column as any)['isResizing'] = false;\n    });\n  }\n\n  public resizeHandlerMouseMove(event: MouseEvent, column: TableColumn | any) {\n    if (event.buttons === 0) {\n      column['isResizing'] = false;\n    }\n\n    if (column['isResizing']) {\n      if (event.type === \"mousemove\") {\n        column.widthInPixels = event.x - column['clickedX'] + column['widthBeforeResizing'];\n      }\n    }\n  }\n}\n",
             "properties": [],
             "indexSignatures": [
                 {
-                    "id": "index-declaration-d907411e9e3e271b8611e1418f9e14c0",
+                    "id": "index-declaration-07a4b4c8c106052f89846370802976bd",
                     "args": [
                         {
                             "name": "key",
@@ -569,6 +619,74 @@
                     }
                 ],
                 "line": 10,
+                "jsdoctags": [
+                    {
+                        "name": "_httpClient",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "baseUrl",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "EventService",
+            "id": "injectable-EventService-fd9314e6398188ff7f1f3801bd16ce9d",
+            "file": "src/app/services/event.service.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "EventsOfPast24Hours",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<ErrorHandledResult<List<EventLoggingEntryDto>>>",
+                    "typeParameters": [],
+                    "line": 16,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        122
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { HttpClient, HttpResponse } from '@angular/common/http';\nimport { Inject, Injectable } from '@angular/core';\nimport { Observable } from 'rxjs';\nimport { ErrorHandledResult } from '../shared/errorHandledResult';\nimport { errorHandler } from '../shared/errorHandler';\nimport { List } from './pipelines.service';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class EventService {\n\n  constructor(private readonly _httpClient: HttpClient,\n    @Inject('API_BASE_URL') private readonly baseUrl: string) { }\n\n  public EventsOfPast24Hours(): Observable<ErrorHandledResult<List<EventLoggingEntryDto>>> {\n    return this._httpClient.get<HttpResponse<List<EventLoggingEntryDto>>>(this.baseUrl + \"api/botevents/past24hours\")\n      .pipe(errorHandler<List<EventLoggingEntryDto>>());;\n  }\n}\n\nexport interface EventLoggingEntryDto {\n  EventDescription: string;\n\n  EventGroup: string;\n\n  EventName: string;\n\n  TimeOfEvent: Date;\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "_httpClient",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "baseUrl",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 11,
                 "jsdoctags": [
                     {
                         "name": "_httpClient",
@@ -1031,7 +1149,7 @@
             "propertiesClass": [
                 {
                     "name": "graphData",
-                    "defaultValue": "{\n    lines: [\n      {\n        label: \"Test Graph\",\n        lineColorSettings: {\n          backgroundColor: \"rgba(255,0,0,0.3)\",\n          borderColor: \"black\"\n        },\n        values: [\n          5.0,\n          10.0,\n          2.0\n        ]\n      }\n    ],\n    showCharLegend: true,\n    xAxisLabels: [\"January\", \"February\", \"March\"]\n  }",
+                    "defaultValue": "{\n    lines: [\n      {\n        label: \"Test Graph\",\n        lineColorSettings: {\n          backgroundColor: \"rgba(255,0,0,0.3)\",\n          borderColor: \"black\"\n        },\n        values: [\n          5.0,\n          10.0,\n          2.0\n        ]\n      }\n    ],\n    showChartLegend: true,\n    xAxisLabels: [\"January\", \"February\", \"March\"]\n  }",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
@@ -1061,7 +1179,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class AppComponent {\n  public graphData = {\n    lines: [\n      {\n        label: \"Test Graph\",\n        lineColorSettings: {\n          backgroundColor: \"rgba(255,0,0,0.3)\",\n          borderColor: \"black\"\n        },\n        values: [\n          5.0,\n          10.0,\n          2.0\n        ]\n      }\n    ],\n    showCharLegend: true,\n    xAxisLabels: [\"January\", \"February\", \"March\"]\n  };\n\n  title = 'YetAnotherBotClient';\n}\n",
+            "sourceCode": "import { Component, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class AppComponent {\n  public graphData = {\n    lines: [\n      {\n        label: \"Test Graph\",\n        lineColorSettings: {\n          backgroundColor: \"rgba(255,0,0,0.3)\",\n          borderColor: \"black\"\n        },\n        values: [\n          5.0,\n          10.0,\n          2.0\n        ]\n      }\n    ],\n    showChartLegend: true,\n    xAxisLabels: [\"January\", \"February\", \"March\"]\n  };\n\n  title = 'YetAnotherBotClient';\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1074,7 +1192,7 @@
         },
         {
             "name": "BotStatusIndicatorComponent",
-            "id": "component-BotStatusIndicatorComponent-1977624e6994d04d145ac29785e98974",
+            "id": "component-BotStatusIndicatorComponent-e11b71663142379dae7cb959e9c338e2",
             "file": "src/stories/components/bot-status-indicator/bot-status-indicator.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -1103,20 +1221,20 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 13,
+                    "line": 15,
                     "modifierKind": [
                         122
                     ]
                 },
                 {
-                    "name": "setTimeoutHandler",
-                    "defaultValue": "null",
+                    "name": "errorRefreshingBotStatus",
+                    "defaultValue": "new Subject<boolean>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "any",
+                    "type": "Subject<boolean>",
                     "optional": false,
                     "description": "",
-                    "line": 17,
+                    "line": 50,
                     "modifierKind": [
                         120
                     ]
@@ -1128,7 +1246,7 @@
                     "type": "ToggleSwitchComponent | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 15,
+                    "line": 17,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -1139,22 +1257,12 @@
             ],
             "methodsClass": [
                 {
-                    "name": "ngOnDestroy",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 24,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 20,
+                    "line": 22,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -1171,7 +1279,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 52,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1202,7 +1310,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 26,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1219,19 +1327,6 @@
                             }
                         }
                     ]
-                },
-                {
-                    "name": "updateBotStatus",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 62,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        120
-                    ]
                 }
             ],
             "deprecated": false,
@@ -1241,7 +1336,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';\nimport { forkJoin } from 'rxjs';\nimport { BotStatusService } from 'src/app/services/bot-status.service';\nimport { ToggleSwitchComponent } from '../toggle-switch/toggle-switch.component';\n\n@Component({\n  selector: 'app-bot-status-indicator',\n  templateUrl: './bot-status-indicator.component.html',\n  styleUrls: ['./bot-status-indicator.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class BotStatusIndicatorComponent implements OnInit, OnDestroy {\n  public botIsRunning = false;\n\n  @ViewChild(ToggleSwitchComponent) toggle: ToggleSwitchComponent | undefined;\n\n  private setTimeoutHandler: any = null;\n  constructor(private readonly _botStatusService: BotStatusService) { }\n\n  ngOnInit(): void {\n    this.reloadBotStatusForEver(1000);\n  }\n\n  ngOnDestroy(): void {\n    if (this.setTimeoutHandler) {\n      clearTimeout(this.setTimeoutHandler);\n      this.setTimeoutHandler = null;\n    }\n  }\n\n  public toggleTheBotState(newBotStatus: boolean) {\n    if (newBotStatus === this.botIsRunning) {\n      return;\n    }\n\n    if (newBotStatus) {\n      this._botStatusService.StartBot()\n        .subscribe(() => {\n          this.botIsRunning = true;\n          if (this.toggle) {\n            this.toggle.value = true;\n          }\n        });\n    } else {\n      this._botStatusService.StopBot()\n        .subscribe(() => {\n          this.botIsRunning = false;\n          if (this.toggle) {\n            this.toggle.value = false;\n          }\n        });\n    }\n  }\n\n  private reloadBotStatusForEver(refreshRate: number) {\n    this.setTimeoutHandler = setTimeout(() => {\n      this.updateBotStatus();\n      this.reloadBotStatusForEver(refreshRate);\n    }, refreshRate);\n  }\n\n  private updateBotStatus() {\n    const botStatusLoader = this._botStatusService.IsBotRunning();\n    forkJoin([botStatusLoader]).subscribe(res => {\n      this.botIsRunning = res[0].data;\n      if (this.toggle) {\n        this.toggle.value = this.botIsRunning;\n      }\n    });\n  }\n}\n",
+            "sourceCode": "import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';\nimport { Router } from '@angular/router';\nimport { Subject, timer } from 'rxjs';\nimport { map, takeUntil } from 'rxjs/operators';\nimport { BotStatusService } from 'src/app/services/bot-status.service';\nimport { ToggleSwitchComponent } from '../toggle-switch/toggle-switch.component';\n\n@Component({\n  selector: 'app-bot-status-indicator',\n  templateUrl: './bot-status-indicator.component.html',\n  styleUrls: ['./bot-status-indicator.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class BotStatusIndicatorComponent implements OnInit {\n  public botIsRunning = false;\n\n  @ViewChild(ToggleSwitchComponent) toggle: ToggleSwitchComponent | undefined;\n\n  constructor(private readonly _botStatusService: BotStatusService,\n    private readonly _router: Router) { }\n\n  ngOnInit(): void {\n    this.reloadBotStatusForEver(1000);\n  }\n\n  public toggleTheBotState(newBotStatus: boolean) {\n    if (newBotStatus === this.botIsRunning) {\n      return;\n    }\n\n    if (newBotStatus) {\n      this._botStatusService.StartBot()\n        .subscribe(() => {\n          this.botIsRunning = true;\n          if (this.toggle) {\n            this.toggle.value = true;\n          }\n        });\n    } else {\n      this._botStatusService.StopBot()\n        .subscribe(() => {\n          this.botIsRunning = false;\n          if (this.toggle) {\n            this.toggle.value = false;\n          }\n        });\n    }\n  }\n\n  private errorRefreshingBotStatus: Subject<boolean> = new Subject<boolean>();\n\n  private reloadBotStatusForEver(refreshRate: number) {\n    timer(0, refreshRate).pipe(\n      takeUntil(this.errorRefreshingBotStatus),\n      map(_ => {\n        return this._botStatusService.IsBotRunning();\n      })\n    )\n      .subscribe({\n        next: status => {\n          status.subscribe(async (res) => {\n            if (!res.successful) {\n              this.errorRefreshingBotStatus.next(false);\n\n              await this._router.navigateByUrl(\"/login\");\n              return;\n            }\n            this.botIsRunning = res.data;\n            if (this.toggle) {\n              this.toggle.value = this.botIsRunning;\n            }\n          });\n        }\n      });\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1261,6 +1356,12 @@
                         "type": "BotStatusService",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "_router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
                 "line": 17,
@@ -1273,14 +1374,22 @@
                         "tagName": {
                             "text": "param"
                         }
+                    },
+                    {
+                        "name": "_router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
                     }
                 ]
             },
             "implements": [
-                "OnInit",
-                "OnDestroy"
+                "OnInit"
             ],
-            "templateData": "<div class=\"h-full flex flex-col justify-center\">\n  <div>\n    <h3 style=\"font-size: 22px;font-weight: 700;\">\n      <span>Bot Status:</span>\n      <app-toggle-switch #toggle (valueChanged)=\"toggleTheBotState($event)\"></app-toggle-switch>\n    </h3>\n  </div>\n</div>\n"
+            "templateData": "<div class=\"h-full flex flex-col justify-center\">\n  <div>\n    <h3 style=\"font-size: 18px;font-weight: 700;\">\n      <span class=\"mr-1.5\">Bot Status:</span>\n      <app-toggle-switch #toggle (valueChanged)=\"toggleTheBotState($event)\"></app-toggle-switch>\n    </h3>\n  </div>\n</div>\n"
         },
         {
             "name": "BubbleWithIconComponent",
@@ -1511,7 +1620,7 @@
         },
         {
             "name": "DashboardPageComponent",
-            "id": "component-DashboardPageComponent-dc7784b5a9a374e1f0dc81caa6e82663",
+            "id": "component-DashboardPageComponent-d95a8f7ee0373dfa36de7352b2cb2f7d",
             "file": "src/app/pages/dashboard-page/dashboard-page.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1531,6 +1640,32 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "errorRefreshingBotEvents",
+                    "defaultValue": "new Subject<boolean>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Subject<boolean>",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "modifierKind": [
+                        120
+                    ]
+                },
+                {
+                    "name": "past24HourEvents",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "List<EventLoggingEntryDto> | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 47,
+                    "modifierKind": [
+                        122
+                    ]
+                },
+                {
                     "name": "pipelineTableConfiguration",
                     "defaultValue": "{\n    columns: [\n      {\n        title: 'Event',\n        selector: 'event',\n        widthInPixels: 200,\n        sort: 'asc',\n        singleLineRow: true\n      },\n      {\n        title: 'Filter',\n        selector: 'filter',\n        widthInPixels: 400,\n        sort: null,\n        singleLineRow: true\n      },\n      {\n        title: 'EventReactorConfigurations',\n        selector: 'eventReactorConfigurations',\n        widthInPixels: 800,\n        sort: null,\n        singleLineRow: false\n      }\n    ],\n    dataItems: []\n  }",
                     "deprecated": false,
@@ -1538,9 +1673,22 @@
                     "type": "literal type",
                     "optional": false,
                     "description": "",
-                    "line": 13,
+                    "line": 20,
                     "modifierKind": [
                         122
+                    ]
+                },
+                {
+                    "name": "refreshRateOfEventsInMs",
+                    "defaultValue": "1000",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        120
                     ]
                 }
             ],
@@ -1551,7 +1699,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 42,
+                    "line": 53,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -1568,7 +1716,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 64,
+                    "line": 95,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1599,7 +1747,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 58,
+                    "line": 89,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1625,7 +1773,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { forkJoin } from 'rxjs';\nimport { FilterOperator, IFilter, IFilterBase, IFilterGroup, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';\nimport { TableColumn, TableRow } from 'src/stories/components/table/table.component';\n\n@Component({\n  selector: 'app-dashboard-page',\n  templateUrl: './dashboard-page.component.html',\n  styleUrls: ['./dashboard-page.component.css']\n})\nexport class DashboardPageComponent implements OnInit {\n\n  public pipelineTableConfiguration: { columns: TableColumn[]; dataItems: TableRow[]; } = {\n    columns: [\n      {\n        title: 'Event',\n        selector: 'event',\n        widthInPixels: 200,\n        sort: 'asc',\n        singleLineRow: true\n      },\n      {\n        title: 'Filter',\n        selector: 'filter',\n        widthInPixels: 400,\n        sort: null,\n        singleLineRow: true\n      },\n      {\n        title: 'EventReactorConfigurations',\n        selector: 'eventReactorConfigurations',\n        widthInPixels: 800,\n        sort: null,\n        singleLineRow: false\n      }\n    ],\n    dataItems: []\n  };\n\n  constructor(private readonly _pipelinesService: PipelinesService) { }\n\n  ngOnInit(): void {\n    const botStatusLoader = this._pipelinesService.GetRegisteredPipelines();\n    forkJoin([botStatusLoader]).subscribe(res => {\n      console.log(res);\n      this.pipelineTableConfiguration.dataItems = res[0].data.$values.map(\n        p => {\n          return {\n            'event': p.eventName.split(\".\")[p.eventName.split(\".\").length - 1],\n            'filter': this.stringifyEventFilters(p.eventFilter),\n            'eventReactorConfigurations': p.serializedEventReactorConfiguration.$values.map(v => this.stringifyEventReactorConfiguration(v)).join(',\\r\\n')\n          } as TableRow;\n        }\n      );\n    });\n  }\n\n  private stringifyEventReactorConfiguration(configuration: string) {\n    const parsedConfig = JSON.parse(configuration);\n    const type = parsedConfig[\"$type\"].split(\", \")[0].split(\".\")[parsedConfig[\"$type\"].split(\", \")[0].split(\".\").length - 1];\n    return type + \": {\" + Object.entries(parsedConfig).filter(t => t[0] !== \"$type\").map(t => \"\\\"\" + t[0] + \"\\\": \\\"\" + t[1] + \"\\\"\").join(\", \") + \"}\";\n  }\n\n  private stringifyEventFilters(eventFilter: IFilterBase): string {\n    if (eventFilter.$type.indexOf('YAB.Core.Pipelines.Filter.Filter, ') !== -1) {\n      const filter = eventFilter as IFilter;\n      const filterOperation = Object.entries(FilterOperator).filter(o => o[1] === filter.operator)[0][0];\n      return filter.propertyName + \" \" + filterOperation + \" \\\"\" + filter.filterValue + \"\\\" (ignoreCasing: \" + filter.ignoreValueCasing + \")\";\n    } else {\n      const filterGroup = eventFilter as IFilterGroup;\n      const filterDescriptions = filterGroup.filters.$values.map(v => \"(\" + this.stringifyEventFilters(v) + \")\");\n      const logicOperator = Object.entries(LogicalOperator).filter(o => o[1] === filterGroup.operator)[0][0];\n      return filterDescriptions.join(\" \" + logicOperator + \" \");\n    }\n  }\n}\n\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { Router } from '@angular/router';\nimport { forkJoin, Subject, timer } from 'rxjs';\nimport { map, takeUntil } from 'rxjs/operators';\nimport { EventLoggingEntryDto, EventService } from 'src/app/services/event.service';\nimport { FilterOperator, IFilter, IFilterBase, IFilterGroup, List, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';\nimport { TableColumn, TableRow } from 'src/stories/components/table/table.component';\n\n@Component({\n  selector: 'app-dashboard-page',\n  templateUrl: './dashboard-page.component.html',\n  styleUrls: ['./dashboard-page.component.css']\n})\nexport class DashboardPageComponent implements OnInit {\n\n  private refreshRateOfEventsInMs = 1000;\n\n  private errorRefreshingBotEvents: Subject<boolean> = new Subject<boolean>();\n\n  public pipelineTableConfiguration: { columns: TableColumn[]; dataItems: TableRow[]; } = {\n    columns: [\n      {\n        title: 'Event',\n        selector: 'event',\n        widthInPixels: 200,\n        sort: 'asc',\n        singleLineRow: true\n      },\n      {\n        title: 'Filter',\n        selector: 'filter',\n        widthInPixels: 400,\n        sort: null,\n        singleLineRow: true\n      },\n      {\n        title: 'EventReactorConfigurations',\n        selector: 'eventReactorConfigurations',\n        widthInPixels: 800,\n        sort: null,\n        singleLineRow: false\n      }\n    ],\n    dataItems: []\n  };\n\n  public past24HourEvents: List<EventLoggingEntryDto> | null = null;\n\n  constructor(private readonly _pipelinesService: PipelinesService,\n    private readonly _eventsService: EventService,\n    private readonly _router: Router) { }\n\n  ngOnInit(): void {\n    const botStatusLoader = this._pipelinesService.GetRegisteredPipelines();\n    forkJoin([botStatusLoader]).subscribe(res => {\n      console.log(res);\n      this.pipelineTableConfiguration.dataItems = res[0].data.$values.map(\n        p => {\n          return {\n            'event': p.eventName.split(\".\")[p.eventName.split(\".\").length - 1],\n            'filter': this.stringifyEventFilters(p.eventFilter),\n            'eventReactorConfigurations': p.serializedEventReactorConfiguration.$values.map(v => this.stringifyEventReactorConfiguration(v)).join(',\\r\\n')\n          } as TableRow;\n        }\n      );\n    });\n\n    timer(0, this.refreshRateOfEventsInMs).pipe(\n      takeUntil(this.errorRefreshingBotEvents),\n      map(_ => {\n        return this._eventsService.EventsOfPast24Hours();\n      })\n    )\n      .subscribe({\n        next: status => {\n          status.subscribe(async (res) => {\n            if (!res.successful) {\n              this.errorRefreshingBotEvents.next(false);\n\n              await this._router.navigateByUrl(\"/login\");\n              return;\n            }\n            this.past24HourEvents = res.data;\n          });\n        }\n      });\n  }\n\n  private stringifyEventReactorConfiguration(configuration: string) {\n    const parsedConfig = JSON.parse(configuration);\n    const type = parsedConfig[\"$type\"].split(\", \")[0].split(\".\")[parsedConfig[\"$type\"].split(\", \")[0].split(\".\").length - 1];\n    return type + \": {\" + Object.entries(parsedConfig).filter(t => t[0] !== \"$type\").map(t => \"\\\"\" + t[0] + \"\\\": \\\"\" + t[1] + \"\\\"\").join(\", \") + \"}\";\n  }\n\n  private stringifyEventFilters(eventFilter: IFilterBase): string {\n    if (eventFilter.$type.indexOf('YAB.Core.Pipelines.Filter.Filter, ') !== -1) {\n      const filter = eventFilter as IFilter;\n      const filterOperation = Object.entries(FilterOperator).filter(o => o[1] === filter.operator)[0][0];\n      return filter.propertyName + \" \" + filterOperation + \" \\\"\" + filter.filterValue + \"\\\" (ignoreCasing: \" + filter.ignoreValueCasing + \")\";\n    } else {\n      const filterGroup = eventFilter as IFilterGroup;\n      const filterDescriptions = filterGroup.filters.$values.map(v => \"(\" + this.stringifyEventFilters(v) + \")\");\n      const logicOperator = Object.entries(LogicalOperator).filter(o => o[1] === filterGroup.operator)[0][0];\n      return filterDescriptions.join(\" \" + logicOperator + \" \");\n    }\n  }\n}\n\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1645,13 +1793,43 @@
                         "type": "PipelinesService",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "_eventsService",
+                        "type": "EventService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "_router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 38,
+                "line": 47,
                 "jsdoctags": [
                     {
                         "name": "_pipelinesService",
                         "type": "PipelinesService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "_eventsService",
+                        "type": "EventService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "_router",
+                        "type": "Router",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -1663,7 +1841,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"h-screen w-full flex flex-col\">\n  <div class=\"w-full\">\n    <div class=\"statusBarContainer w-full px-2 grid grid-cols-2\" style=\"background-color: gray; height: 65px; \">\n      <app-logo></app-logo>\n      <app-bot-status-indicator class=\"self-end h-full\" style=\"text-align: right;\"></app-bot-status-indicator>\n    </div>\n  </div>\n  <div class=\"content w-full grid h-full\" style=\"grid-template-columns: auto 1fr;\">\n    <div class=\"navbar h-full\">\n      <app-navbar></app-navbar>\n    </div>\n    <div class=\"dashboard h-full p-4 overflow-auto\" style=\"background-color: rgb(190, 190, 190);\">\n      <app-table [data]=\"pipelineTableConfiguration\">\n      </app-table>\n    </div>\n  </div>\n</div>\n"
+            "templateData": "<div class=\"h-screen w-full flex flex-col\">\n  <div class=\"content w-full grid h-full\" style=\"grid-template-columns: auto 1fr;\">\n    <div class=\"h-full p-4\">\n      <app-logo></app-logo>\n      <app-navbar></app-navbar>\n    </div>\n    <div class=\"pb-2 pl-2 pt-2 pr-6 overflow-x-hidden\">\n      <div class=\"w-full m-1.5 mt-3 pr-2\" style=\"height: 53px;\">\n        <app-bot-status-indicator class=\"self-end h-full\" style=\"text-align: right;\"></app-bot-status-indicator>\n      </div>\n      <div>\n        <app-table [title]=\"'Registered Pipelines:'\" [data]=\"pipelineTableConfiguration\">\n        </app-table>\n      </div>\n    </div>\n  </div>\n\n\n  <!-- <div class=\"w-full\">\n    <div class=\"statusBarContainer w-full px-2 grid grid-cols-2\" style=\"background-color: gray; height: 65px; \">\n      <app-logo></app-logo>\n      <app-bot-status-indicator class=\"self-end h-full\" style=\"text-align: right;\"></app-bot-status-indicator>\n    </div>\n  </div>\n  <div class=\"content w-full grid h-full\" style=\"grid-template-columns: auto 1fr;\">\n    <div class=\"navbar h-full\">\n      <app-navbar></app-navbar>\n    </div>\n    <div class=\"dashboard h-full p-4 \" style=\"background-color: rgb(190, 190, 190);\">\n      <app-table [data]=\"pipelineTableConfiguration\">\n      </app-table>\n    </div>\n  </div> -->\n</div>\n"
         },
         {
             "name": "InputFieldComponent",
@@ -2035,7 +2213,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\nimport { ChartDataSets, ChartOptions, ChartType } from \"chart.js\";\nimport { LineGraphDataset } from './line-graph-dataset';\n\n@Component({\n  selector: 'app-line-graph',\n  templateUrl: './line-graph.component.html',\n  styleUrls: ['./line-graph.component.css'],\n  encapsulation: ViewEncapsulation.None,\n})\nexport class LineGrpahComponent implements OnInit {\n\n  private _graphValues: LineGraphDataset | null = null;\n  public get graphValues(): LineGraphDataset | null {\n    return this._graphValues;\n  }\n  @Input()\n  public set graphValues(value: LineGraphDataset | null) {\n    this._graphValues = value;\n    this.updateLineChartColors();\n    this.updateLineChartData();\n    this.updateLineChartLabels();\n    this.updateLineChartLegend();\n    this.updateLineChartOptions();\n    const temp = this._graphValues;\n    this._graphValues = null;\n    this._graphValues = temp;\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public lineChartData: ChartDataSets[] = [];\n  public updateLineChartData(): void {\n    if (!this.graphValues) {\n      this.lineChartData = [];\n    }\n\n    const result = this.graphValues?.lines.map(l => ({ data: l.values, label: l.label }));\n    this.lineChartData = result ?? [];\n  }\n\n  public lineChartLabels: string[] = [];\n  public updateLineChartLabels(): void {\n    if (!this.graphValues) {\n      this.lineChartLabels = [];\n    }\n\n    this.lineChartLabels = this.graphValues?.xAxisLabels ?? [];\n  }\n\n  public lineChartOptions: ChartOptions = {};\n  public updateLineChartOptions(): void {\n    this.lineChartOptions = {\n      responsive: false\n    };\n  }\n\n  public lineChartColors: any[] = [];\n  public updateLineChartColors(): void {\n    if (!this.graphValues) {\n      this.lineChartColors = [];\n    }\n\n    this.lineChartColors = this.graphValues?.lines.map(l => l.lineColorSettings) ?? [];\n  }\n\n  public lineChartLegend = true;\n  public updateLineChartLegend() {\n    this.lineChartLegend = this.graphValues ? this.graphValues.showCharLegend : false;\n  }\n\n  public lineChartType: ChartType = \"line\";\n\n  public lineChartPlugins: any[] = [];\n\n}\n",
+            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\nimport { ChartDataSets, ChartOptions, ChartType } from \"chart.js\";\nimport { LineGraphDataset } from './line-graph-dataset';\n\n@Component({\n  selector: 'app-line-graph',\n  templateUrl: './line-graph.component.html',\n  styleUrls: ['./line-graph.component.css'],\n  encapsulation: ViewEncapsulation.None,\n})\nexport class LineGrpahComponent implements OnInit {\n\n  private _graphValues: LineGraphDataset | null = null;\n  public get graphValues(): LineGraphDataset | null {\n    return this._graphValues;\n  }\n  @Input()\n  public set graphValues(value: LineGraphDataset | null) {\n    this._graphValues = value;\n    this.updateLineChartColors();\n    this.updateLineChartData();\n    this.updateLineChartLabels();\n    this.updateLineChartLegend();\n    this.updateLineChartOptions();\n    const temp = this._graphValues;\n    this._graphValues = null;\n    this._graphValues = temp;\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public lineChartData: ChartDataSets[] = [];\n  public updateLineChartData(): void {\n    if (!this.graphValues) {\n      this.lineChartData = [];\n    }\n\n    const result = this.graphValues?.lines.map(l => ({ data: l.values, label: l.label }));\n    this.lineChartData = result ?? [];\n  }\n\n  public lineChartLabels: string[] = [];\n  public updateLineChartLabels(): void {\n    if (!this.graphValues) {\n      this.lineChartLabels = [];\n    }\n\n    this.lineChartLabels = this.graphValues?.xAxisLabels ?? [];\n  }\n\n  public lineChartOptions: ChartOptions = {};\n  public updateLineChartOptions(): void {\n    this.lineChartOptions = {\n      responsive: false\n    };\n  }\n\n  public lineChartColors: any[] = [];\n  public updateLineChartColors(): void {\n    if (!this.graphValues) {\n      this.lineChartColors = [];\n    }\n\n    this.lineChartColors = this.graphValues?.lines.map(l => l.lineColorSettings) ?? [];\n  }\n\n  public lineChartLegend = true;\n  public updateLineChartLegend() {\n    this.lineChartLegend = this.graphValues ? this.graphValues.showChartLegend : false;\n  }\n\n  public lineChartType: ChartType = \"line\";\n\n  public lineChartPlugins: any[] = [];\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -2097,7 +2275,7 @@
         },
         {
             "name": "LoginPageComponent",
-            "id": "component-LoginPageComponent-080c6d4553a3303475d577bcc8dcd1d7",
+            "id": "component-LoginPageComponent-b323a7c167211c4b5ce53776837b1a2b",
             "file": "src/app/pages/login-page/login-page.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2163,7 +2341,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { ActivatedRoute, Router } from '@angular/router';\nimport { LoginService } from 'src/app/services/login.service';\n\n@Component({\n  selector: 'app-login-page',\n  templateUrl: './login-page.component.html',\n  styleUrls: ['./login-page.component.css']\n})\nexport class LoginPageComponent implements OnInit {\n\n  public password: string | null = null;\n  constructor(private readonly _loginService: LoginService,\n    private readonly _activatedRoute: ActivatedRoute,\n    private readonly _router: Router\n  ) { }\n\n  ngOnInit(): void {\n  }\n\n  public async login() {\n    console.log(\"login clicked\");\n    await this._loginService.Login(this.password ?? \"\").toPromise()\n      .then(async r => {\n        if (!r.successful && r.statusCode === 404) {\n          // some options were not registered correctly. start registering\n          await this._router.navigateByUrl(\"/register\");\n          return;\n        }\n\n        // open the status page of the frontend\n        await this._router.navigateByUrl(\"/dashboard\");\n        await this._router.navigate([\"/dashboard\"]);\n      });\n  }\n\n  /**\n   * - click on login should call a login controller (use env. file for storing the url)\n   * - we want dont need an access token for now (since you ll be hosting this yourself at first)\n   *\n   */\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { ActivatedRoute, Router } from '@angular/router';\nimport { LoginService } from 'src/app/services/login.service';\n\n@Component({\n  selector: 'app-login-page',\n  templateUrl: './login-page.component.html',\n  styleUrls: ['./login-page.component.css']\n})\nexport class LoginPageComponent implements OnInit {\n\n  public password: string | null = null;\n  constructor(private readonly _loginService: LoginService,\n    private readonly _activatedRoute: ActivatedRoute,\n    private readonly _router: Router\n  ) { }\n\n  ngOnInit(): void {\n  }\n\n  public async login() {\n    console.log(\"login clicked\");\n    await this._loginService.Login(this.password ?? \"\").toPromise()\n      .then(async r => {\n        if (!r.successful && r.statusCode === 404) {\n          // some options were not registered correctly. start registering\n          await this._router.navigateByUrl(\"/register\");\n          return;\n        } else if (!r.successful) {\n          return;\n        }\n\n        // open the status page of the frontend\n        await this._router.navigateByUrl(\"/dashboard\");\n      });\n  }\n\n  /**\n   * - click on login should call a login controller (use env. file for storing the url)\n   * - we want dont need an access token for now (since you ll be hosting this yourself at first)\n   *\n   */\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -2281,7 +2459,7 @@
                 "args": [],
                 "line": 9
             },
-            "templateData": "<div class=\"h-full\" style=\"width: fit-content;\">\n  <a href=\"#\" class=\"flex items-center text-gray-700 hover:text-gray-900 h-full my-auto\t\" style=\"font-size: 1.6em;\">\n    <svg class=\"mr-1 text-blue-400\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\"\n      style=\"width: 1.75em; height: 1.75em\" stroke=\"currentColor\">\n      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 19l9 2-9-18-9 18 9-2zm0 0v-8\" />\n    </svg>\n    <span class=\"font-bold\">YetAnotherBot</span>\n  </a>\n</div>\n"
+            "templateData": "<div class=\"\" style=\"width: fit-content;\">\n  <a href=\"#\" class=\"flex items-center text-gray-700 hover:text-gray-900\" style=\"font-size: 1.6em;\">\n    <svg class=\"mr-1 text-blue-400\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\"\n      style=\"width: 1.75em; height: 1.75em\" stroke=\"currentColor\">\n      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 19l9 2-9-18-9 18 9-2zm0 0v-8\" />\n    </svg>\n    <span class=\"font-bold\">YAB<span class=\"text-red-500\">.</span></span>\n  </a>\n</div>\n"
         },
         {
             "name": "NavbarComponent",
@@ -2416,7 +2594,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<!-- navbar goes here -->\n<nav class=\"bg-gray-100 h-full\" style=\"width: fit-content; padding-top: 12px;\">\n  <div class=\"mx-auto px-4 h-full\">\n    <div class=\"h-full\">\n\n      <div class=\"space-x-4\">\n\n        <!-- primary nav -->\n        <div class=\"items-center h-full grid gap-y-2\">\n          <div *ngFor=\"let element of getNavbarItemsToShow()\" class=\"flex\">\n            <a href=\"{{element.href}}\"\n              class=\"py-2 px-3 text-gray-700 hover:text-gray-900 text-2xl\">{{element.titleKey}}</a>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!-- mobile menu -->\n  <!-- <div [ngClass]=\"{'mobile-menu':true, 'hidden':!isMobileMenuShowing, 'md:hidden':true}\">\n    <span *ngFor=\"let element of getNavbarItemsToShow()\">\n      <a href=\"{{element.href}}\" class=\"block py-2 px-4 text-sm hover:bg-gray-200\">{{element.titleKey}}</a>\n    </span>\n  </div> -->\n</nav>\n"
+            "templateData": "<!-- navbar goes here -->\n<nav class=\"bg-gray-100 \" style=\"width: fit-content; padding-top: 12px;\">\n  <div class=\"mx-auto  h-full\">\n    <div class=\"h-full\">\n\n      <div class=\"space-x-4\">\n\n        <!-- primary nav -->\n        <div class=\"items-center h-full grid gap-y-2\">\n          <div *ngFor=\"let element of getNavbarItemsToShow()\" class=\"flex\">\n            <a href=\"{{element.href}}\" class=\"py-2 text-gray-700 hover:text-gray-900 text-2xl\">{{element.titleKey}}</a>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!-- mobile menu -->\n  <!-- <div [ngClass]=\"{'mobile-menu':true, 'hidden':!isMobileMenuShowing, 'md:hidden':true}\">\n    <span *ngFor=\"let element of getNavbarItemsToShow()\">\n      <a href=\"{{element.href}}\" class=\"block py-2 px-4 text-sm hover:bg-gray-200\">{{element.titleKey}}</a>\n    </span>\n  </div> -->\n</nav>\n"
         },
         {
             "name": "PipelineGraphComponent",
@@ -2690,7 +2868,7 @@
         },
         {
             "name": "TableComponent",
-            "id": "component-TableComponent-d907411e9e3e271b8611e1418f9e14c0",
+            "id": "component-TableComponent-07a4b4c8c106052f89846370802976bd",
             "file": "src/stories/components/table/table.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -2713,8 +2891,16 @@
                     "name": "data",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 29,
+                    "line": 32,
                     "type": "literal type"
+                },
+                {
+                    "name": "title",
+                    "defaultValue": "\"\"",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 29,
+                    "type": "string"
                 }
             ],
             "outputsClass": [],
@@ -2747,7 +2933,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 79,
+                    "line": 82,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2771,7 +2957,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 89,
+                    "line": 92,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2784,7 +2970,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 39,
+                    "line": 42,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2813,7 +2999,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 72,
+                    "line": 75,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2868,7 +3054,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 95,
+                    "line": 98,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2914,7 +3100,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 42,
+                    "line": 45,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2949,11 +3135,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\n\nexport interface TableColumn {\n  title: string;\n  singleLineRow: boolean;\n  selector: string;\n  widthInPixels: number;\n  sort: 'asc' | 'desc' | null\n}\n\nexport interface TableRow {\n  [key: string]: string;\n}\n\n@Component({\n  selector: 'app-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class TableComponent implements OnInit {\n  private _data: { columns: TableColumn[]; dataItems: TableRow[]; } = { columns: [], dataItems: [] };\n\n  public get data(): { columns: TableColumn[]; dataItems: TableRow[]; } {\n    return this._data;\n  }\n\n  @Input()\n  public set data(value: { columns: TableColumn[]; dataItems: TableRow[]; }) {\n    this._data = value;\n    this._data.columns.forEach(c => {\n      const castedColumn = c as any;\n      castedColumn.widthBeforeResizing = c.widthInPixels;\n    })\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public toggleSorting(event: MouseEvent, column: TableColumn) {\n    event.preventDefault();\n\n    this._data.columns.forEach(c => {\n      if (c.selector === column.selector) {\n        if (c.sort === null || c.sort === 'desc') {\n          c.sort = 'asc';\n        } else {\n          c.sort = 'desc'\n        }\n      } else {\n        c.sort = null;\n      }\n    });\n\n    const sortColumn = this._data.columns.filter(c => c.sort !== null);\n    const sortedData = { columns: this._data.columns, dataItems: [...this._data.dataItems] };\n    if (sortColumn) {\n      sortedData.dataItems = sortedData.dataItems.sort((a, b) => {\n        if (a[sortColumn[0].selector] < b[sortColumn[0].selector]) {\n          return sortColumn[0].sort === 'asc' ? -1 : 1;\n        } else {\n          return sortColumn[0].sort === 'asc' ? 1 : -1;\n        }\n      });\n    }\n\n    this.data = sortedData;\n  }\n\n  public resizeHandlerClickHandler(event: MouseEvent, mouseDown: boolean, column: TableColumn | any) {\n    event.preventDefault();\n    column['isResizing'] = mouseDown;\n    column['clickedX'] = event.x;\n    column['widthBeforeResizing'] = column.widthInPixels;\n  }\n\n  public generalResizeHandlerMouseMove(event: MouseEvent) {\n    const resizingColumns = this.data.columns.filter(c => (c as any)['isResizing']);\n    if (resizingColumns.length > 1 || event.buttons === 0) {\n      this.generalResizeHandlerResetHandler();\n    }\n    if (resizingColumns.length === 1) {\n      this.resizeHandlerMouseMove(event, resizingColumns[0]);\n    }\n  }\n\n  public generalResizeHandlerResetHandler() {\n    this.data.columns.forEach(column => {\n      (column as any)['isResizing'] = false;\n    });\n  }\n\n  public resizeHandlerMouseMove(event: MouseEvent, column: TableColumn | any) {\n    if (event.buttons === 0) {\n      column['isResizing'] = false;\n    }\n\n    if (column['isResizing']) {\n      if (event.type === \"mousemove\") {\n        column.widthInPixels = event.x - column['clickedX'] + column['widthBeforeResizing'];\n      }\n    }\n  }\n}\n",
+            "sourceCode": "import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';\n\nexport interface TableColumn {\n  title: string;\n  singleLineRow: boolean;\n  selector: string;\n  widthInPixels: number;\n  sort: 'asc' | 'desc' | null\n}\n\nexport interface TableRow {\n  [key: string]: string;\n}\n\n@Component({\n  selector: 'app-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class TableComponent implements OnInit {\n  private _data: { columns: TableColumn[]; dataItems: TableRow[]; } = { columns: [], dataItems: [] };\n\n  public get data(): { columns: TableColumn[]; dataItems: TableRow[]; } {\n    return this._data;\n  }\n\n  @Input()\n  public title: string = \"\";\n\n  @Input()\n  public set data(value: { columns: TableColumn[]; dataItems: TableRow[]; }) {\n    this._data = value;\n    this._data.columns.forEach(c => {\n      const castedColumn = c as any;\n      castedColumn.widthBeforeResizing = c.widthInPixels;\n    })\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public toggleSorting(event: MouseEvent, column: TableColumn) {\n    event.preventDefault();\n\n    this._data.columns.forEach(c => {\n      if (c.selector === column.selector) {\n        if (c.sort === null || c.sort === 'desc') {\n          c.sort = 'asc';\n        } else {\n          c.sort = 'desc'\n        }\n      } else {\n        c.sort = null;\n      }\n    });\n\n    const sortColumn = this._data.columns.filter(c => c.sort !== null);\n    const sortedData = { columns: this._data.columns, dataItems: [...this._data.dataItems] };\n    if (sortColumn) {\n      sortedData.dataItems = sortedData.dataItems.sort((a, b) => {\n        if (a[sortColumn[0].selector] < b[sortColumn[0].selector]) {\n          return sortColumn[0].sort === 'asc' ? -1 : 1;\n        } else {\n          return sortColumn[0].sort === 'asc' ? 1 : -1;\n        }\n      });\n    }\n\n    this.data = sortedData;\n  }\n\n  public resizeHandlerClickHandler(event: MouseEvent, mouseDown: boolean, column: TableColumn | any) {\n    event.preventDefault();\n    column['isResizing'] = mouseDown;\n    column['clickedX'] = event.x;\n    column['widthBeforeResizing'] = column.widthInPixels;\n  }\n\n  public generalResizeHandlerMouseMove(event: MouseEvent) {\n    const resizingColumns = this.data.columns.filter(c => (c as any)['isResizing']);\n    if (resizingColumns.length > 1 || event.buttons === 0) {\n      this.generalResizeHandlerResetHandler();\n    }\n    if (resizingColumns.length === 1) {\n      this.resizeHandlerMouseMove(event, resizingColumns[0]);\n    }\n  }\n\n  public generalResizeHandlerResetHandler() {\n    this.data.columns.forEach(column => {\n      (column as any)['isResizing'] = false;\n    });\n  }\n\n  public resizeHandlerMouseMove(event: MouseEvent, column: TableColumn | any) {\n    if (event.buttons === 0) {\n      column['isResizing'] = false;\n    }\n\n    if (column['isResizing']) {\n      if (event.type === \"mousemove\") {\n        column.widthInPixels = event.x - column['clickedX'] + column['widthBeforeResizing'];\n      }\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "@import '../../../styles.css';\r\n\r\n.custom-table-row:nth-child(2n) {\r\n  background-color: #e4e4e47a;\r\n}\r\n\r\ntbody.custom-table-body>tr.custom-table-row:hover {\r\n  background-color: #d4d4d4;\r\n}\r\n\r\n.resize-handler {\r\n  cursor: col-resize;\r\n}\r\n\r\n.resize-handler:hover {\r\n  border-color: lightskyblue;\r\n}\r\n\r\n.column-header-wrapper {\r\n  grid-template-columns: auto 2px;\r\n}\r\n\r\n.custom-table-column {\r\n  /* height: calc(1em + 8px); */\r\n}\r\n",
+                    "data": "@import '../../../styles.css';\r\n\r\n.custom-table-row:nth-child(2n) {\r\n  /* background-color: #e4e4e47a; */\r\n}\r\n\r\n/* width */\r\n.custom-table-block-scrollable::-webkit-scrollbar {\r\n  height: 10px;\r\n}\r\n\r\n/* Track */\r\n.custom-table-block-scrollable::-webkit-scrollbar-track {\r\n  border-radius: 5px;\r\n  height: 10px;\r\n}\r\n\r\n/* Handle */\r\n.custom-table-block-scrollable::-webkit-scrollbar-thumb {\r\n  background: #bcbac5;\r\n  border-radius: 5px;\r\n}\r\n\r\n/* Handle on hover */\r\n.custom-table-block-scrollable::-webkit-scrollbar-thumb:hover {\r\n  background: #84828a;\r\n}\r\n\r\ntbody.custom-table-body>tr.custom-table-row:hover {\r\n  background-color: #ebebeb;\r\n}\r\n\r\n.resize-handler {\r\n  cursor: col-resize;\r\n}\r\n\r\n.resize-handler:hover {\r\n  border-color: lightskyblue;\r\n}\r\n\r\n.column-header-wrapper {\r\n  grid-template-columns: auto 2px;\r\n}\r\n\r\n.custom-table-column {\r\n  /* height: calc(1em + 8px); */\r\n}\r\n",
                     "styleUrl": "./table.component.css"
                 }
             ],
@@ -2964,7 +3150,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 35
+                "line": 38
             },
             "implements": [
                 "OnInit"
@@ -2986,7 +3172,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 29,
+                        "line": 32,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -3007,11 +3193,11 @@
                     }
                 }
             },
-            "templateData": "<div class=\"custom-table-wrapper\" (mousemove)=\"generalResizeHandlerMouseMove($event)\"\n  (mouseup)=\"generalResizeHandlerResetHandler()\">\n  <table class=\"custom-table border-l\">\n    <thead class=\"custom-table-header \">\n      <tr>\n        <th *ngFor=\"let column of data.columns; let index=index\" class=\"custom-table-column-header text-left p-0\">\n          <div class=\"column-header-wrapper grid pr-0  border border-r-0 border-l-0\">\n            <p class=\"flex cursor-pointer\" (mousedown)=\"toggleSorting($event, column)\">\n              <span [ngStyle]=\"{'width': (column.widthInPixels - 15) + 'px'}\"\n                class=\"py-1 pl-2 overflow-hidden overflow-ellipsis \">{{column.title}}</span>\n\n              <svg *ngIf=\"column.sort === 'asc'\" xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3 w-3 self-center\"\n                fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"#444444\">\n                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16 17l-4 4m0 0l-4-4m4 4V3\" />\n              </svg>\n\n              <svg *ngIf=\"column.sort === 'desc'\" xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3 w-3 self-center\"\n                fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"#444444\">\n                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7l4-4m0 0l4 4m-4-4v18\" />\n              </svg>\n\n            </p>\n            <span class=\"resize-handler border-r \" (mousedown)=\"resizeHandlerClickHandler($event, true, column)\"\n              (mouseup)=\"resizeHandlerClickHandler($event, false, column)\"></span>\n          </div>\n        </th>\n      </tr>\n    </thead>\n\n    <tbody class=\"custom-table-body\">\n      <tr *ngFor=\"let row of data.dataItems\" class=\"custom-table-row\">\n        <td *ngFor=\"let column of data.columns; let index=index; let last = last\"\n          class=\"pl-2 py-1 border-r border-b border-t-0 border-l-0\">\n          <div *ngIf=\"column.singleLineRow\" class=\"custom-table-column text-left break-words\"\n            [ngStyle]=\"{'width': (column.widthInPixels - 6) + 'px'}\">\n            {{row[column.selector]}}\n          </div>\n          <div *ngIf=\"!column.singleLineRow\" class=\"custom-table-column text-left overflow-hidden overflow-ellipsis\"\n            [ngStyle]=\"{'width': (column.widthInPixels - 6) + 'px'}\">\n            {{row[column.selector]}}\n          </div>\n        </td>\n      </tr>\n    </tbody>\n\n  </table>\n</div>\n"
+            "templateData": "<div class=\"custom-table-wrapper\" (mousemove)=\"generalResizeHandlerMouseMove($event)\"\n  (mouseup)=\"generalResizeHandlerResetHandler()\">\n  <div class=\"bg-white rounded-lg shadow-md hover:shadow-xl p-1\">\n    <h3 class=\"font-bold text-lg px-2 mb-1.5 pt-3\">{{title}}</h3>\n    <div class=\"custom-table-block-scrollable overflow-auto  p-2\">\n\n      <table class=\"w-full\">\n\n        <thead class=\"custom-table-header \">\n          <tr>\n            <th *ngFor=\"let column of data.columns; let index=index\"\n              class=\"custom-table-column-header border-b text-left p-0 \">\n              <div class=\"column-header-wrapper grid pr-0  border-b border-r-0 border-l-0\"\n                style=\"border-left-width: 0px !important;\">\n                <p class=\"flex cursor-pointer\" (mousedown)=\"toggleSorting($event, column)\">\n                  <span [ngStyle]=\"{'width': (column.widthInPixels - 15) + 'px'}\"\n                    class=\"py-1 pl-2 overflow-hidden overflow-ellipsis \">{{column.title}}</span>\n\n                  <svg *ngIf=\"column.sort === 'asc'\" xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3 w-3 self-center\"\n                    fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"#444444\">\n                    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                      d=\"M16 17l-4 4m0 0l-4-4m4 4V3\" />\n                  </svg>\n\n                  <svg *ngIf=\"column.sort === 'desc'\" xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3 w-3 self-center\"\n                    fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"#444444\">\n                    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                      d=\"M8 7l4-4m0 0l4 4m-4-4v18\" />\n                  </svg>\n\n                </p>\n                <span class=\"resize-handler border-r \" (mousedown)=\"resizeHandlerClickHandler($event, true, column)\"\n                  (mouseup)=\"resizeHandlerClickHandler($event, false, column)\"></span>\n              </div>\n            </th>\n          </tr>\n        </thead>\n\n        <tbody class=\"custom-table-body\">\n          <tr *ngFor=\"let row of data.dataItems;let lastRow = last\" class=\"custom-table-row\"\n            [ngClass]=\"{'border-b': !lastRow}\">\n            <td *ngFor=\"let column of data.columns; let index=index; let lastColumn = last\"\n              class=\"pl-2 py-1  border-t-0 border-l-0\" [ngClass]=\"{'border-r': !lastColumn}\">\n              <div *ngIf=\"column.singleLineRow\" class=\"custom-table-column text-left break-words\"\n                [ngStyle]=\"{'width': (column.widthInPixels - 6) + 'px'}\">\n                {{row[column.selector]}}\n              </div>\n              <div *ngIf=\"!column.singleLineRow\" class=\"custom-table-column text-left overflow-hidden overflow-ellipsis\"\n                [ngStyle]=\"{'width': (column.widthInPixels - 6) + 'px'}\">\n                {{row[column.selector]}}\n              </div>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n</div>\n"
         },
         {
             "name": "ToggleSwitchComponent",
-            "id": "component-ToggleSwitchComponent-4e429b0c1f0d21eff7f34823277f4dcb",
+            "id": "component-ToggleSwitchComponent-b6cb0c01680d7daf5c0eb5a12c788c90",
             "file": "src/stories/components/toggle-switch/toggle-switch.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -3045,6 +3231,13 @@
                     "deprecationMessage": "",
                     "line": 11,
                     "type": "string"
+                },
+                {
+                    "name": "value",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 23,
+                    "type": "boolean"
                 }
             ],
             "outputsClass": [
@@ -3053,7 +3246,7 @@
                     "defaultValue": "new EventEmitter()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 15,
+                    "line": 14,
                     "type": "EventEmitter<boolean>"
                 }
             ],
@@ -3066,7 +3259,7 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 17,
+                    "line": 16,
                     "modifierKind": [
                         120
                     ]
@@ -3091,11 +3284,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-toggle-switch',\n  templateUrl: './toggle-switch.component.html',\n  styleUrls: ['./toggle-switch.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class ToggleSwitchComponent implements OnInit {\n\n  @Input() label: string = \"\";\n  @Input() defaultState: boolean = false;\n\n\n  @Output() valueChanged: EventEmitter<boolean> = new EventEmitter();\n\n  private _value: boolean = false;\n\n  public get value(): boolean {\n    return this._value;\n  }\n\n  public set value(newValue: boolean) {\n    this._value = newValue;\n    console.log(newValue);\n    this.valueChanged.next(newValue);\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n    this.value = this.defaultState;\n  }\n}\n",
+            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';\n\n@Component({\n  selector: 'app-toggle-switch',\n  templateUrl: './toggle-switch.component.html',\n  styleUrls: ['./toggle-switch.component.css'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class ToggleSwitchComponent implements OnInit {\n\n  @Input() label: string = \"\";\n  @Input() defaultState: boolean = false;\n\n  @Output() valueChanged: EventEmitter<boolean> = new EventEmitter();\n\n  private _value: boolean = false;\n\n  public get value(): boolean {\n    return this._value;\n  }\n\n  @Input()\n  public set value(newValue: boolean) {\n    this._value = newValue;\n    console.log(newValue);\n    this.valueChanged.next(newValue);\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n    this.value = this.defaultState;\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "@import '../../../styles.css';\r\n\r\n.switchWrapper {\r\n  --toggle-width: 2em;\r\n  --toggle-switch-button-size-offset: 3px;\r\n\r\n  --toggle-height: calc(var(--toggle-width) / 2);\r\n  --toggle-border-radius: calc(var(--toggle-height) / 2);\r\n\r\n  --toggle-switch-button-size: calc(var(--toggle-height) + 2 * var(--toggle-switch-button-size-offset));\r\n  --toggle-switch-button-border-radius: calc(var(--toggle-switch-button-size) / 2);\r\n\r\n  margin: var(--toggle-switch-button-size-offset);\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n}\r\n\r\n.toggle {\r\n  /* TODO style this toggle using the font size (so \"em\" instead of \"px\")  */\r\n  width: var(--toggle-width);\r\n  height: var(--toggle-height);\r\n\r\n  position: relative;\r\n\r\n  display: inline-block;\r\n  cursor: pointer;\r\n}\r\n\r\n.toggleInput {\r\n  display: none;\r\n}\r\n\r\n.toggleFill {\r\n  position: relative;\r\n  width: var(--toggle-width);\r\n  height: var(--toggle-height);\r\n  border-radius: var(--toggle-border-radius);\r\n  background-color: #a4d8df;\r\n  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4) inset;\r\n  transition: background-color 0.2s;\r\n}\r\n\r\n.toggleFill::after {\r\n  content: \"\";\r\n  position: absolute;\r\n  top: calc(var(--toggle-switch-button-size-offset)*-1);\r\n  left: calc(var(--toggle-switch-button-size-offset)*-1);\r\n  width: var(--toggle-switch-button-size);\r\n  height: var(--toggle-switch-button-size);\r\n  background-color: #b7b7b7;\r\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);\r\n  border-radius: var(--toggle-switch-button-border-radius);\r\n  transition: transform 0.2s;\r\n}\r\n\r\n.toggleInput:checked~.toggleFill {\r\n  background-color: #28a745;\r\n}\r\n\r\n.toggleInput:checked~.toggleFill::after {\r\n  transform: translateX(calc(var(--toggle-height)));\r\n}\r\n",
+                    "data": "@import '../../../styles.css';\r\n\r\n.switchWrapper {\r\n  --toggle-width: 2em;\r\n  --toggle-switch-button-size-offset: 3px;\r\n\r\n  --toggle-height: calc(var(--toggle-width) / 2);\r\n  --toggle-border-radius: calc(var(--toggle-height) / 2);\r\n\r\n  --toggle-switch-button-size: calc(var(--toggle-height) + 2 * var(--toggle-switch-button-size-offset));\r\n  --toggle-switch-button-border-radius: calc(var(--toggle-switch-button-size) / 2);\r\n\r\n  margin: var(--toggle-switch-button-size-offset);\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  cursor: pointer;\r\n}\r\n\r\n.toggle {\r\n  /* TODO style this toggle using the font size (so \"em\" instead of \"px\")  */\r\n  width: var(--toggle-width);\r\n  height: var(--toggle-height);\r\n\r\n  position: relative;\r\n\r\n  display: inline-block;\r\n  cursor: pointer;\r\n}\r\n\r\n.toggleInput {\r\n  display: none;\r\n}\r\n\r\n.toggleFill {\r\n  position: relative;\r\n  width: var(--toggle-width);\r\n  height: var(--toggle-height);\r\n  border-radius: var(--toggle-border-radius);\r\n  background-color: #cfe4ff;\r\n  box-shadow: 0 0 0.2em rgb(0 0 0 / 25%) inset;\r\n  transition: background-color 0.2s;\r\n}\r\n\r\n.toggleFill::after {\r\n  content: \"\";\r\n  position: absolute;\r\n  top: calc(var(--toggle-switch-button-size-offset)*-1);\r\n  left: calc(var(--toggle-switch-button-size-offset)*-1);\r\n  width: var(--toggle-switch-button-size);\r\n  height: var(--toggle-switch-button-size);\r\n  background-color: #60a5fa;\r\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);\r\n  border-radius: var(--toggle-switch-button-border-radius);\r\n  transition: transform 0.2s;\r\n}\r\n\r\n.toggleInput:checked~.toggleFill {\r\n  background-color: #60ea77;\r\n}\r\n\r\n.toggleInput:checked~.toggleFill::after {\r\n  transform: translateX(calc(var(--toggle-height)));\r\n}\r\n",
                     "styleUrl": "./toggle-switch.component.css"
                 }
             ],
@@ -3145,23 +3338,23 @@
                         "name": "value",
                         "type": "boolean",
                         "returnType": "boolean",
-                        "line": 19
+                        "line": 18
                     }
                 }
             },
-            "templateData": "<div class=\"switchWrapper\">\n  <label class=\"toggle\" for=\"toggleSwitch\">\n    <input class=\"toggleInput\" name=\"\" type=\"checkbox\" id=\"toggleSwitch\" [(ngModel)]=\"value\">\n    <div class=\"toggleFill\"></div>\n  </label>\n</div>\n"
+            "templateData": "<div class=\"switchWrapper\" (click)=\"value = !value\">\n  <label class=\"toggle\" for=\"toggleSwitch\" style=\"margin-bottom: 0px;\">\n    <input class=\"toggleInput\" name=\"\" type=\"checkbox\" id=\"toggleSwitch\" [(ngModel)]=\"value\">\n    <div class=\"toggleFill\"></div>\n  </label>\n</div>\n"
         }
     ],
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-e0c285019f2f20d87076a514c97318c9",
+            "id": "module-AppModule-a3f8c8c7dcadc855598e1e0deb29cf4b",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { FormsModule } from '@angular/forms';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { NgxGraphModule } from '@swimlane/ngx-graph';\nimport { ChartsModule } from 'ng2-charts';\nimport { BotStatusIndicatorComponent } from 'src/stories/components/bot-status-indicator/bot-status-indicator.component';\nimport { BubbleWithIconComponent } from 'src/stories/components/bubble-with-icon/bubble-with-icon.component';\nimport { ButtonComponent } from 'src/stories/components/button/button.component';\nimport { InputFieldComponent } from 'src/stories/components/input-field/input-field.component';\nimport { LineGrpahComponent } from 'src/stories/components/line-graph/line-graph.component';\nimport { LogoComponent } from 'src/stories/components/logo/logo.component';\nimport { NavbarComponent } from 'src/stories/components/navbar/navbar.component';\nimport { TableComponent } from 'src/stories/components/table/table.component';\nimport { ToggleSwitchComponent } from 'src/stories/components/toggle-switch/toggle-switch.component';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';\nimport { LoginPageComponent } from './pages/login-page/login-page.component';\nimport { RegisterPageComponent } from './pages/register-page/register-page.component';\n\nexport function getBaseUrl(): string {\n  return window.location.origin + \"/\";\n}\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    BubbleWithIconComponent,\n    LineGrpahComponent,\n    InputFieldComponent,\n    LoginPageComponent,\n    ButtonComponent,\n    DashboardPageComponent,\n    LogoComponent,\n    NavbarComponent,\n    BotStatusIndicatorComponent,\n    ToggleSwitchComponent,\n    TableComponent,\n    RegisterPageComponent\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    HttpClientModule,\n    ChartsModule,\n    NgxGraphModule,\n    FormsModule,\n    CommonModule\n  ],\n  providers: [\n    {\n      provide: 'API_BASE_URL',\n      useFactory: getBaseUrl\n    }],\n  bootstrap: [AppComponent]\n})\nexport class AppModule { }\n",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { FormsModule } from '@angular/forms';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { NgxGraphModule } from '@swimlane/ngx-graph';\nimport { ChartsModule } from 'ng2-charts';\nimport { BotStatusIndicatorComponent } from 'src/stories/components/bot-status-indicator/bot-status-indicator.component';\nimport { BubbleWithIconComponent } from 'src/stories/components/bubble-with-icon/bubble-with-icon.component';\nimport { ButtonComponent } from 'src/stories/components/button/button.component';\nimport { InputFieldComponent } from 'src/stories/components/input-field/input-field.component';\nimport { LineGrpahComponent } from 'src/stories/components/line-graph/line-graph.component';\nimport { LogoComponent } from 'src/stories/components/logo/logo.component';\nimport { NavbarComponent } from 'src/stories/components/navbar/navbar.component';\nimport { TableComponent } from 'src/stories/components/table/table.component';\nimport { ToggleSwitchComponent } from 'src/stories/components/toggle-switch/toggle-switch.component';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';\nimport { LoginPageComponent } from './pages/login-page/login-page.component';\nimport { RegisterPageComponent } from './pages/register-page/register-page.component';\n\nexport function getBaseUrl(): string {\n\n  if (window.location.origin.includes(\"4200\")) {\n    return \"https://localhost:5001/\"\n  }\n\n  return window.location.origin + \"/\";\n}\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    BubbleWithIconComponent,\n    LineGrpahComponent,\n    InputFieldComponent,\n    LoginPageComponent,\n    ButtonComponent,\n    DashboardPageComponent,\n    LogoComponent,\n    NavbarComponent,\n    BotStatusIndicatorComponent,\n    ToggleSwitchComponent,\n    TableComponent,\n    RegisterPageComponent\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    HttpClientModule,\n    ChartsModule,\n    NgxGraphModule,\n    FormsModule,\n    CommonModule\n  ],\n  providers: [\n    {\n      provide: 'API_BASE_URL',\n      useFactory: getBaseUrl\n    }],\n  bootstrap: [AppComponent]\n})\nexport class AppModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -3290,21 +3483,21 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\r\n  production: false,\r\n}"
-            },
-            {
-                "name": "environment",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/environments/environment.prod.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\r\n  production: true\r\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\r\n  production: false,\r\n}"
             },
             {
                 "name": "FilterOperator",
@@ -3437,18 +3630,6 @@
                     "type": "literal type"
                 }
             ],
-            "src/environments/environment.ts": [
-                {
-                    "name": "environment",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/environments/environment.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\r\n  production: false,\r\n}"
-                }
-            ],
             "src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
@@ -3459,6 +3640,18 @@
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\r\n  production: true\r\n}"
+                }
+            ],
+            "src/environments/environment.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\r\n  production: false,\r\n}"
                 }
             ],
             "src/app/services/pipelines.service.ts": [
@@ -3637,7 +3830,7 @@
                 "linktype": "component",
                 "name": "DashboardPageComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
@@ -3663,6 +3856,24 @@
                 "type": "injectable",
                 "linktype": "injectable",
                 "name": "BotStatusService",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/services/event.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "EventService",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/services/event.service.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "EventLoggingEntryDto",
                 "coveragePercent": 0,
                 "coverageCount": "0/5",
                 "status": "low"
@@ -3833,7 +4044,7 @@
                 "linktype": "component",
                 "name": "BotStatusIndicatorComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/10",
+                "coverageCount": "0/8",
                 "status": "low"
             },
             {
@@ -3932,7 +4143,7 @@
                 "linktype": "component",
                 "name": "TableComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/10",
+                "coverageCount": "0/11",
                 "status": "low"
             },
             {
@@ -3959,7 +4170,7 @@
                 "linktype": "component",
                 "name": "ToggleSwitchComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/8",
                 "status": "low"
             },
             {

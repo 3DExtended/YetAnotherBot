@@ -26,11 +26,12 @@ export class LoginPageComponent implements OnInit {
           // some options were not registered correctly. start registering
           await this._router.navigateByUrl("/register");
           return;
+        } else if (!r.successful) {
+          return;
         }
 
         // open the status page of the frontend
         await this._router.navigateByUrl("/dashboard");
-        await this._router.navigate(["/dashboard"]);
       });
   }
 

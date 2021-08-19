@@ -58,7 +58,7 @@ namespace YAB.Api
         {
             ControllerBuilder.Current.DefaultNamespaces.Add("YAB.Api.Contracts.Controllers");
 
-            // neccessary in order to inject IContainerAccessor into controller
+            // Necessary in order to inject IContainerAccessor into controller
             services.AddSingleton(typeof(IContainerAccessor), new ContainerAccessor(_container));
             services.AddCors();
             services
@@ -97,6 +97,7 @@ namespace YAB.Api
             _container.RegisterInstance<IContainerAccessor>(containerAccessor);
             _container.RegisterInstance<IAvailablePluginsHelper>(new AvailablePluginsHelper());
             _container.RegisterSingleton<IPipelineStore, PipelineStore>();
+            _container.RegisterSingleton<IFrontendLogging, FrontendLogging>();
             _container.RegisterSingleton(typeof(IEventSender), typeof(EventSenderInstantExecuter));
 
             _container.LoadAllPlugins();

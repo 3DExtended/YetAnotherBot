@@ -19,7 +19,7 @@ const expandableExampleGraphData: LineGraphDataset = {
       ]
     }
   ],
-  showCharLegend: true,
+  showChartLegend: true,
   xAxisLabels: ["January", "February", "March"]
 };
 

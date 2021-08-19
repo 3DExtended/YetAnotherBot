@@ -8,6 +8,12 @@
       <div class="w-full m-1.5 mt-3 pr-2" style="height: 53px;">
         <app-bot-status-indicator class="self-end h-full" style="text-align: right;"></app-bot-status-indicator>
       </div>
+      <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-4 pl-4 pb-4 pt-2 my-4">
+        <h3 class="font-bold text-lg px-2 mb-1.5 pt-3">Todays Events:</h3>
+        <app-line-graph [graphValues]="eventGraphValues" [lineChartType]="'bar'">
+        </app-line-graph>
+      </div>
+
       <div>
         <app-table [title]="'Registered Pipelines:'" [data]="pipelineTableConfiguration">
         </app-table>

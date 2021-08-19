@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { forkJoin } from 'rxjs';
-import { FilterOperator, IFilter, IFilterBase, IFilterGroup, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
+import { Router } from '@angular/router';
+import { forkJoin, Subject, timer } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { EventLoggingEntryDto, EventService } from 'src/app/services/event.service';
+import { FilterOperator, IFilter, IFilterBase, IFilterGroup, List, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
+import { LineGraphDataset } from 'src/stories/components/line-graph/line-graph-dataset';
 import { TableColumn, TableRow } from 'src/stories/components/table/table.component';
 
 @Component({
@@ -9,6 +13,39 @@ import { TableColumn, TableRow } from 'src/stories/components/table/table.compon
   styleUrls: ['./dashboard-page.component.css']
 })
 export class DashboardPageComponent implements OnInit {
+
+  private refreshRateOfEventsInMs = 1000;
+
+  public eventGraphValues: LineGraphDataset = {
+    lines: [
+      {
+        label: "Events in past 24h",
+        lineColorSettings: {
+          backgroundColor: "rgba(96,165,250,1)",
+          borderColor: "black"
+        },
+        values: [
+          0, 0, 0, 0,
+          0, 0, 0, 0,
+          0, 0, 0, 0,
+          0, 0, 0, 0,
+          0, 0, 0, 0,
+          0, 0, 0, 0,
+        ]
+      },
+    ],
+    xAxisLabels: [
+      "-23h", "-22h", "-21h", "-20h",
+      "-19h", "-18h", "-17h", "-16h",
+      "-15h", "-14h", "-13h", "-12h",
+      "-11h", "-10h", "-9h", "-8h",
+      "-7h", "-6h", "-5h", "-4h",
+      "-3h", "-2h", "-1h", "-0h",
+    ],
+    showChartLegend: false,
+  };
+
+  private errorRefreshingBotEvents: Subject<boolean> = new Subject<boolean>();
 
   public pipelineTableConfiguration: { columns: TableColumn[]; dataItems: TableRow[]; } = {
     columns: [
@@ -37,7 +74,11 @@ export class DashboardPageComponent implements OnInit {
     dataItems: []
   };
 
-  constructor(private readonly _pipelinesService: PipelinesService) { }
+  public past24HourEvents: List<EventLoggingEntryDto> | null = null;
+
+  constructor(private readonly _pipelinesService: PipelinesService,
+    private readonly _eventsService: EventService,
+    private readonly _router: Router) { }
 
   ngOnInit(): void {
     const botStatusLoader = this._pipelinesService.GetRegisteredPipelines();
@@ -53,6 +94,61 @@ export class DashboardPageComponent implements OnInit {
         }
       );
     });
+
+    timer(0, this.refreshRateOfEventsInMs).pipe(
+      takeUntil(this.errorRefreshingBotEvents),
+      map(_ => {
+        return this._eventsService.EventsOfPast24Hours();
+      })
+    )
+      .subscribe({
+        next: status => {
+          status.subscribe(async (res) => {
+            if (!res.successful) {
+              this.errorRefreshingBotEvents.next(false);
+
+              await this._router.navigateByUrl("/login");
+              return;
+            }
+            this.past24HourEvents = res.data;
+            var now = new Date();
+            var utc_timestamp = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+              now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+
+            // group events into hours
+            const groupsByHours: { [key: string]: any[] } = {};
+
+            this.past24HourEvents.$values.forEach(event => {
+              const differenceInHoursToNow = Math.abs((new Date(event.timeOfEvent)).getTime() - utc_timestamp) / 36e5;
+              const hourString = "-" + parseInt(differenceInHoursToNow.toString(), 10) + "h";
+              if (hourString in groupsByHours) {
+                groupsByHours[hourString].push(event);
+              } else {
+                groupsByHours[hourString] = [event];
+              }
+            });
+
+            let somethingChanged = false;
+
+            this.eventGraphValues.lines[0].values = this.eventGraphValues.xAxisLabels.map((label: string, index: number, array: string[]) => {
+              let numberOfEventsForLabel = 0;
+              if (label in groupsByHours) {
+                numberOfEventsForLabel = groupsByHours[label].length;
+              }
+
+              if (this.eventGraphValues.lines[0].values[index] !== numberOfEventsForLabel) {
+                somethingChanged = true;
+              }
+
+              return numberOfEventsForLabel;
+            });
+
+            if (somethingChanged) {
+              this.eventGraphValues = { ...this.eventGraphValues };
+            }
+          });
+        }
+      });
   }
 
   private stringifyEventReactorConfiguration(configuration: string) {

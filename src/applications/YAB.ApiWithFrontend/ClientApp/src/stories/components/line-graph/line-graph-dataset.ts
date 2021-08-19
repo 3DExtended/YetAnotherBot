@@ -3,7 +3,7 @@ import { Color } from "ng2-charts";
 export interface LineGraphDataset {
   lines: LineGraphLine[];
   xAxisLabels: string[];
-  showCharLegend: boolean;
+  showChartLegend: boolean;
 };
 
 export interface LineGraphLine {

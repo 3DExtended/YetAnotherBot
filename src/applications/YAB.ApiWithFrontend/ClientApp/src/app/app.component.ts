@@ -22,7 +22,7 @@ export class AppComponent {
         ]
       }
     ],
-    showCharLegend: true,
+    showChartLegend: true,
     xAxisLabels: ["January", "February", "March"]
   };
 
