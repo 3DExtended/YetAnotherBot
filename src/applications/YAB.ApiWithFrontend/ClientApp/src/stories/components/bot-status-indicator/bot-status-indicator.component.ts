@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, timer } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { ToggleSwitchComponent } from '../toggle-switch/toggle-switch.component'
   selector: 'app-bot-status-indicator',
   templateUrl: './bot-status-indicator.component.html',
   styleUrls: ['./bot-status-indicator.component.css'],
-  encapsulation: ViewEncapsulation.None
+  // encapsulation: ViewEncapsulation.None
 })
 export class BotStatusIndicatorComponent implements OnInit {
   public botIsRunning = false;

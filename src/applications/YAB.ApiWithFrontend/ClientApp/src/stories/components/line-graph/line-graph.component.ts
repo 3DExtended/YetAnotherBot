@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from "chart.js";
 import { LineGraphDataset } from './line-graph-dataset';
 
@@ -6,7 +6,7 @@ import { LineGraphDataset } from './line-graph-dataset';
   selector: 'app-line-graph',
   templateUrl: './line-graph.component.html',
   styleUrls: ['./line-graph.component.css'],
-  encapsulation: ViewEncapsulation.None,
+  // encapsulation: ViewEncapsulation.None,
 })
 export class LineGrpahComponent implements OnInit {
 

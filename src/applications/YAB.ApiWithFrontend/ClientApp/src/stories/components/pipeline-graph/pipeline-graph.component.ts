@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Edge, Node } from '@swimlane/ngx-graph';
 import * as shape from 'd3-shape';
 
@@ -17,7 +17,7 @@ export interface Employee {
   selector: 'app-pipeline-graph',
   templateUrl: './pipeline-graph.component.html',
   styleUrls: ['./pipeline-graph.component.css'],
-  encapsulation: ViewEncapsulation.None
+  // encapsulation: ViewEncapsulation.None
 })
 export class PipelineGraphComponent implements OnInit {
 

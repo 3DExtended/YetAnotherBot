@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 export interface TableColumn {
   title: string;
@@ -16,7 +16,7 @@ export interface TableRow {
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
-  encapsulation: ViewEncapsulation.None
+  // encapsulation: ViewEncapsulation.None
 })
 export class TableComponent implements OnInit {
   private _data: { columns: TableColumn[]; dataItems: TableRow[]; } = { columns: [], dataItems: [] };

@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-bubble-with-icon',
   templateUrl: './bubble-with-icon.component.html',
   styleUrls: ['./bubble-with-icon.component.css'],
-  encapsulation: ViewEncapsulation.None
+  // encapsulation: ViewEncapsulation.None
 })
 export class BubbleWithIconComponent implements OnInit {
 

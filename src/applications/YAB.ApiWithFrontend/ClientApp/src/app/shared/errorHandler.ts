@@ -10,8 +10,8 @@ export function errorHandler<T>() {
   return (source: Observable<HttpResponse<T>>) =>
     source.pipe(
       map((value) => {
-        if (value?.body) {
-          return new ErrorHandledResult<T>(value?.body as T, true, 0, null);
+        if (value["body"] !== undefined) {
+          return new ErrorHandledResult<T>(value.body as T, true, 0, null);
         } else {
           return new ErrorHandledResult<T>(value as unknown as T, true, 0, null);
         }
