@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -16,6 +17,16 @@ export class LoginPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    const IsRegistrationCompletedLoader = this._loginService.IsRegistrationCompleted();
+    forkJoin([IsRegistrationCompletedLoader]).subscribe(async (res) => {
+      if (res.some(r => !r.successful)) {
+        return;
+      } else {
+        if (res[0].data === false) {
+          await this._router.navigateByUrl("/register");
+        }
+      }
+    });
   }
 
   public async login() {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,6 +38,21 @@ namespace YAB.Api.Contracts.Controllers
         public Task<SupportedPlugins> GetOfficiallySupportedPluginsAsync(CancellationToken cancellationToken)
         {
             return _availablePluginsHelper.GetSupportedPlugins(cancellationToken);
+        }
+
+        [HttpGet("installed")]
+        public async Task<IActionResult> GetInstalledPluginsAsync(CancellationToken cancellationToken)
+        {
+            var allPlugins = await _availablePluginsHelper.GetSupportedPlugins(cancellationToken).ConfigureAwait(false);
+
+            var result = new List<(SupportedPlugin, bool)>();
+            foreach (var plugin in allPlugins.Plugins)
+            {
+                var installed = await _availablePluginsHelper.IsPluginAlreadyInstalled(plugin.PluginName, cancellationToken).ConfigureAwait(false);
+                result.Add((plugin, installed));
+            }
+            
+            return Ok(result);
         }
 
         [HttpPost("events/send")]

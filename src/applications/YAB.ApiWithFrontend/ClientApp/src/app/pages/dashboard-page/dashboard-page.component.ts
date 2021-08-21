@@ -5,7 +5,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { EventLoggingEntryDto, EventService } from 'src/app/services/event.service';
 import { FilterOperator, IFilter, IFilterBase, IFilterGroup, List, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
 import { LineGraphDataset } from 'src/stories/components/line-graph/line-graph-dataset';
-import { TableColumn, TableRow } from 'src/stories/components/table/table.component';
+import { TableColumn, TableColumnType, TableRow } from 'src/stories/components/table/table.component';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -38,21 +38,24 @@ export class DashboardPageComponent implements OnInit {
         selector: 'event',
         widthInPixels: 200,
         sort: 'asc',
-        singleLineRow: true
+        singleLineRow: true,
+        columnType: TableColumnType.normal
       },
       {
         title: 'Filter',
         selector: 'filter',
         widthInPixels: 400,
         sort: null,
-        singleLineRow: true
+        singleLineRow: true,
+        columnType: TableColumnType.normal
       },
       {
         title: 'EventReactorConfigurations',
         selector: 'eventReactorConfigurations',
         widthInPixels: 800,
         sort: null,
-        singleLineRow: false
+        singleLineRow: false,
+        columnType: TableColumnType.normal
       }
     ],
     dataItems: []

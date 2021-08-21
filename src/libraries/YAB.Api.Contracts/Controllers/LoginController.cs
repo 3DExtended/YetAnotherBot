@@ -25,6 +25,13 @@ namespace YAB.Api.Contracts.Controllers
             _optionsToLoad = optionsToLoad;
         }
 
+        [HttpGet()]
+        public async Task<IActionResult> IsRegistrationCompleted(CancellationToken cancellationToken)
+        {
+            var isRegistrationCompleted = await _pipelineStore.IsRegistrationCompletedAsync(cancellationToken).ConfigureAwait(false);
+            return Ok(isRegistrationCompleted);
+        }
+
         [HttpPost()]
         public async Task<IActionResult> LoginAsync(string botPassword, CancellationToken cancellationToken)
         {

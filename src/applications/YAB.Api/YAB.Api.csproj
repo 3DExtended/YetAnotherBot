@@ -18,6 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="..\..\..\plugins.json" Link="plugins.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\libraries\YAB.Api.Contracts\YAB.Api.Contracts.csproj" />
     <ProjectReference Include="..\..\libraries\YAB.Core.Pipelines\YAB.Core.Pipelines.csproj" />
     <ProjectReference Include="..\..\libraries\YAB.Core\YAB.Core.csproj" />

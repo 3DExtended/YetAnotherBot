@@ -1,15 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 export interface TableColumn {
   title: string;
   singleLineRow: boolean;
   selector: string;
   widthInPixels: number;
-  sort: 'asc' | 'desc' | null
+  sort: 'asc' | 'desc' | null;
+  columnType: TableColumnType;
+}
+
+export enum TableColumnType {
+  // use this for displaying the content as string without edit option
+  normal = 'normal',
+
+  // this column will render as toggle switches which can be modified by the user.
+  booleanToogleColumn = 'booleanToogleColumn'
 }
 
 export interface TableRow {
-  [key: string]: string;
+  [key: string]: string | number | boolean;
 }
 
 @Component({
@@ -28,6 +37,9 @@ export class TableComponent implements OnInit {
   @Input()
   public title: string = "";
 
+  // returns the updated dataItem and the selector of the changed property
+  @Output() valueChanged: EventEmitter<{ selector: string; dataItem: TableRow }> = new EventEmitter();
+
   @Input()
   public set data(value: { columns: TableColumn[]; dataItems: TableRow[]; }) {
     this._data = value;
@@ -40,6 +52,12 @@ export class TableComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public booleanToogleColumnValueChanged(dataItem: TableRow, column: TableColumn, newValue: boolean) {
+    dataItem[column.selector] = newValue;
+
+    this.valueChanged.next({ selector: column.selector, dataItem: dataItem });
   }
 
   public toggleSorting(event: MouseEvent, column: TableColumn) {

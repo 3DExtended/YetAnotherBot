@@ -16,6 +16,11 @@ export class LoginService {
     return this._httpClient.post<any>(this.baseUrl + "api/login", { password: password })
       .pipe(errorHandler<any>());;
   }
+
+  public IsRegistrationCompleted(): Observable<ErrorHandledResult<boolean>> {
+    return this._httpClient.get<any>(this.baseUrl + "api/login")
+      .pipe(errorHandler<boolean>());;
+  }
 }
 
 

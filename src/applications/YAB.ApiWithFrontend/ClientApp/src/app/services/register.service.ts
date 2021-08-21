@@ -14,7 +14,13 @@ export class RegisterService {
 
   public Register(password: string): Observable<ErrorHandledResult<any>> {
     return this._httpClient.post<any>(this.baseUrl + "api/register", { password: password })
-      .pipe(errorHandler<any>());;
+      .pipe(errorHandler<any>());
+  }
+
+  public InstallPlugin(pluginName: string): Observable<ErrorHandledResult<boolean>> {
+    debugger;
+    return this._httpClient.post<any>(this.baseUrl + "api/register/addplugin?extensionName=" + pluginName, {})
+      .pipe(errorHandler<boolean>());
   }
 }
 

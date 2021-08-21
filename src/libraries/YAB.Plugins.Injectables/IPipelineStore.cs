@@ -10,6 +10,8 @@ namespace YAB.Plugins.Injectables
     {
         public List<Pipeline> Pipelines { get; set; }
 
+        public Task<bool> IsRegistrationCompletedAsync(CancellationToken cancellationToken);
+
         public Task LoadPipelinesAsync(CancellationToken cancellationToken);
 
         public Task SavePipelinesAsync(CancellationToken cancellationToken);

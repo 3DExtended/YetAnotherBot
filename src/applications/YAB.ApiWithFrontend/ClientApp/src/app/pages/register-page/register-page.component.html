@@ -1,1 +1,20 @@
-<p>register-page works!</p>
+<div class="h-screen w-full flex flex-col">
+  <div class="content w-full grid h-full" style="grid-template-columns: auto 1fr;">
+    <div class="h-full pt-4 px-6">
+      <app-logo></app-logo>
+      <!-- <app-navbar></app-navbar> -->
+      <!-- this has to become the wizard steps counter -->
+    </div>
+    <div class="pb-4 pl-2 pt-2 pr-6 overflow-x-hidden">
+
+      <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-4 pl-4 pb-4 pt-2 my-4">
+        <h3 class="font-bold text-lg px-2 mb-1.5 pt-3">Todays Events:</h3>
+      </div>
+      <div>
+        <app-table [title]="'Supported plugins:'" [data]="pluginsTableConfig"
+          (valueChanged)="installedPluginsValueChanged($event)">
+        </app-table>
+      </div>
+    </div>
+  </div>
+</div>

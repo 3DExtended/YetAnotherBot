@@ -22,6 +22,11 @@ namespace YAB.Plugins.Injectables
 
         public List<Pipeline> Pipelines { get; set; } = new List<Pipeline>();
 
+        public Task<bool> IsRegistrationCompletedAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(File.Exists(_options.PipelineConfigurationPath));
+        }
+        
         public async Task LoadPipelinesAsync(CancellationToken cancellationToken)
         {
             using (var file = new StreamReader(_options.PipelineConfigurationPath))

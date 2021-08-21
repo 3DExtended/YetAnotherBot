@@ -20,6 +20,11 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
+COPY ["plugins.json", "src/applications/YAB.ApiWithFrontend/"]
+COPY ["plugins.json", "/app/build"]
+COPY ["plugins.json", "/app/publish"]
+COPY ["plugins.json", "/app"]
+COPY ["plugins.json", "/"]
 COPY ["src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.csproj", "src/applications/YAB.ApiWithFrontend/"]
 RUN dotnet restore "src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.csproj"
 COPY . .

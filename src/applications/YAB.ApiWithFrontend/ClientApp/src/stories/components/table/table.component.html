@@ -14,7 +14,7 @@
                 style="border-left-width: 0px !important;">
                 <p class="flex cursor-pointer" (mousedown)="toggleSorting($event, column)">
                   <span [ngStyle]="{'width': (column.widthInPixels - 15) + 'px'}"
-                    class="py-1 pl-2 overflow-hidden overflow-ellipsis ">{{column.title}}</span>
+                    class="py-1 pl-2 overflow-hidden overflow-ellipsis whitespace-nowrap">{{column.title}}</span>
 
                   <svg *ngIf="column.sort === 'asc'" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 self-center"
                     fill="none" viewBox="0 0 24 24" stroke="#444444">
@@ -41,14 +41,12 @@
             [ngClass]="{'border-b': !lastRow}">
             <td *ngFor="let column of data.columns; let index=index; let lastColumn = last"
               class="pl-2 py-1  border-t-0 border-l-0" [ngClass]="{'border-r': !lastColumn}">
-              <div *ngIf="column.singleLineRow" class="custom-table-column text-left break-words"
-                [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
-                {{row[column.selector]}}
+              <div [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+                <ng-container [ngTemplateOutlet]="columnContent"
+                  [ngTemplateOutletContext]="{dataItem:row, column:column}">
+                </ng-container>
               </div>
-              <div *ngIf="!column.singleLineRow" class="custom-table-column text-left overflow-hidden overflow-ellipsis"
-                [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
-                {{row[column.selector]}}
-              </div>
+
             </td>
           </tr>
         </tbody>
@@ -57,3 +55,30 @@
   </div>
 
 </div>
+
+
+<ng-template #columnContent let-dataItem='dataItem' let-column='column'>
+  <!-- normal column with text -->
+  <div *ngIf="column.columnType === 'normal'">
+    <div *ngIf="column.singleLineRow" class="custom-table-column text-left break-words"
+      [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+      {{dataItem[column.selector]}}
+    </div>
+    <div *ngIf="!column.singleLineRow" class="custom-table-column text-left overflow-hidden overflow-ellipsis"
+      [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+      {{dataItem[column.selector]}}
+    </div>
+  </div>
+
+  <!-- booleanToogleColumn: column with toggle switches which are editable -->
+  <div *ngIf="column.columnType === 'booleanToogleColumn'">
+
+    <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
+      [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+      <app-toggle-switch [value]="dataItem[column.selector]"
+        (valueChanged)="booleanToogleColumnValueChanged(dataItem, column, $event)">
+
+      </app-toggle-switch>
+    </div>
+  </div>
+</ng-template>
