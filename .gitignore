@@ -339,3 +339,4 @@ desktop.ini
 /registeredPipelines.json
 /plugin-repos
 /plugins
+/src/applications/YAB.ApiWithFrontend/plugins
