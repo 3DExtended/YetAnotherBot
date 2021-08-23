@@ -38,6 +38,6 @@ stages:
       inputs:
         containerRegistry: 'Dockerhub 3DExtended'
         repository: 'yetanotherbot'
-        command: 'buildAndPush'
+        command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
