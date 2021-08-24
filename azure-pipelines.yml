@@ -23,7 +23,7 @@ stages:
 
     - task: DockerInstaller@0
       inputs:
-        dockerVersion: '17.09.0-ce'
+        dockerVersion: '20.10.7'
     
     - task: CmdLine@2
       inputs:
