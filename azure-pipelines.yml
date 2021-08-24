@@ -27,7 +27,11 @@ stages:
     
     - task: CmdLine@2
       inputs:
-        script: 'docker --version'
+        script: |
+          docker --version
+          ls -la
+          docker builds build -t $(tag) . 
+          docker builds build -t ${tag} .
 
     # - task: Docker@2
     #  inputs:
