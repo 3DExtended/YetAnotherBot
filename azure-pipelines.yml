@@ -30,8 +30,8 @@ stages:
         script: |
           docker --version
           ls -la
-          docker builds build -t $(tag) . 
-          docker builds build -t ${tag} .
+          docker buildx build -t $(tag) . 
+          docker buildx build -t ${tag} .
 
     # - task: Docker@2
     #  inputs:
