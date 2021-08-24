@@ -31,7 +31,7 @@ stages:
       inputs:
         script: |
           docker --version
-          docker buildx build -t $(tag)-raspberryPi . --platform linux/arm/v7
+          docker buildx build -t $(tag)-raspberrypi . --platform linux/arm/v7
 
     - task: Docker@2
       displayName: Build and push image for linux/amd64
@@ -51,7 +51,7 @@ stages:
 #    - task: CmdLine@2
 #      inputs:
 #        script: |
-#          docker image push registry-host:5000/myadmin/rhel-httpd:$(tag)-raspberryPi
+#          docker image push registry-host:5000/myadmin/rhel-httpd:$(tag)-raspberrypi
 #
     - task: Docker@2
       displayName: push custom platform version of image
@@ -59,4 +59,4 @@ stages:
         containerRegistry: '3dextended registry azure'
         repository: 'yetanotherbot'
         command: 'push'
-        tags: '$(tag)-raspberryPi'
+        tags: '$(tag)-raspberrypi'
