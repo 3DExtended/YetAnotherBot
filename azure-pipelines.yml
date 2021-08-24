@@ -21,10 +21,18 @@ stages:
       vmImage: ubuntu-latest
     steps:
 
-    - task: Docker@2
+    - task: DockerInstaller@0
       inputs:
-        containerRegistry: '3dextended registry azure'
-        repository: 'yetanotherbot'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        tags: '$(tag)'
+        dockerVersion: '17.09.0-ce'
+    
+    - task: CmdLine@2
+      inputs:
+        script: 'docker --version'
+
+    # - task: Docker@2
+    #  inputs:
+    #    containerRegistry: '3dextended registry azure'
+    #    repository: 'yetanotherbot'
+    #    command: 'buildAndPush'
+    #    Dockerfile: '**/Dockerfile'
+    #    tags: '$(tag)'
