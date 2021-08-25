@@ -16,6 +16,7 @@ stages:
   displayName: Build image
   jobs:
   - job: BuildAMDVersion
+    dependsOn: BuildARMVersion
     displayName: Build
     pool:
       vmImage: ubuntu-latest
