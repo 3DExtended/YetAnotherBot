@@ -3,14 +3,17 @@
 # defines which image should be used for running the APP.
 # For raspberry pi, use an arm based image
 # see list here:
-# https://mcrflowprodcentralus.data.mcr.microsoft.com/mcrprod/dotnet/aspnet?P1=1629836556&P2=1&P3=1&P4=ZEL7AZHcsJouD2IEd2m9Sjf05QwAMfNKhnDFcllMo7w%3D&se=2021-08-24T20%3A22%3A36Z&sig=hBKKsfr5si0pUG4xBmUuZfZdVbB0kgTvgO4XbFlv1Yo%3D&sp=r&sr=b&sv=2015-02-21
+# https://mcr.microsoft.com/v2/dotnet/aspnet/tags/list
 ARG BASE_IMAGE=aspnet:5.0
 
 # defines which image should be used for building the APP.
 # For raspberry pi use an arm based image.
 # See list here:
-# https://mcrflowprodcentralus.data.mcr.microsoft.com/mcrprod/dotnet/sdk?P1=1629915034&P2=1&P3=1&P4=XDigs%2FUE1ah5SBxTSLoyRj5zEBgT09A%2BuwhMjb8yVAI%3D&se=2021-08-25T18%3A10%3A34Z&sig=E29BD2aw47bsXWa6V6xomhfHtetwZC6vL66zPRZy83Y%3D&sp=r&sr=b&sv=2015-02-21
+# https://mcr.microsoft.com/v2/dotnet/sdk/tags/list
 ARG BUILD_IMAGE=sdk:5.0
+
+# env variable for slim-buster images
+ARG DEBIAN_FRONTEND=noninteractive
 
 FROM mcr.microsoft.com/dotnet/$BASE_IMAGE AS base
 WORKDIR /app
