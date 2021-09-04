@@ -18,6 +18,8 @@ export class InputFieldComponent implements OnInit {
     this.valueChanged.next(value);
   }
 
+  @Input() autocompleteName: string = "off";
+
   @Input() name: string = "";
   @Input() placeholder: string = "";
 

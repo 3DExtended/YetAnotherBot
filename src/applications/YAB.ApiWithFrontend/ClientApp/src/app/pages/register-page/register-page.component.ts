@@ -4,8 +4,8 @@ import { cloneDeep } from 'lodash';
 import { forkJoin } from 'rxjs';
 import { List } from 'src/app/services/pipelines.service';
 import { InstalledPluginTupleDto, PluginService } from 'src/app/services/plugin.service';
-import { OptionsDescription, RegisterService } from 'src/app/services/register.service';
-import { TableColumn, TableColumnType, TableRow } from 'src/stories/components/table/table.component';
+import { OptionsDescription, PropertyValueType, RegisterService } from 'src/app/services/register.service';
+import { InputColumnValueType, TableColumn, TableColumnType, TableRow } from 'src/stories/components/table/table.component';
 
 export interface TableOfOptionsToFill {
   columns: TableColumn[];
@@ -36,7 +36,29 @@ const TableOfOptionsToFillColumns: TableColumn[] = [
     widthInPixels: 300,
     sort: null,
     singleLineRow: true,
-    columnType: TableColumnType.normal // TODO make this an input column (maybe password)
+    columnType: TableColumnType.customizableInputColumn,
+    customizableInputColumnDefinition: (dataItem: TableRow): InputColumnValueType => {
+      if (!dataItem) {
+        return InputColumnValueType.string;
+      }
+
+      if (dataItem.isSecret) {
+        return InputColumnValueType.password;
+      }
+
+      if (dataItem.valueType === PropertyValueType["string"]) {
+        return InputColumnValueType.string;
+      }
+      if (dataItem.valueType === PropertyValueType["int"]) {
+        return InputColumnValueType.int;
+      }
+      if (dataItem.valueType === PropertyValueType["floatingPoint"]) {
+        return InputColumnValueType.floatingPoint;
+      }
+
+      // TODO add other datatypes as well (like boolean...)
+      return InputColumnValueType.string;
+    },
   }
 ];
 
@@ -105,6 +127,8 @@ export class RegisterPageComponent implements OnInit {
               "propertyName": pv.propertyName,
               "propertyDescription": pv.propertyDescription,
               "value": "",
+              "isSecret": pv.isSecret,
+              "valueType": pv.valueType
             };
           }),
           title: v.optionFullName.split(".")[v.optionFullName.split(".").length - 1],

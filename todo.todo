@@ -37,6 +37,7 @@ YetAnotherBot:
         ☐ Stream overlay page (which we can use in OBS)
         ☐ Table
             ☐ Table columns do not resize properly. Take a look at table on register page for options to fill for example.
+            ☐ Password fields do get autocompleted by browsers. This is an issue since you dont want your login password for the bot end up in the clients secret input field.
     ☐ Twitch Plugin
         ✔ Currently, there is now way of responding with predefined text in chat. @done(21-07-07 20:26)
         

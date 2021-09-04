@@ -7,6 +7,7 @@ export interface TableColumn {
   widthInPixels: number;
   sort: 'asc' | 'desc' | null;
   columnType: TableColumnType;
+  customizableInputColumnDefinition?: (dataItem: TableRow) => InputColumnValueType | undefined;
 }
 
 export enum TableColumnType {
@@ -14,7 +15,18 @@ export enum TableColumnType {
   normal = 'normal',
 
   // this column will render as toggle switches which can be modified by the user.
-  booleanToogleColumn = 'booleanToogleColumn'
+  booleanToogleColumn = 'booleanToogleColumn',
+
+  // For each row, there is an lamda expression on the column called, which defines, which input type is expected.
+  customizableInputColumn = 'customizableInputColumn'
+}
+
+export enum InputColumnValueType {
+  string = "string",
+  password = "password",
+  int = "int",
+  floatingPoint = "floatingPoint",
+  boolean = "boolean",
 }
 
 export interface TableRow {
