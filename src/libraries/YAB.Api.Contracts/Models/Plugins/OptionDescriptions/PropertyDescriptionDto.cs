@@ -7,5 +7,7 @@
         public string PropertyName { get; set; }
 
         public PropertyValueTypeDto ValueType { get; set; }
+
+        public bool IsSecret { get; set; }
     }
 }

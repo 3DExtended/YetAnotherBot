@@ -42,7 +42,8 @@ namespace YAB.Plugins.Injectables
 
             // find pipelines for event
             var pipelinesToExecute = _pipelineStore.Pipelines
-                .Where(p => p.EventType.Name == evt.GetType().Name);
+                .Where(p => p.EventType.Name == evt.GetType().Name)
+                .ToList();
 
             _logger.LogInformation($"Found {pipelinesToExecute.Count()} pipelines to execute for event of type {evt.GetType().Name}.");
 

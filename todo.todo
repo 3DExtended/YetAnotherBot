@@ -35,6 +35,8 @@ YetAnotherBot:
         ☐ Pipeline Edit view
             Some way of creating end editing new pipelines
         ☐ Stream overlay page (which we can use in OBS)
+        ☐ Table
+            ☐ Table columns do not resize properly. Take a look at table on register page for options to fill for example.
     ☐ Twitch Plugin
         ✔ Currently, there is now way of responding with predefined text in chat. @done(21-07-07 20:26)
         

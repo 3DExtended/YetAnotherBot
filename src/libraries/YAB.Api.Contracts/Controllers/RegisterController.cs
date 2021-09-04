@@ -52,15 +52,17 @@ namespace YAB.Api.Contracts.Controllers
 
                 foreach (var optionProperty in optionProperties)
                 {
+                    var propertyDescriptionAttribute = optionProperty
+                        .GetCustomAttributes(typeof(OptionPropertyDescriptionAttribute), true)
+                        .Cast<OptionPropertyDescriptionAttribute>()
+                        .FirstOrDefault();
+
                     optionPropertyDescriptions.Add(new PropertyDescriptionDto
                     {
                         PropertyName = optionProperty.Name,
                         ValueType = optionProperty.PropertyType.GetValueType(),
-                        PropertyDescription = optionProperty
-                            .GetCustomAttributes(typeof(OptionPropertyDescriptionAttribute), true)
-                            .Cast<OptionPropertyDescriptionAttribute>()
-                            .Select(a => a.Description)
-                            .FirstOrDefault()
+                        PropertyDescription = propertyDescriptionAttribute?.Description,
+                        IsSecret = propertyDescriptionAttribute?.IsSecret ?? true
                     });
                 }
 

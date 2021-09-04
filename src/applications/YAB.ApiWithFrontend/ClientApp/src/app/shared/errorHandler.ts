@@ -10,13 +10,14 @@ export function errorHandler<T>() {
   return (source: Observable<HttpResponse<T>>) =>
     source.pipe(
       map((value) => {
-        if (value["body"] !== undefined) {
+        if (value && value["body"] !== undefined) {
           return new ErrorHandledResult<T>(value.body as T, true, 0, null);
         } else {
           return new ErrorHandledResult<T>(value as unknown as T, true, 0, null);
         }
       }),
       catchError((error: HttpErrorResponse): Observable<ErrorHandledResult<T>> => {
+        debugger;
         return of(new ErrorHandledResult<T>({} as T, false, error.status, ErrorKind.Fatal));
       })
     );

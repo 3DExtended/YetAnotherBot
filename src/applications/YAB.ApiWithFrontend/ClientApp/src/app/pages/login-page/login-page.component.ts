@@ -33,6 +33,7 @@ export class LoginPageComponent implements OnInit {
     console.log("login clicked");
     await this._loginService.Login(this.password ?? "").toPromise()
       .then(async r => {
+        console.log(r);
         if (!r.successful && r.statusCode === 404) {
           // some options were not registered correctly. start registering
           await this._router.navigateByUrl("/register");
