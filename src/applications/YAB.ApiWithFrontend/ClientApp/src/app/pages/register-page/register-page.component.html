@@ -91,7 +91,12 @@
 
         <!-- save -->
         <div *ngIf="currentStep === 3" class="bg-white rounded-lg shadow-md hover:shadow-xl pr-4 pl-4 pb-4 pt-2 my-4">
-          asdf
+          <div>
+            <h4 class="font-bold text-lg px-2 mb-1.5 pt-3">Ready to configure your bot?</h4>
+          </div>
+          <app-button [label]="'Save!'" [primary]="true" class="text-right ml-auto" [bigButton]="true"
+            (clicked)="saveSettingsToBot()">
+          </app-button>
         </div>
       </div>
     </div>

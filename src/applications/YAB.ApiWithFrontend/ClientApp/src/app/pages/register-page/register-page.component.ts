@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash';
 import { forkJoin } from 'rxjs';
 import { List } from 'src/app/services/pipelines.service';
 import { InstalledPluginTupleDto, PluginService } from 'src/app/services/plugin.service';
-import { OptionsDescription, PropertyValueType, RegisterService } from 'src/app/services/register.service';
+import { OptionsDescription, PropertyDescription, PropertyValueType, RegisterService } from 'src/app/services/register.service';
 import { InputColumnValueType, TableColumn, TableColumnType, TableRow } from 'src/stories/components/table/table.component';
 
 export interface TableOfOptionsToFill {
@@ -144,6 +144,7 @@ export class RegisterPageComponent implements OnInit {
             };
           }),
           title: v.optionFullName.split(".")[v.optionFullName.split(".").length - 1],
+          internalName: v.optionFullName
         };
       });
     });
@@ -165,6 +166,38 @@ export class RegisterPageComponent implements OnInit {
           "repository": p.item1.repositoryUrl,
         };
       })
+    });
+  }
+
+  public saveSettingsToBot() {
+    const updates: OptionsDescription[] = [];
+    this.tableOfOptionsToFill.forEach(options => {
+      const optionsName = (options as any)["internalName"];
+      const updateRequest: OptionsDescription = {
+        $type: "YAB.Api.Contracts.Models.Plugins.OptionDescriptions.OptionsDescriptionDto, YAB.Api.Contracts",
+        optionFullName: optionsName,
+        properties: {
+          $type: "",
+          $values: options.dataItems.map(asdf => {
+            const propertyDescription: PropertyDescription = {
+              $type: "YAB.Api.Contracts.Models.Plugins.OptionDescriptions.PropertyDescriptionDto, YAB.Api.Contracts",
+              propertyDescription: asdf.propertyDescription as string,
+              propertyName: asdf.propertyName as string,
+              isSecret: asdf.isSecret as boolean,
+              currentValue: asdf.currentValue as string,
+              valueType: asdf.valueType as number,
+              value: asdf.value,
+            };
+            return propertyDescription;
+          })
+        }
+      };
+      updates.push(updateRequest);
+    });
+
+    this._registerService.UpdateOptionsToFill(this.password, updates).subscribe(async res => {
+      // navigate to login
+      await this._router.navigateByUrl("/login");
     });
   }
 

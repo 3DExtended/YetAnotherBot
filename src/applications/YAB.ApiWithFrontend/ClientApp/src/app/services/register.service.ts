@@ -28,21 +28,21 @@ export class RegisterService {
       .pipe(errorHandler<List<OptionsDescription>>());
   }
 
-  public UpdateOptionsToFill(password: string, updatedOptions: List<OptionsDescription>): Observable<ErrorHandledResult<any>> {
+  public UpdateOptionsToFill(password: string, updatedOptions: OptionsDescription[]): Observable<ErrorHandledResult<any>> {
     const result: any[] = [];
-    updatedOptions.$values.forEach(option => {
+    updatedOptions.forEach(option => {
       result.push({
         "optionFullName": option.optionFullName,
         "updatedProperties": option.properties.$values.map(v => {
           return {
             "propertyName": v.propertyName,
-            "stringifiedPropertyValue": v.value.ToString()
+            "stringifiedPropertyValue": v.value
           };
         })
       });
     });
 
-    return this._httpClient.post<any>(this.baseUrl + "api/register/options?botPassword=" + password, { optionUpdateRequests: result }, {})
+    return this._httpClient.post<any>(this.baseUrl + "api/register/options?botPassword=" + password, result, {})
       .pipe(errorHandler<any>());
   }
 }
