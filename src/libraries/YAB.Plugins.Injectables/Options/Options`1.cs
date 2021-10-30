@@ -11,17 +11,17 @@ namespace YAB.Plugins.Injectables.Options
         protected string decryptPassword = null;
 
         [JsonIgnore]
-        private static string filename = typeof(T).Name.ToLower().Trim().Replace(".", "") + "EncryptedSettings.encjson";
+        private JsonSerializerOptions serializerOptions = new JsonSerializerOptions { IncludeFields = true };
 
         [JsonIgnore]
-        private JsonSerializerOptions serializerOptions = new JsonSerializerOptions { IncludeFields = true };
+        public static string Filename { get => typeof(T).Name.ToLower().Trim().Replace(".", "") + "EncryptedSettings.encjson"; }
 
         public void Load(string password)
         {
-            if (File.Exists(filename))
+            if (File.Exists(Filename))
             {
                 // TODO decrypt file
-                var loadedSettings = JsonSerializer.Deserialize<T>(File.ReadAllText(filename), serializerOptions);
+                var loadedSettings = JsonSerializer.Deserialize<T>(File.ReadAllText(Filename), serializerOptions);
 
                 loadedSettings.decryptPassword = password;
 
@@ -39,7 +39,7 @@ namespace YAB.Plugins.Injectables.Options
         public void Save(string password)
         {
             // TODO encrypt file
-            File.WriteAllText(filename, JsonSerializer.Serialize((T)this));
+            File.WriteAllText(Filename, JsonSerializer.Serialize((T)this));
         }
     }
 }

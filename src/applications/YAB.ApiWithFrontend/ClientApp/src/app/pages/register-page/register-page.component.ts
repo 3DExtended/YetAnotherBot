@@ -25,7 +25,7 @@ const TableOfOptionsToFillColumns: TableColumn[] = [
   {
     title: 'Description',
     selector: 'propertyDescription',
-    widthInPixels: 500,
+    widthInPixels: 300,
     sort: null,
     singleLineRow: false,
     columnType: TableColumnType.normal
@@ -70,6 +70,23 @@ const TableOfOptionsToFillColumns: TableColumn[] = [
 export class RegisterPageComponent implements OnInit {
   public allPlugins: List<InstalledPluginTupleDto> | null = null;
 
+  public pluginsChanged = false;
+
+  public currentStep = 0;
+  public password = "";
+  public repeatedPassword = "";
+
+  public maxCurrentStepReached = -1;
+
+  public navigateForward() {
+    this.currentStep++;
+    this.maxCurrentStepReached = this.currentStep;
+
+    if (this.currentStep === 2) {
+      this.loadOptionsToFill();
+    }
+  }
+
   public pluginsTableConfig: { columns: TableColumn[]; dataItems: TableRow[]; } = {
     columns: [
       {
@@ -91,7 +108,7 @@ export class RegisterPageComponent implements OnInit {
       {
         title: 'Repository',
         selector: 'repository',
-        widthInPixels: 800,
+        widthInPixels: 500,
         sort: null,
         singleLineRow: true,
         columnType: TableColumnType.normal
@@ -109,15 +126,10 @@ export class RegisterPageComponent implements OnInit {
     private readonly _activatedRoute: ActivatedRoute,
     private readonly _router: Router) { }
 
-  ngOnInit(): void {
-    const installedPluginsLoader = this._pluginService.InstalledStatusOfSupportedPlugins();
-    const optionsToFillLoader = this._registerService.GetOptionsToFill();
-    forkJoin([installedPluginsLoader, optionsToFillLoader]).subscribe((res) => {
-      if (res.some(r => !r.successful)) {
-        return;
-      }
-      this.allPlugins = res[0].data;
-      this.optionsToFill = res[1].data;
+  loadOptionsToFill() {
+    const optionsToFillLoader = this._registerService.GetOptionsToFill(this.password);
+    forkJoin([optionsToFillLoader]).subscribe((res) => {
+      this.optionsToFill = res[0].data;
 
       this.tableOfOptionsToFill = this.optionsToFill.$values.map(v => {
         return {
@@ -126,7 +138,7 @@ export class RegisterPageComponent implements OnInit {
             return {
               "propertyName": pv.propertyName,
               "propertyDescription": pv.propertyDescription,
-              "value": "",
+              "value": pv.currentValue,
               "isSecret": pv.isSecret,
               "valueType": pv.valueType
             };
@@ -134,6 +146,17 @@ export class RegisterPageComponent implements OnInit {
           title: v.optionFullName.split(".")[v.optionFullName.split(".").length - 1],
         };
       });
+    });
+  }
+
+  ngOnInit(): void {
+    const installedPluginsLoader = this._pluginService.InstalledStatusOfSupportedPlugins();
+    forkJoin([installedPluginsLoader]).subscribe((res) => {
+      if (res.some(r => !r.successful)) {
+        return;
+      }
+      this.allPlugins = res[0].data;
+
 
       this.pluginsTableConfig.dataItems = this.allPlugins.$values.map(p => {
         return {
@@ -145,7 +168,12 @@ export class RegisterPageComponent implements OnInit {
     });
   }
 
+  public areAllOptionsValid(): boolean {
+    return !this.tableOfOptionsToFill.some(e => e.dataItems.some(d => !d.value));
+  }
+
   public async installedPluginsValueChanged(event: { selector: string, dataItem: TableRow }) {
+    this.pluginsChanged = true;
     if (event.dataItem[event.selector] === true) {
       console.log("install extension");
       await this._registerService.InstallPlugin(event.dataItem['pluginName'].toString()).toPromise();

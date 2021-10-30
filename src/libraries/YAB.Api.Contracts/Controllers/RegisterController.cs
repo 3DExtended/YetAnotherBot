@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace YAB.Api.Contracts.Controllers
         }
 
         [HttpGet("optionsToFill")]
-        public Task<IActionResult> GetOptionsToFillAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetOptionsToFillAsync(string password, CancellationToken cancellationToken)
         {
             var result = new List<OptionsDescriptionDto>();
 
@@ -75,7 +76,29 @@ namespace YAB.Api.Contracts.Controllers
                 result.Add(optionAsDescription);
             }
 
-            return Task.FromResult((IActionResult)Ok(result));
+            // try loading existing options.
+            try
+            {
+                foreach (var option in _optionsToLoad)
+                {
+                    option.Load(password);
+                    var optionDescriptor = result.Single(r => r.OptionFullName == option.GetType().FullName);
+
+                    var optionProperties = option.GetType().GetProperties();
+                    foreach (var prop in optionProperties)
+                    {
+                        var value = prop.GetValue(option).ToString();
+                        var propertyDiscriptor = optionDescriptor.Properties.Single(p => p.PropertyName == prop.Name);
+                        propertyDiscriptor.CurrentValue = value;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return (IActionResult)Ok(result);
+            }
+
+            return (IActionResult)Ok(result);
         }
 
         [HttpPost()]
@@ -115,13 +138,19 @@ namespace YAB.Api.Contracts.Controllers
 
                 foreach (var propertyUpdate in updateRequestForOption.UpdatedProperties)
                 {
-                    var propertyInfo = option.GetType().GetProperty(propertyUpdate.PropertyName);
+                    var propertyInfo = option
+                        .GetType()
+                        .GetProperty(propertyUpdate.PropertyName);
+
                     if (propertyInfo == null)
                     {
                         return Task.FromResult((IActionResult)NotFound());
                     }
 
-                    var propertyValue = propertyInfo.PropertyType.FromStringifiedValue(propertyUpdate.StringifiedPropertyValue);
+                    var propertyValue = propertyInfo
+                        .PropertyType
+                        .FromStringifiedValue(propertyUpdate.StringifiedPropertyValue);
+
                     propertyInfo.SetValue(option, propertyValue);
                 }
 

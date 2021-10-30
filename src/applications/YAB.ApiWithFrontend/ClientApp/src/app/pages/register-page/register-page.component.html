@@ -1,24 +1,98 @@
 <div class="h-screen w-full flex flex-col">
   <div class="content w-full grid h-full" style="grid-template-columns: auto 1fr;">
     <div class="h-full pt-4 px-6">
-      <app-logo></app-logo>
+      <app-logo class="mb-2"></app-logo>
       <!-- <app-navbar></app-navbar> -->
       <!-- this has to become the wizard steps counter -->
+      <app-wizard-step-indicator [title]="'Plugins'" [completed]="maxCurrentStepReached >= 0 && currentStep !== 0"
+        [primary]="false" [active]="currentStep === 0">
+      </app-wizard-step-indicator>
+      <app-wizard-step-indicator [title]="'Basic Settings'"
+        [completed]="maxCurrentStepReached >= 1 && currentStep !== 1" [primary]="false" [active]="currentStep === 1">
+      </app-wizard-step-indicator>
+      <app-wizard-step-indicator [title]="'Options'" [completed]="maxCurrentStepReached >= 2 && currentStep !== 2"
+        [primary]="false" [active]="currentStep === 2">
+      </app-wizard-step-indicator>
+      <app-wizard-step-indicator [title]="'Save and Login'" [completed]="false" [primary]="true"
+        [active]="currentStep === 3">
+      </app-wizard-step-indicator>
+
     </div>
     <div class="pb-4 pl-2 pt-2 pr-6 overflow-x-hidden">
+      <div style="max-width: 1000px;">
 
-      <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-4 pl-4 pb-4 pt-2 my-4">
-        <h3 class="font-bold text-lg px-2 mb-1.5 pt-3">Configuration of your bot!</h3>
-      </div>
-      <div>
-        <app-table [title]="'Supported plugins:'" [data]="pluginsTableConfig"
-          (valueChanged)="installedPluginsValueChanged($event)">
-        </app-table>
-      </div>
+        <!-- headline -->
+        <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-4 pl-4 pb-4 pt-2 my-4">
+          <h3 class="font-bold text-lg px-2 mb-1.5 pt-3">Configuration of your bot!</h3>
+        </div>
 
-      <div *ngFor="let table of tableOfOptionsToFill" class="my-4">
-        <app-table [title]="table.title" [data]="table">
-        </app-table>
+        <!-- plugins -->
+        <ng-container *ngIf="currentStep === 0">
+          <div>
+            <app-table [title]="'Supported plugins:'" [data]="pluginsTableConfig"
+              (valueChanged)="installedPluginsValueChanged($event)">
+            </app-table>
+          </div>
+          <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 my-4">
+            <div class="grid " style="grid-template-columns: auto 1fr;">
+              <div>
+                <h4 *ngIf="pluginsChanged" class="font-bold text-lg px-2 mb-1.5 pt-3">Since you changed your plugins,
+                  you have to restart your
+                  bot to install them.</h4>
+              </div>
+              <app-button [label]="'Next'" [primary]="true" class="text-right ml-auto" [bigButton]="true"
+                (clicked)="navigateForward()" [disabled]="pluginsChanged">
+              </app-button>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- password for bot login -->
+        <ng-container *ngIf="currentStep === 1">
+          <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-4 pl-4 pb-4 pt-2 my-4">
+            <h3 class="font-bold text-lg px-2 mb-1.5 pt-3">Login Credentials</h3>
+            <div>
+              <app-input-field class="w-full" [placeholder]="'Password'" [inputType]="'password'"
+                [startValue]="password" (valueChanged)="password = $event"></app-input-field>
+              <app-input-field class="w-full" [placeholder]="'Repeat Password'" [inputType]="'password'"
+                [startValue]="repeatedPassword" (valueChanged)="repeatedPassword = $event"></app-input-field>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 my-4">
+            <div>
+              <app-button [label]="'Next'" [primary]="true" class="text-right ml-auto py-4" [bigButton]="true"
+                (clicked)="navigateForward()" [disabled]="!password || password !== repeatedPassword">
+              </app-button>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- options to fill -->
+        <div *ngIf="currentStep === 2">
+          <div *ngFor="let table of tableOfOptionsToFill" class="my-4">
+            <app-table [title]="table.title" [data]="table">
+            </app-table>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 my-4">
+            <div class="grid " style="grid-template-columns: auto 1fr;">
+              <div>
+                <h4 *ngIf="!areAllOptionsValid()" class="font-bold text-lg px-2 mb-1.5 pt-3">Please enter values for all
+                  those
+                  options.</h4>
+              </div>
+              <app-button [label]="'Next'" [primary]="true" class="text-right ml-auto" [bigButton]="true"
+                (clicked)="navigateForward()" [disabled]="!areAllOptionsValid()">
+              </app-button>
+            </div>
+          </div>
+        </div>
+
+        <!-- save -->
+        <div *ngIf="currentStep === 3" class="bg-white rounded-lg shadow-md hover:shadow-xl pr-4 pl-4 pb-4 pt-2 my-4">
+          asdf
+        </div>
       </div>
     </div>
   </div>

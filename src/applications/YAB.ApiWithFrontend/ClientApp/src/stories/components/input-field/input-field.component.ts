@@ -23,6 +23,8 @@ export class InputFieldComponent implements OnInit {
   @Input() name: string = "";
   @Input() placeholder: string = "";
 
+  @Input() startValue = "";
+
   @Input() inputType = "text";
 
   @Output() valueChanged: EventEmitter<string> = new EventEmitter();
@@ -30,5 +32,6 @@ export class InputFieldComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.value = this.startValue;
   }
 }

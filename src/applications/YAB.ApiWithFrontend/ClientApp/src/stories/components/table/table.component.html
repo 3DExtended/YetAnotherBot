@@ -101,7 +101,8 @@
       *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'string'">
       <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
         [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
-        <app-input-field class="w-full" (valueChanged)="$event" [name]="column.title + index"></app-input-field>
+        <app-input-field class="w-full" (valueChanged)="$event" [name]="column.title + index"
+          [startValue]="dataItem.value"></app-input-field>
       </div>
     </div>
 
@@ -110,7 +111,8 @@
       *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'password'">
       <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
         [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
-        <app-input-field class="w-full" [inputType]="'password'" (valueChanged)="$event" [name]="column.title + index">
+        <app-input-field class="w-full" [inputType]="'password'" (valueChanged)="$event" [name]="column.title + index"
+          [startValue]="dataItem.value">
         </app-input-field>
       </div>
     </div>

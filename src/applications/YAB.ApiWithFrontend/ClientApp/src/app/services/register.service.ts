@@ -23,9 +23,27 @@ export class RegisterService {
       .pipe(errorHandler<boolean>());
   }
 
-  public GetOptionsToFill(): Observable<ErrorHandledResult<List<OptionsDescription>>> {
-    return this._httpClient.get<any>(this.baseUrl + "api/register/optionsToFill", {})
+  public GetOptionsToFill(password: string): Observable<ErrorHandledResult<List<OptionsDescription>>> {
+    return this._httpClient.get<any>(this.baseUrl + "api/register/optionsToFill?password=" + password, {})
       .pipe(errorHandler<List<OptionsDescription>>());
+  }
+
+  public UpdateOptionsToFill(password: string, updatedOptions: List<OptionsDescription>): Observable<ErrorHandledResult<any>> {
+    const result: any[] = [];
+    updatedOptions.$values.forEach(option => {
+      result.push({
+        "optionFullName": option.optionFullName,
+        "updatedProperties": option.properties.$values.map(v => {
+          return {
+            "propertyName": v.propertyName,
+            "stringifiedPropertyValue": v.value.ToString()
+          };
+        })
+      });
+    });
+
+    return this._httpClient.post<any>(this.baseUrl + "api/register/options?botPassword=" + password, { optionUpdateRequests: result }, {})
+      .pipe(errorHandler<any>());
   }
 }
 
@@ -46,8 +64,11 @@ export interface PropertyDescription {
   propertyDescription: string;
   propertyName: string;
   isSecret: boolean;
+  currentValue: string;
   // instance of PropertyValueType
   valueType: number;
+
+  value: any;
 }
 
 

@@ -14,6 +14,7 @@ import { LogoComponent } from 'src/stories/components/logo/logo.component';
 import { NavbarComponent } from 'src/stories/components/navbar/navbar.component';
 import { TableComponent } from 'src/stories/components/table/table.component';
 import { ToggleSwitchComponent } from 'src/stories/components/toggle-switch/toggle-switch.component';
+import { WizardStepIndicatorComponent } from 'src/stories/components/wizard-step-indicator/wizard-step-indicator.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
@@ -42,6 +43,7 @@ export function getBaseUrl(): string {
     NavbarComponent,
     BotStatusIndicatorComponent,
     ToggleSwitchComponent,
+    WizardStepIndicatorComponent,
     TableComponent,
     RegisterPageComponent
   ],
