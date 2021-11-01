@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { EventService } from 'src/app/services/event.service';
 import { FilterOperator, IFilter, IFilterBase, IFilterGroup, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
 
@@ -17,56 +18,66 @@ export interface PipelineBlock {
 })
 export class PipelinePageComponent implements OnInit {
 
-  public showFilterDetails = true;
+  public showFilterDetails = false;
 
-  public filter: IFilterBase = {
-    $type: "YAB.Core.Pipelines.Filter.FilterGroup, YAB.Core.Pipelines",
-    filters: {
-      $type: "System.Collections.ObjectModel.ReadOnlyCollection`1[[YAB.Core.Pipelines.Filter.FilterBase, YAB.Core.Pipelines]], System.Private.CoreLib",
-      $values: [{
-        $type: "YAB.Core.Pipelines.Filter.Filter, YAB.Core.Pipelines",
-        filterValue: "0",
-        ignoreValueCasing: true,
-        operator: 2,
-        propertyName: "MinuteOfHour"
-      }, {
-        $type: "YAB.Core.Pipelines.Filter.Filter, YAB.Core.Pipelines",
-        filterValue: "29",
-        ignoreValueCasing: true,
-        operator: 2,
-        propertyName: "MinuteOfHour"
-      }]
-    },
-    operator: 1
-  } as IFilterBase;
+  public allowEdit = false;
 
-  public event: PipelineBlock = {
-    showDetails: false,
-    title: "TwitchMessage",
-    properties: ["Message", "UserName"],
-    description: "This event is disposed for you when someone sends a twitch message into chat.",
-  };
+  public pipelineName: string | null = null;
+  public pipelineDescription: string | null = null;
+  public filter: IFilterBase | null = null;
 
-  public eventReactorConfigurations: PipelineBlock[] = [
-    {
-      showDetails: false,
-      title: "TwitchSendMessage",
-      properties: ["Message"],
-      description: "This will send a message from your twitch bot into chat.",
-    },
-    {
-      showDetails: false,
-      title: "BlinkLight",
-      properties: ["Duration"],
-      description: "This will blink your lights for a specific duration.",
-    },
-  ];
+  public event: PipelineBlock | null = null;
+
+  public eventReactorConfigurations: PipelineBlock[] = [];
+
+  pipelineId: string | null = null;
 
   constructor(private readonly _pipelinesService: PipelinesService,
+    private readonly _activatedRoute: ActivatedRoute,
     private readonly _eventsService: EventService,
     private readonly _router: Router) { }
 
   ngOnInit(): void {
+    this.pipelineId = this._activatedRoute.snapshot.paramMap.get("guid");
+
+    const pipelineLoader = this._pipelinesService.GetRegisteredPipelineById(this.pipelineId as string);
+    forkJoin([pipelineLoader]).subscribe(async res => {
+      if (res.some(r => !r.successful)) {
+        await this._router.navigateByUrl("/dashboard");
+      }
+      this.filter = res[0].data.eventFilter;
+
+      const eventFullNameSplits = res[0].data.eventName.split(".");
+
+      this.pipelineName = res[0].data.name;
+      this.pipelineDescription = res[0].data.description;
+
+      this.event = {
+        showDetails: false,
+        title: eventFullNameSplits[eventFullNameSplits.length - 1],
+        properties: ["TODO GET ME"],
+        description: "TODO GET ME",
+      };
+
+      this.eventReactorConfigurations = res[0].data.serializedEventReactorConfiguration.$values.map(v => {
+        const config = this.stringifyEventReactorConfiguration(v);
+        return {
+          showDetails: false,
+          title: config.typeName,
+          properties: config.properties,
+          description: "TODO GET ME",
+        };
+      });
+    });
+  }
+
+  private stringifyEventReactorConfiguration(configuration: string): { typeName: string, properties: string[] } {
+    const parsedConfig = JSON.parse(configuration);
+    let type = parsedConfig["$type"].split(", ")[0].split(".")[parsedConfig["$type"].split(", ")[0].split(".").length - 1] as string;
+    type = type.substr(0, type.lastIndexOf("ReactorConfiguration"));
+    const properties = Object.entries(parsedConfig).filter(t => t[0] !== "$type").map(t => t[0] + ": \"" + t[1] + "\"");
+
+    return { typeName: type, properties: properties };
   }
 
   public isFilterBaseFilter(filterBase: IFilterBase) {
@@ -89,6 +100,9 @@ export class PipelinePageComponent implements OnInit {
     if (this.eventReactorConfigurations.length === 0) {
       return 'linear-gradient(to right, rgb(0, 0, 0) 50%, rgb(0, 0, 0) 50%) 100% 1';
     }
+    else if (this.eventReactorConfigurations.length === 1) {
+      return 'linear-gradient(to right, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 50%) 100% 1';
+    }
     else if (index === 0) {
       return 'linear-gradient(to right, rgba(255, 255, 255, 0) 50%, rgb(0, 0, 0) 50%) 100% 1';
     }
@@ -109,7 +123,6 @@ export class PipelinePageComponent implements OnInit {
       const filterOperation = Object.entries(FilterOperator).filter(o => o[1] === filter.operator)[0][0];
       return "event." + filter.propertyName + " " + filterOperation + " \"" + filter.filterValue + "\" (ignoreCasing: " + filter.ignoreValueCasing + ")";
     } else {
-      debugger;
       const filterGroup = eventFilter as IFilterGroup;
       const opEntries = Object.entries(LogicalOperator);
       const logicOperator = opEntries.filter(o => o[1] === filterGroup.operator)[0][0];

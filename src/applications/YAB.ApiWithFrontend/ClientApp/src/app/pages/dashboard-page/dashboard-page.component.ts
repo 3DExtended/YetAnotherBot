@@ -34,14 +34,30 @@ export class DashboardPageComponent implements OnInit {
   public pipelineTableConfiguration: { columns: TableColumn[]; dataItems: TableRow[]; } = {
     columns: [
       {
-        title: 'Event',
-        selector: 'event',
+        title: 'Pipeline Name',
+        selector: 'name',
         widthInPixels: 200,
         sort: 'asc',
         singleLineRow: true,
         columnType: TableColumnType.normal
       },
       {
+        title: 'Description',
+        selector: 'description',
+        widthInPixels: 200,
+        sort: null,
+        singleLineRow: false,
+        columnType: TableColumnType.normal
+      },
+      {
+        title: 'Event',
+        selector: 'event',
+        widthInPixels: 200,
+        sort: null,
+        singleLineRow: true,
+        columnType: TableColumnType.normal
+      },
+      { // TODO REMOVE ME
         title: 'Filter',
         selector: 'filter',
         widthInPixels: 400,
@@ -49,7 +65,7 @@ export class DashboardPageComponent implements OnInit {
         singleLineRow: true,
         columnType: TableColumnType.normal
       },
-      {
+      { // TODO REMOVE ME
         title: 'EventReactorConfigurations',
         selector: 'eventReactorConfigurations',
         widthInPixels: 800,
@@ -74,6 +90,9 @@ export class DashboardPageComponent implements OnInit {
       this.pipelineTableConfiguration.dataItems = res[0].data.$values.map(
         p => {
           return {
+            'name': p.name,
+            'pipelineId': p.pipelineId,
+            'description': p.description,
             'event': p.eventName.split(".")[p.eventName.split(".").length - 1],
             'filter': this.stringifyEventFilters(p.eventFilter),
             'eventReactorConfigurations': p.serializedEventReactorConfiguration.$values.map(v => this.stringifyEventReactorConfiguration(v)).join(',\r\n')
@@ -174,6 +193,10 @@ export class DashboardPageComponent implements OnInit {
           });
         }
       });
+  }
+
+  public async pipelineConfigurationDoubleClicked(event: TableRow) {
+    await this._router.navigateByUrl("/pipelines/" + event.pipelineId);
   }
 
   private stringifyEventReactorConfiguration(configuration: string) {

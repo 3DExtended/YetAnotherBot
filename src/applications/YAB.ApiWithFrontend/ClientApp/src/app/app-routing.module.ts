@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
   { path: 'dashboard', component: DashboardPageComponent },
-  { path: 'pipelines', component: PipelinePageComponent },
+  { path: 'pipelines/:guid', component: PipelinePageComponent },
   { path: '**', redirectTo: 'login' }
 ];
 

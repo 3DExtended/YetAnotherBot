@@ -15,6 +15,10 @@ export class PipelinesService {
   public GetRegisteredPipelines(): Observable<ErrorHandledResult<List<IPipelineDto>>> {
     return this._httpClient.get<List<IPipelineDto>>(this.baseUrl + "api/Pipelines/registered", { observe: 'response' }).pipe(errorHandler());
   }
+
+  public GetRegisteredPipelineById(guid: string): Observable<ErrorHandledResult<IPipelineDto>> {
+    return this._httpClient.get<IPipelineDto>(this.baseUrl + "api/Pipelines/registered/" + guid, { observe: 'response' }).pipe(errorHandler());
+  }
 }
 
 
@@ -69,6 +73,7 @@ export interface IPipelineDto {
   eventReactors: any;
   name: string;
   pipelineId: string;
+  description: string;
 
   // Those strings are serialized json objects and if we want to extract properties here, we have to deserialize them...
   serializedEventReactorConfiguration: List<string>;

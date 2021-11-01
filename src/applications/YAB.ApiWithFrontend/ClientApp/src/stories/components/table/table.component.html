@@ -38,7 +38,7 @@
 
         <tbody class="custom-table-body">
           <tr *ngFor="let row of data.dataItems;let lastRow = last; let index = index" class="custom-table-row"
-            [ngClass]="{'border-b': !lastRow}">
+            (dblclick)="handleDoubleClick($event, row)" [ngClass]="{'border-b': !lastRow}">
             <td *ngFor="let column of data.columns; let index=index; let lastColumn = last"
               class="pl-2 py-1  border-t-0 border-l-0" [ngClass]="{'border-r': !lastColumn}">
               <div [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">

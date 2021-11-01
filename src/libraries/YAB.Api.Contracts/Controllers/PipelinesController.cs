@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,11 +31,12 @@ namespace YAB.Api.Contracts.Controllers
             _availableEvents = availableEvents;
         }
 
-        [HttpGet("registered/{eventTypeName}")]
-        public Task<IActionResult> GetRegisteredPipelineAsync([FromRoute] string eventTypeName, CancellationToken cancellationToken)
+        [HttpGet("registered/{pipelineId}")]
+        public Task<IActionResult> GetRegisteredPipelineAsync([FromRoute] string pipelineId, CancellationToken cancellationToken)
         {
+            var pipelineIdParsed = Guid.Parse(pipelineId);
             var pipelineStore = _containerAccessor.Container.GetInstance<IPipelineStore>();
-            var pipeline = pipelineStore.Pipelines.SingleOrDefault(p => p.EventType.FullName.Contains(eventTypeName));
+            var pipeline = pipelineStore.Pipelines.SingleOrDefault(p => p.PipelineId == pipelineIdParsed);
             if (pipeline == null)
             {
                 return Task.FromResult<IActionResult>(NotFound());
@@ -43,6 +45,7 @@ namespace YAB.Api.Contracts.Controllers
             return Task.FromResult<IActionResult>(Ok(new PipelineDto
             {
                 Name = pipeline.Name,
+                Description = pipeline.Description,
                 PipelineId = pipeline.PipelineId.ToString(),
                 EventFilter = pipeline.EventFilter,
                 EventName = pipeline.EventType.FullName,
@@ -58,6 +61,7 @@ namespace YAB.Api.Contracts.Controllers
             List<PipelineDto> resultDtos = pipelineStore.Pipelines.Select(p => new PipelineDto
             {
                 Name = p.Name,
+                Description = p.Description,
                 PipelineId = p.PipelineId.ToString(),
                 EventFilter = p.EventFilter,
                 EventName = p.EventType.FullName,
@@ -93,7 +97,7 @@ namespace YAB.Api.Contracts.Controllers
                 eventReactorConfigurations.Add(configuration);
             }
 
-            var newPipeline = new Pipeline(pipelineDto.Name, eventType.GetType(), pipelineDto.EventFilter, eventReactorConfigurations);
+            var newPipeline = new Pipeline(pipelineDto.Name, pipelineDto.Description, eventType.GetType(), pipelineDto.EventFilter, eventReactorConfigurations);
 
             _pipelineStore.Pipelines.Add(newPipeline);
             return Task.FromResult<IActionResult>(Ok());

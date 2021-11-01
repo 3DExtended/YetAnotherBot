@@ -52,6 +52,8 @@ export class TableComponent implements OnInit {
   // returns the updated dataItem and the selector of the changed property
   @Output() valueChanged: EventEmitter<{ selector: string; dataItem: TableRow }> = new EventEmitter();
 
+  @Output() doubleClickHandler: EventEmitter<TableRow> = new EventEmitter();
+
   @Input()
   public set data(value: { columns: TableColumn[]; dataItems: TableRow[]; }) {
     this._data = value;
@@ -64,6 +66,11 @@ export class TableComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public handleDoubleClick(event: MouseEvent, row: TableRow) {
+    event.stopPropagation();
+    this.doubleClickHandler.next(row);
   }
 
   public booleanToogleColumnValueChanged(dataItem: TableRow, column: TableColumn, newValue: boolean) {

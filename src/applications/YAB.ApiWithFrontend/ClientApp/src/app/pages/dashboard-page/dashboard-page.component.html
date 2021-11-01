@@ -15,26 +15,10 @@
       </div>
 
       <div>
-        <app-table [title]="'Registered Pipelines:'" [data]="pipelineTableConfiguration">
+        <app-table (doubleClickHandler)="pipelineConfigurationDoubleClicked($event)" [title]="'Registered Pipelines:'"
+          [data]="pipelineTableConfiguration">
         </app-table>
       </div>
     </div>
   </div>
-
-
-  <!-- <div class="w-full">
-    <div class="statusBarContainer w-full px-2 grid grid-cols-2" style="background-color: gray; height: 65px; ">
-      <app-logo></app-logo>
-      <app-bot-status-indicator class="self-end h-full" style="text-align: right;"></app-bot-status-indicator>
-    </div>
-  </div>
-  <div class="content w-full grid h-full" style="grid-template-columns: auto 1fr;">
-    <div class="navbar h-full">
-      <app-navbar></app-navbar>
-    </div>
-    <div class="dashboard h-full p-4 " style="background-color: rgb(190, 190, 190);">
-      <app-table [data]="pipelineTableConfiguration">
-      </app-table>
-    </div>
-  </div> -->
 </div>
