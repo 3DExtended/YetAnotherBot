@@ -138,7 +138,7 @@ export class RegisterPageComponent implements OnInit {
             return {
               "propertyName": pv.propertyName,
               "propertyDescription": pv.propertyDescription,
-              "value": pv.currentValue,
+              "value": pv.currentValue ?? "",
               "isSecret": pv.isSecret,
               "valueType": pv.valueType
             };
@@ -199,6 +199,12 @@ export class RegisterPageComponent implements OnInit {
       // navigate to login
       await this._router.navigateByUrl("/login");
     });
+  }
+
+  public optionsChangedHandler(table: TableOfOptionsToFill, event: { selector: string; dataItem: TableRow }) {
+    this.tableOfOptionsToFill.filter(t => (t as any).internalName === (table as any).internalName)[0]
+      .dataItems
+      .filter(d => d.propertyName === event.dataItem.propertyName)[0][event.selector] = event.dataItem[event.selector];
   }
 
   public areAllOptionsValid(): boolean {

@@ -72,6 +72,12 @@ export class TableComponent implements OnInit {
     this.valueChanged.next({ selector: column.selector, dataItem: dataItem });
   }
 
+  public textFieldChangedHandler(dataItem: TableRow, column: TableColumn, newValue: string) {
+    dataItem[column.selector] = newValue;
+
+    this.valueChanged.next({ selector: column.selector, dataItem: dataItem });
+  }
+
   public toggleSorting(event: MouseEvent, column: TableColumn) {
     event.preventDefault();
 

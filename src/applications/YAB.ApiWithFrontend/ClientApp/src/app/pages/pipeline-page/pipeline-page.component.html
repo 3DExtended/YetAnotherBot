@@ -1,0 +1,252 @@
+<div class="h-screen w-full flex flex-col">
+  <div class="content w-full grid h-full" style="grid-template-columns: auto 1fr;">
+    <div class="h-full pt-4 px-6">
+      <app-logo></app-logo>
+      <app-navbar></app-navbar>
+    </div>
+    <div class="pb-4 pl-2 pt-2 pr-6 overflow-x-hidden">
+      <div class="w-full mt-3 pr-2 " style="height: 53px;">
+      </div>
+
+      <div class="bg-red w-full">
+
+
+        <!-- pipeline -->
+        <div class="flex w-full justify-content-center " style="flex-wrap: wrap;">
+
+          <!-- event block -->
+          <div class="flex w-full justify-content-center "
+            style="flex-wrap: wrap; height: fit-content; max-width: 420px;">
+            <div class=" bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 mt-4 cursor-pointer"
+              (click)="event.showDetails= !event.showDetails;">
+              <!-- block header -->
+              <div class="grid gap-x-1" style="grid-template-columns: auto auto auto;">
+                <!-- icon -->
+                <div style="margin-right: 0.5em;">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                  </svg>
+                </div>
+                <!-- title -->
+                <div style="margin-right: 0.5em;">
+                  <h2 class="select-none font-bold">{{event.title}}</h2>
+                  <span *ngIf="event.description" class="select-none">{{event.description}}</span>
+                </div>
+                <!-- chevron -->
+                <div class="transform " style="transition: all 0.4s; height: fit-content;"
+                  [ngClass]="{'rotate-180': event.showDetails}">
+                  <!-- chevron down -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              <!-- block details -->
+              <div style="overflow: hidden;">
+                <div style="transition: all 0.4s; padding-top: 0.5rem;"
+                  [ngStyle]="{'margin-top': event.showDetails? '0%' : '-100%', 'color': event.showDetails? 'inherit' : 'transparent'}">
+                  <ng-container *ngFor="let detail of event.properties; let last = last;">
+                    <span>{{detail}}</span><br *ngIf="!last" />
+                  </ng-container>
+                </div>
+              </div>
+
+            </div>
+            <!-- break flex row -->
+            <div style="flex-basis: 100%; height: 0px;"></div>
+            <!-- line to bottom with plus -->
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24"
+                style="width: 2.5rem;height: 2.5rem;" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 9 M 12 3 L 12 -25 Z" />
+              </svg>
+              <svg *ngIf="!filter" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="2 2 20 20"
+                class="cursor-pointer"
+                style="width: 2.5rem;height: 2.5rem; animation: pulse 2s cubic-bezier(0.4, 0.5, 0.6, 0.75) infinite; "
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <svg *ngIf="!filter" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24"
+                style="width: 2.5rem;height: 2.5rem;" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 9 M 12 3 L 12 -25 Z" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- break flex row -->
+          <div style="flex-basis: 100%; height: 0px;"></div>
+
+          <!-- filter block -->
+          <div *ngIf="!!filter" class="flex w-full justify-content-center "
+            style="flex-wrap: wrap; height: fit-content; max-width: 420px;">
+            <div class=" bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 cursor-pointer"
+              (click)="showFilterDetails= !showFilterDetails;">
+              <!-- block header -->
+              <div class="grid gap-x-1" style="grid-template-columns: auto auto auto;">
+                <!-- icon -->
+                <div style="margin-right: 0.5em;">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                  </svg>
+                </div>
+                <!-- title -->
+                <div style="margin-right: 0.5em;">
+                  <h2 class="select-none font-bold">Filter</h2>
+                  <span class="select-none">Filter allows you to specify, which events should trigger this
+                    pipeline.</span>
+                </div>
+                <!-- chevron -->
+                <div class="transform " style="transition: all 0.4s; height: fit-content;"
+                  [ngClass]="{'rotate-180': showFilterDetails}">
+                  <!-- chevron down -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              <!-- block details -->
+              <div style="overflow: hidden;">
+                <div style="transition: all 0.4s; padding-top: 0.5rem;"
+                  [ngStyle]="{'margin-top': showFilterDetails? '0%' : '-100%', 'color': showFilterDetails? 'inherit' : 'transparent'}">
+
+
+                  <!-- filter outlet -->
+                  <ng-container [ngTemplateOutlet]="filterBlock"
+                    [ngTemplateOutletContext]="{filterBase:filter, depth: 1 }">
+                  </ng-container>
+
+                </div>
+              </div>
+
+            </div>
+            <!-- break flex row -->
+            <div style="flex-basis: 100%; height: 0px;"></div>
+            <!-- line to bottom with plus -->
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24"
+                style="width: 2.5rem;height: 2.5rem;" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 9 M 12 3 L 12 -25 Z" />
+              </svg>
+              <svg *ngIf="!filter" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="2 2 20 20"
+                class="cursor-pointer"
+                style="width: 2.5rem;height: 2.5rem; animation: pulse 2s cubic-bezier(0.4, 0.5, 0.6, 0.75) infinite; "
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <svg *ngIf="!filter" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24"
+                style="width: 2.5rem;height: 2.5rem;" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 9 M 12 3 L 12 -25 Z" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- break flex row -->
+          <div *ngIf="!!filter" style="flex-basis: 100%; height: 0px;"></div>
+
+          <ng-container
+            *ngFor="let eventConfiguration of eventReactorConfigurations; let lastConfig = last; let index = index;">
+
+            <!-- eventConfiguration block -->
+            <div class="flex  justify-content-center "
+              style="flex-wrap: wrap; height: fit-content; border-top: 4px solid; max-width: 420px;"
+              [ngStyle]="{'border-image': getBorderImageForEventConfigurationBlockAndIndex(index)}">
+              <!-- line into block -->
+              <div>
+                <svg *ngIf="lastConfig" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="2 2 20 20"
+                  class="cursor-pointer"
+                  style="width: 2.5rem;height: 2.5rem; animation: pulse 2s cubic-bezier(0.4, 0.5, 0.6, 0.75) infinite; position: relative; top: -54%; background-color: #f3f3f7;border-radius: 100%;"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24"
+                  style="width: 2.5rem;height: 2.5rem; " stroke="currentColor"
+                  [ngStyle]="{'margin-top': lastConfig ? '-100%' : '0px'}">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 5 L 12 -25 Z" />
+                </svg>
+              </div>
+              <div style="flex-basis: 100%; height: 0px;"></div>
+
+              <div class=" bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 mb-4 cursor-pointer"
+                (click)="eventConfiguration.showDetails = !eventConfiguration.showDetails;">
+
+                <!-- block header -->
+                <div class="grid gap-x-1" style="grid-template-columns: auto auto auto;">
+                  <!-- icon -->
+                  <div style="margin-right: 0.5em;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <!-- title -->
+                  <div style="margin-right: 0.5em;">
+                    <h2 class="select-none font-bold">{{eventConfiguration.title}}</h2>
+                    <span *ngIf="eventConfiguration.description"
+                      class="select-none">{{eventConfiguration.description}}</span>
+
+                  </div>
+                  <!-- chevron -->
+                  <div class="transform " style="transition: all 0.4s; height: fit-content;"
+                    [ngClass]="{'rotate-180': eventConfiguration.showDetails}">
+                    <!-- chevron down -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- block details -->
+                <div style="overflow: hidden;">
+                  <div style="transition: all 0.4s; padding-top: 0.5rem;"
+                    [ngStyle]="{'margin-top': eventConfiguration.showDetails ? '0%' : '-100%', 'color': eventConfiguration.showDetails ? 'inherit' : 'transparent'}">
+                    <ng-container *ngFor="let detail of eventConfiguration.properties; let last = last;">
+                      <span>{{detail}}</span><br *ngIf="last" />
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- gap for flex box -->
+            <div *ngIf="!lastConfig" style="flex-basis: 4%; height: 0px; border-top: 4px solid;"></div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #filterBlock let-filterBase='filterBase' let-depth='depth'>
+  <div [ngClass]="'bg-gray-' + (depth * 100)" [ngStyle]="{'color': depth > 4 ? 'white': 'inherit'}"
+    class="p-2.5 m-1 rounded-md">
+    <ng-container *ngIf="isFilterBaseFilter(filterBase)">
+      <div>
+        {{stringifyEventFilters(filterBase)}}
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isFilterBaseFilterGroup(filterBase)">
+      <div>
+        {{stringifyEventFilters(filterBase)}}
+        <div style="margin-left: 1em;" class="mt-1 pb-1">
+          <ng-container *ngFor="let childFilter of filterBaseAsFilterGroup(filterBase).filters.$values"
+            [ngTemplateOutlet]="filterBlock" [ngTemplateOutletContext]="{filterBase:childFilter,depth: depth + 1 }">
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

@@ -55,7 +55,7 @@
 }
 
 .toggleInput:checked~.toggleFill {
-  background-color: #60ea77;
+  background-color: #b6e957;
 }
 
 .toggleInput:checked~.toggleFill::after {

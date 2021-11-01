@@ -71,7 +71,7 @@
         <!-- options to fill -->
         <div *ngIf="currentStep === 2">
           <div *ngFor="let table of tableOfOptionsToFill" class="my-4">
-            <app-table [title]="table.title" [data]="table">
+            <app-table [title]="table.title" [data]="table" (valueChanged)="optionsChangedHandler(table, $event)">
             </app-table>
           </div>
 

@@ -77,9 +77,9 @@ namespace YAB.Api.Contracts.Controllers
             }
 
             // try loading existing options.
-            try
+            foreach (var option in _optionsToLoad)
             {
-                foreach (var option in _optionsToLoad)
+                try
                 {
                     option.Load(password);
                     var optionDescriptor = result.Single(r => r.OptionFullName == option.GetType().FullName);
@@ -92,10 +92,9 @@ namespace YAB.Api.Contracts.Controllers
                         propertyDiscriptor.CurrentValue = value;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                return (IActionResult)Ok(result);
+                catch (Exception ex)
+                {
+                }
             }
 
             return (IActionResult)Ok(result);

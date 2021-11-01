@@ -1,5 +1,6 @@
 {
-  "plugins": [{
+  "plugins": [
+    {
       "PluginName": "UtilsPlugin",
       "DllPath": "https://github.com/3DExtended/YAB-UtilsPlugin/releases/latest/download/UtilsPlugin.zip",
       "RepositoryUrl": "https://github.com/3DExtended/YAB-UtilsPlugin"
@@ -8,6 +9,11 @@
       "PluginName": "TwitchPlugin",
       "DllPath": "https://github.com/3DExtended/YAB-TwitchPlugin/releases/latest/download/TwitchBotPlugin.zip",
       "RepositoryUrl": "https://github.com/3DExtended/YAB-TwitchPlugin"
+    },
+    {
+      "PluginName": "HomeBridgePlugin",
+      "DllPath": "https://github.com/3DExtended/YAB-HomeBridgePlugin/releases/latest/download/HomeBridgePlugin.zip",
+      "RepositoryUrl": "https://github.com/3DExtended/YAB-HomeBridgePlugin"
     }
   ]
 }

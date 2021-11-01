@@ -102,7 +102,8 @@
       <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
         [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
         <app-input-field class="w-full" (valueChanged)="$event" [name]="column.title + index"
-          [startValue]="dataItem.value"></app-input-field>
+          (valueChanged)="textFieldChangedHandler(dataItem, column, $event)" [startValue]="dataItem.value">
+        </app-input-field>
       </div>
     </div>
 
@@ -112,14 +113,26 @@
       <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
         [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
         <app-input-field class="w-full" [inputType]="'password'" (valueChanged)="$event" [name]="column.title + index"
-          [startValue]="dataItem.value">
+          (valueChanged)="textFieldChangedHandler(dataItem, column, $event)" [startValue]="dataItem.value">
+        </app-input-field>
+      </div>
+    </div>
+
+    <!-- int field -->
+    <div
+      *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'int'">
+      <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
+        [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+
+        <!-- todo add int number valdation -->
+        <app-input-field class="w-full" (valueChanged)="$event" [name]="column.title + index"
+          (valueChanged)="textFieldChangedHandler(dataItem, column, $event)" [startValue]="dataItem.value">
         </app-input-field>
       </div>
     </div>
 
     <!--
       TODO add definitions for int and floating point inputs
-          int
           floatingPoint
     -->
   </div>
