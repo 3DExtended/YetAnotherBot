@@ -13,7 +13,8 @@
 
         <!-- pipeline -->
         <div class="flex w-full justify-content-center " style="flex-wrap: wrap;">
-          <div class="bg-white rounded-lg shadow-md pr-4 pl-4 pb-4 pt-2 my-4" style="max-width: 420px;">
+          <div class="rounded-lg shadow-md pr-4 pl-4 pb-4 pt-2 my-4"
+            style="max-width: 420px;background-color: rgb(96 165 250 / 55%);">
             <h3 class="font-bold text-lg px-2 mb-1.5 pt-3">{{pipelineName}}</h3>
             <span *ngIf="pipelineDescription" class="select-none">{{pipelineDescription}}</span>
 
@@ -23,7 +24,7 @@
 
           <!-- event block -->
           <div class="flex w-full justify-content-center "
-            style="flex-wrap: wrap; height: fit-content; max-width: 420px;">
+            style="flex-wrap: wrap; height: fit-content; width: fit-content; justify-self: flex-end; max-width: 420px;">
             <div *ngIf="event"
               class=" bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 mt-4 cursor-pointer"
               (click)="event.showDetails= !event?.showDetails;">
@@ -43,7 +44,8 @@
                   <span *ngIf="event?.description" class="select-none">{{event?.description}}</span>
                 </div>
                 <!-- chevron -->
-                <div class="transform " style="transition: all 0.4s; height: fit-content;"
+                <div class="transform "
+                  style="transition: all 0.4s; height: fit-content; width: fit-content; justify-self: flex-end;"
                   [ngClass]="{'rotate-180': event?.showDetails}">
                   <!-- chevron down -->
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -91,7 +93,7 @@
 
           <!-- filter block -->
           <div *ngIf="!!filter" class="flex w-full justify-content-center "
-            style="flex-wrap: wrap; height: fit-content; max-width: 420px;">
+            style="flex-wrap: wrap; height: fit-content; width: fit-content; justify-self: flex-end; max-width: 420px;">
             <div class=" bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 cursor-pointer"
               (click)="showFilterDetails= !showFilterDetails;">
               <!-- block header -->
@@ -111,7 +113,8 @@
                     pipeline.</span>
                 </div>
                 <!-- chevron -->
-                <div class="transform " style="transition: all 0.4s; height: fit-content;"
+                <div class="transform "
+                  style="transition: all 0.4s; height: fit-content; width: fit-content; justify-self: flex-end;"
                   [ngClass]="{'rotate-180': showFilterDetails}">
                   <!-- chevron down -->
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -170,7 +173,7 @@
 
             <!-- eventConfiguration block -->
             <div class="flex  justify-content-center "
-              style="flex-wrap: wrap; height: fit-content; border-top: 4px solid; max-width: 420px;"
+              style="flex-wrap: wrap; height: fit-content; width: fit-content; justify-self: flex-end; border-top: 4px solid; max-width: 420px;"
               [ngStyle]="{'border-image': getBorderImageForEventConfigurationBlockAndIndex(index)}">
               <!-- line into block -->
               <div>
@@ -211,7 +214,8 @@
 
                   </div>
                   <!-- chevron -->
-                  <div class="transform " style="transition: all 0.4s; height: fit-content;"
+                  <div class="transform "
+                    style="transition: all 0.4s; height: fit-content; width: fit-content; justify-self: flex-end;"
                     [ngClass]="{'rotate-180': eventConfiguration.showDetails}">
                     <!-- chevron down -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
