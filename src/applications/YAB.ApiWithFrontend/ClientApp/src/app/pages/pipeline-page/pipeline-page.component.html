@@ -56,11 +56,13 @@
 
               <!-- block details -->
               <div style="overflow: hidden;">
-                <div style="transition: all 0.4s; padding-top: 0.5rem;"
+                <div style="transition: all 0.4s; padding-top: 1rem;"
                   [ngStyle]="{'margin-top': event?.showDetails? '0%' : '-100%', 'color': event?.showDetails? 'inherit' : 'transparent'}">
-                  <ng-container *ngFor="let detail of event?.properties; let last = last;">
-                    <span>{{detail}}</span><br *ngIf="!last" />
-                  </ng-container>
+                  <div class="p-2.5 mb-1 ml-1 mr-1 rounded-md bg-gray-100">
+                    <ng-container *ngFor="let detail of event?.properties; let last = last;">
+                      <span>{{detail}}</span><br *ngIf="!last" />
+                    </ng-container>
+                  </div>
                 </div>
               </div>
 
@@ -125,18 +127,18 @@
 
               <!-- block details -->
               <div style="overflow: hidden;">
-                <div style="transition: all 0.4s; padding-top: 0.5rem;" [ngStyle]="{
+                <div style="transition: all 0.4s; " [ngStyle]="{
                     'filter': showFilterDetails? 'opacity(1.0)' : 'opacity(0.0)',
-                    'margin-top': showFilterDetails? '0%' : '-100%',
+                    'margin-top': showFilterDetails? '0%' : '-100vh',
                     'color': showFilterDetails? 'inherit' : 'transparent'
                   }">
 
-
-                  <!-- filter outlet -->
-                  <ng-container [ngTemplateOutlet]="filterBlock"
-                    [ngTemplateOutletContext]="{filterBase:filter, depth: 1 }">
-                  </ng-container>
-
+                  <div style="padding-top: 1rem;">
+                    <!-- filter outlet -->
+                    <ng-container [ngTemplateOutlet]="filterBlock"
+                      [ngTemplateOutletContext]="{filterBase:filter, depth: 1 }">
+                    </ng-container>
+                  </div>
                 </div>
               </div>
             </div>
@@ -226,11 +228,13 @@
 
                 <!-- block details -->
                 <div style="overflow: hidden;">
-                  <div style="transition: all 0.4s; padding-top: 0.5rem;"
+                  <div style="transition: all 0.4s; padding-top: 1rem;"
                     [ngStyle]="{'margin-top': eventConfiguration.showDetails ? '0%' : '-100%', 'color': eventConfiguration.showDetails ? 'inherit' : 'transparent'}">
-                    <ng-container *ngFor="let detail of eventConfiguration.properties; let last = last;">
-                      <span>{{detail}}</span><br *ngIf="last" />
-                    </ng-container>
+                    <div class="p-2.5 mb-1 ml-1 mr-1 rounded-md bg-gray-100">
+                      <ng-container *ngFor="let detail of eventConfiguration.properties; let last = last;">
+                        <span>{{detail}}</span><br *ngIf="last" />
+                      </ng-container>
+                    </div>
                   </div>
                 </div>
               </div>
