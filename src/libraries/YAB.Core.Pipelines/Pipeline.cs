@@ -9,8 +9,9 @@ namespace YAB.Core.Pipeline
 {
     public class Pipeline
     {
-        public Pipeline(Type eventType, FilterBase eventFilter, IReadOnlyList<IEventReactorConfiguration> pipelineHandlerConfigurations)
+        public Pipeline(string name, Type eventType, FilterBase eventFilter, IReadOnlyList<IEventReactorConfiguration> pipelineHandlerConfigurations)
         {
+            Name = name;
             EventType = eventType;
             PipelineHandlerConfigurations = pipelineHandlerConfigurations;
             EventFilter = eventFilter;
@@ -20,12 +21,16 @@ namespace YAB.Core.Pipeline
 
         public Type EventType { get; }
 
+        public string Name { get; }
+
         public IReadOnlyList<IEventReactorConfiguration> PipelineHandlerConfigurations { get; }
 
-        public static Pipeline CreateForEvent<TEvent>(FilterBase eventFilter, IReadOnlyList<IEventReactorConfiguration> pipelineHandlerConfigurations)
+        public Guid PipelineId { get; } = Guid.NewGuid();
+
+        public static Pipeline CreateForEvent<TEvent>(string name, FilterBase eventFilter, IReadOnlyList<IEventReactorConfiguration> pipelineHandlerConfigurations)
             where TEvent : EventBase
         {
-            return new Pipeline(typeof(TEvent), eventFilter, pipelineHandlerConfigurations);
+            return new Pipeline(name, typeof(TEvent), eventFilter, pipelineHandlerConfigurations);
         }
     }
 }

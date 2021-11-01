@@ -67,6 +67,8 @@ export interface IPipelineDto {
   eventFilter: IFilterBase;
   eventName: string;
   eventReactors: any;
+  name: string;
+  pipelineId: string;
 
   // Those strings are serialized json objects and if we want to extract properties here, we have to deserialize them...
   serializedEventReactorConfiguration: List<string>;

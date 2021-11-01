@@ -12,6 +12,10 @@ namespace YAB.Api.Contracts.Models.Pipelines
 
         public IReadOnlyList<string> EventReactors { get; set; }
 
+        public string Name { get; set; }
+
+        public string PipelineId { get; set; }
+
         public IReadOnlyList<string> SerializedEventReactorConfiguration { get; set; }
     }
 }

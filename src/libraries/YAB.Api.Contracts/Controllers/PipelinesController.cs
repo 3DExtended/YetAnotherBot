@@ -42,6 +42,8 @@ namespace YAB.Api.Contracts.Controllers
 
             return Task.FromResult<IActionResult>(Ok(new PipelineDto
             {
+                Name = pipeline.Name,
+                PipelineId = pipeline.PipelineId.ToString(),
                 EventFilter = pipeline.EventFilter,
                 EventName = pipeline.EventType.FullName,
                 EventReactors = pipeline.PipelineHandlerConfigurations.Select(t => t.GetType().FullName).ToList(),
@@ -55,6 +57,8 @@ namespace YAB.Api.Contracts.Controllers
             var pipelineStore = _containerAccessor.Container.GetInstance<IPipelineStore>();
             List<PipelineDto> resultDtos = pipelineStore.Pipelines.Select(p => new PipelineDto
             {
+                Name = p.Name,
+                PipelineId = p.PipelineId.ToString(),
                 EventFilter = p.EventFilter,
                 EventName = p.EventType.FullName,
                 EventReactors = p.PipelineHandlerConfigurations.Select(t => t.GetType().FullName).ToList(),
@@ -89,7 +93,7 @@ namespace YAB.Api.Contracts.Controllers
                 eventReactorConfigurations.Add(configuration);
             }
 
-            var newPipeline = new Pipeline(eventType.GetType(), pipelineDto.EventFilter, eventReactorConfigurations);
+            var newPipeline = new Pipeline(pipelineDto.Name, eventType.GetType(), pipelineDto.EventFilter, eventReactorConfigurations);
 
             _pipelineStore.Pipelines.Add(newPipeline);
             return Task.FromResult<IActionResult>(Ok());

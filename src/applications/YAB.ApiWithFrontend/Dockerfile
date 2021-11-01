@@ -2,15 +2,12 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
-run apt-get update
-run apt-get upgrade -y
 run apt-get install -y curl
 run apt-get install -y npm
 run npm install -g npm@6.14.13 
 
 run curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
 run sh ./setup_14.sh
-run apt-get update -y
 run apt-get install -y nodejs
 
 run node -v
