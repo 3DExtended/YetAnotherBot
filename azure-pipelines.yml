@@ -31,7 +31,6 @@ stages:
        tags: '$(tag)'
 
   - job: BuildARMVersion
-    dependsOn: BuildAMDVersion
     displayName: Build
     pool: Tower DOCKER
     steps:
