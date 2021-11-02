@@ -35,7 +35,6 @@
     "jquery": "^3.5.1",
     "lodash": "^4.17.21",
     "ng2-charts": "^2.4.2",
-    "node-sass": "^4.14.0",
     "oidc-client": "^1.11.3",
     "popper.js": "^1.16.0",
     "protractor": "~5.4.2",
@@ -72,7 +71,6 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
     "postcss": "^8.2.12",
-    "protractor": "~7.0.0",
     "storybook-addon-themes": "^6.1.0",
     "tailwindcss": "^2.1.2",
     "ts-node": "~8.3.0",
@@ -84,8 +82,6 @@
     "karma-coverage-istanbul-reporter": "~2.1.0"
   },
   "optionalDependencies": {
-    "node-sass": "^4.14.0",
-    "protractor": "~5.4.2",
     "ts-node": "~8.4.1",
     "tslint": "~5.20.0"
   }
