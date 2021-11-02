@@ -33,8 +33,7 @@ stages:
   - job: BuildARMVersion
     dependsOn: BuildAMDVersion
     displayName: Build
-    pool:
-      vmImage: ubuntu-latest
+    pool: Tower DOCKER
     steps:
 
     - task: DockerInstaller@0
