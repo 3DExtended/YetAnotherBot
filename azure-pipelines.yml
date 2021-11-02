@@ -46,7 +46,7 @@ stages:
         script: |
           docker --version
           docker run --privileged --rm tonistiigi/binfmt --install all
-          docker buildx create --name mybuilder --use
+          docker buildx use mybuilder
           docker buildx build -t $(tag)-raspberrypi . --platform linux/arm/v7 --build-arg BASE_IMAGE=aspnet:5.0.11-buster-slim-arm64v8 --build-arg BUILD_IMAGE=sdk:5.0.402-buster-slim-arm64v8
        
     - task: Docker@2
