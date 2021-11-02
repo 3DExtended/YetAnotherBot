@@ -1,0 +1,127 @@
+<div [ngClass]="{'mx-auto': marginXAuto}">
+  <div [ngStyle]="getTopBorderStyle()">
+    <div [ngStyle]="getBottomBorderStyle()">
+      <div [ngStyle]="getLeftBorderStyle()" class="customLeftBorderStyle">
+        <div class="grid gap-0" style="grid-template-columns: 40px auto 40px; grid-template-rows: 40px auto 40px;">
+          <!-- top three cells -->
+          <div class="justify-self-center"></div>
+          <div class="justify-self-center">
+            <ng-container [ngTemplateOutlet]="lineSVG"
+              [ngTemplateOutletContext]="{rotate90Deg:false, hide: !borderDefinition.lineIntoFromTop }">
+            </ng-container>
+          </div>
+          <div class="justify-self-center"></div>
+
+          <!-- middle three cells -->
+          <div class="justify-self-center my-auto">
+            <ng-container [ngTemplateOutlet]="lineSVG"
+              [ngTemplateOutletContext]="{rotate90Deg:true, hide: !borderDefinition.lineFromLeftIntoRight }">
+            </ng-container>
+          </div>
+          <div class="justify-self-center" style="width: 420px;">
+            <ng-container [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{ }">
+            </ng-container>
+          </div>
+          <div class="justify-self-center"></div>
+
+          <!-- bottom three cells -->
+          <div class="justify-self-center"></div>
+          <div class="justify-self-center">
+            <ng-container [ngTemplateOutlet]="lineSVG"
+              [ngTemplateOutletContext]="{rotate90Deg:false, hide: !borderDefinition.lineFromBottomDown }">
+            </ng-container>
+          </div>
+          <div class="justify-self-center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #lineSVG let-rotate90Deg='rotate90Deg' let-hide='hide'>
+  <div [ngStyle]="{'transform': rotate90Deg ? 'rotate(90deg)' : 'rotate(0deg)'}" style="width: 40px;height: 40px;">
+    <svg [ngClass]="{'hidden': hide}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24"
+      style="width: 40px;height: 40px; " stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 5 L 12 -25 Z" />
+    </svg>
+  </div>
+</ng-template>
+
+<ng-template #contentTemplate>
+  <div>
+    <div *ngIf="elementDetails" class="bg-white rounded-lg shadow-md hover:shadow-xl p-3 cursor-pointer"
+      (click)="showDetails= !showDetails;">
+
+      <!-- block header -->
+      <div class="grid gap-x-1" style="grid-template-columns: auto auto auto;">
+        <!-- icon -->
+        <div style="margin-right: 0.5em;">
+          <ng-container [ngTemplateOutlet]="iconTemplate">
+          </ng-container>
+        </div>
+        <!-- title -->
+        <div style="margin-right: 0.5em;">
+          <h2 class="select-none font-bold">{{elementDetails?.title}}</h2>
+          <span *ngIf="elementDetails?.description" class="select-none">{{elementDetails?.description}}</span>
+        </div>
+        <!-- chevron -->
+        <div class="transform "
+          style="transition: all 0.4s; height: fit-content; width: fit-content; justify-self: flex-end;"
+          [ngClass]="{'rotate-180': showDetails}">
+          <!-- chevron down -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- block details -->
+      <div style="overflow: hidden;">
+        <!-- TODO fix this 100vh... I would like to use 100% here but we cannot use 0% on the contra side -->
+        <div style="transition: all 0.4s ease-out;"
+          [ngStyle]="{'max-height': showDetails? '100vh' : '0vh', 'color': showDetails? 'inherit' : 'transparent'}">
+
+          <div class="pt-2">
+
+            <ng-container *ngIf="injectedContentTemplate" [ngTemplateOutlet]="injectedContentTemplate">
+            </ng-container>
+
+            <ng-container *ngIf="!injectedContentTemplate" [ngTemplateOutlet]="defaultContentPropertiesBlock">
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #defaultContentPropertiesBlock>
+  <div class="p-2.5 mb-1 ml-1 mr-1 rounded-md bg-gray-100">
+    <ng-container *ngFor="let detail of elementDetails?.properties; let last = last;">
+      <span>{{detail}}</span><br *ngIf="!last" />
+    </ng-container>
+  </div>
+</ng-template>
+
+<!-- icons of pipeline block -->
+<ng-template #iconTemplate>
+  <!-- event -->
+  <svg *ngIf="icon === 'EVENT'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+    stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+  </svg>
+
+  <!-- Filter -->
+  <svg *ngIf="icon === 'FILTER'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+    stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+  </svg>
+
+  <!-- Action -->
+  <svg *ngIf="icon === 'ACTION'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+    stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+  </svg>
+</ng-template>

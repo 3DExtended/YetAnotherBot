@@ -3,13 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { EventService } from 'src/app/services/event.service';
 import { FilterOperator, IFilter, IFilterBase, IFilterGroup, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
-
-export interface PipelineBlock {
-  showDetails: boolean;
-  title: string;
-  properties: string[];
-  description: string | null;
-};
+import { PipelineBlock } from 'src/stories/components/pipeline-element/pipeline-element.component';
 
 @Component({
   selector: 'app-pipeline-page',
@@ -27,6 +21,7 @@ export class PipelinePageComponent implements OnInit {
   public filter: IFilterBase | null = null;
 
   public event: PipelineBlock | null = null;
+  public filterBlock: PipelineBlock | null = null;
 
   public eventReactorConfigurations: PipelineBlock[] = [];
 
@@ -43,7 +38,7 @@ export class PipelinePageComponent implements OnInit {
     const pipelineLoader = this._pipelinesService.GetRegisteredPipelineById(this.pipelineId as string);
     forkJoin([pipelineLoader]).subscribe(async res => {
       if (res.some(r => !r.successful)) {
-        await this._router.navigateByUrl("/dashboard");
+        await this._router.navigateByUrl("/login");
       }
       this.filter = res[0].data.eventFilter;
 
@@ -53,16 +48,20 @@ export class PipelinePageComponent implements OnInit {
       this.pipelineDescription = res[0].data.description;
 
       this.event = {
-        showDetails: false,
         title: eventFullNameSplits[eventFullNameSplits.length - 1],
         properties: ["TODO GET ME"],
         description: "TODO GET ME",
       };
 
+      this.filterBlock = {
+        title: "Filter",
+        description: "Filter allow you to specify, which events should trigger this pipeline.",
+        properties: [] // we use a custom template to render the filter.
+      };
+
       this.eventReactorConfigurations = res[0].data.serializedEventReactorConfiguration.$values.map(v => {
         const config = this.stringifyEventReactorConfiguration(v);
         return {
-          showDetails: false,
           title: config.typeName,
           properties: config.properties,
           description: "TODO GET ME",

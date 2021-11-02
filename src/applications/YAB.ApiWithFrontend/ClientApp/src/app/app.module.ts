@@ -12,6 +12,7 @@ import { InputFieldComponent } from 'src/stories/components/input-field/input-fi
 import { LineGrpahComponent } from 'src/stories/components/line-graph/line-graph.component';
 import { LogoComponent } from 'src/stories/components/logo/logo.component';
 import { NavbarComponent } from 'src/stories/components/navbar/navbar.component';
+import { PipelineElementComponent } from 'src/stories/components/pipeline-element/pipeline-element.component';
 import { TableComponent } from 'src/stories/components/table/table.component';
 import { ToggleSwitchComponent } from 'src/stories/components/toggle-switch/toggle-switch.component';
 import { WizardStepIndicatorComponent } from 'src/stories/components/wizard-step-indicator/wizard-step-indicator.component';
@@ -47,6 +48,7 @@ export function getBaseUrl(): string {
     ToggleSwitchComponent,
     WizardStepIndicatorComponent,
     TableComponent,
+    PipelineElementComponent,
     RegisterPageComponent
   ],
   imports: [
