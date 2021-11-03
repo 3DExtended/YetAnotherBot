@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 using YAB.Api.Contracts.Models.EventReactors;
 using YAB.Core.EventReactor;
+using YAB.Plugins.Injectables;
 
 namespace YAB.Api.Contracts.Controllers
 {
@@ -17,11 +18,13 @@ namespace YAB.Api.Contracts.Controllers
     [ApiController]
     public class EventReactorConfigurationsController : ControllerBase
     {
+        private readonly IContainerAccessor _containerAccessor;
         private readonly IList<IEventReactor> _eventReactors;
 
-        public EventReactorConfigurationsController(IList<IEventReactor> eventReactors)
+        public EventReactorConfigurationsController(IList<IEventReactor> eventReactors, IContainerAccessor containerAccessor)
         {
             _eventReactors = eventReactors;
+            this._containerAccessor = containerAccessor;
         }
 
         [HttpGet("all")]
@@ -41,13 +44,34 @@ namespace YAB.Api.Contracts.Controllers
 
                     result.Add(new EventReactorConfigurationDto
                     {
-                        EventTypeName = eventType.Name,
+                        EventTypeName = eventType.FullName,
                         SeralizedEventReactorConfiguration = JsonConvert.SerializeObject(configurationInstance, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })
                     });
                 }
             }
 
             return Task.FromResult<IActionResult>(Ok(result));
+        }
+
+        [HttpGet("pipelines/{pipelineId}/eventbases")]
+        public Task<IActionResult> GetRegisteredPipelineAsync([FromRoute] string pipelineId, CancellationToken cancellationToken)
+        {
+            var pipelineIdParsed = Guid.Parse(pipelineId);
+            var pipelineStore = _containerAccessor.Container.GetInstance<IPipelineStore>();
+            var pipeline = pipelineStore.Pipelines.SingleOrDefault(p => p.PipelineId == pipelineIdParsed);
+            if (pipeline == null)
+            {
+                return Task.FromResult<IActionResult>(NotFound());
+            }
+
+            var eventParentClasses = GetParentClassesAndSelf(pipeline.EventType).ToList();
+            return Task.FromResult<IActionResult>(Ok(eventParentClasses.Select(c => c.FullName).Take(eventParentClasses.Count - 1).ToList()));
+
+            IEnumerable<Type> GetParentClassesAndSelf(Type childType)
+            {
+                for (var current = childType; current != null; current = current.BaseType)
+                    yield return current;
+            }
         }
     }
 }

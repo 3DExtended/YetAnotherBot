@@ -14,7 +14,9 @@
         margin-right: auto !important;
         margin-left: 0cm !important;">
           <div class="pr-4 pl-4 pb-4 pt-2 mb-1 mt-4 mx-auto" style="max-width: 420px;text-align: center;">
-            <h3 class="font-bold text-xl px-2 mb-1.5 pt-3">{{pipelineName}}</h3>
+            <!-- TODO remove this click handler and this cursor pointer class -->
+            <h3 class="font-bold text-xl px-2 mb-1.5 pt-3 cursor-pointer" (click)="allowEdit = !allowEdit">
+              {{pipelineName}}</h3>
             <span *ngIf="pipelineDescription" class="select-none">{{pipelineDescription}}</span>
           </div>
 
@@ -31,12 +33,15 @@
             }">
           </app-pipeline-element>
 
+          <ng-container *ngIf="!filterBlock && allowEdit" [ngTemplateOutlet]="addIconTemplate"
+            [ngTemplateOutletContext]="{lineOutOfBottom: true }">
+          </ng-container>
 
-          <app-pipeline-element [marginXAuto]="true" [elementDetails]="filterBlock" [icon]="'FILTER'"
-            [borderDefinition]="{
+          <app-pipeline-element *ngIf="filterBlock" [marginXAuto]="true" [elementDetails]="filterBlock"
+            [icon]="'FILTER'" [borderDefinition]="{
             'topLeft': false,
             'topRight': false,
-            'bottomLeft': true,
+            'bottomLeft': false,
             'bottomRight': false,
             'leftTop': false,
             'leftBottom': false,
@@ -54,9 +59,9 @@
           </app-pipeline-element>
 
           <ng-container
-            *ngFor="let eventConfiguration of eventReactorConfigurations; let lastConfig = last; let index = index;">
+            *ngFor="let eventConfiguration of eventReactorConfigurations; let lastConfig = last;let firstConfig = first; let index = index;">
             <app-pipeline-element [marginXAuto]="true" [icon]="'ACTION'" [borderDefinition]="{
-              'topLeft': false,
+              'topLeft': firstConfig,
               'topRight': false,
               'bottomLeft': false,
               'bottomRight': false,
@@ -67,6 +72,10 @@
               'lineFromLeftIntoRight': true
             }" [elementDetails]="eventConfiguration">
             </app-pipeline-element>
+          </ng-container>
+
+          <ng-container *ngIf="allowEdit" [ngTemplateOutlet]="addIconTemplate"
+            [ngTemplateOutletContext]="{lineOutOfBottom: false }">
           </ng-container>
         </div>
       </div>
@@ -93,5 +102,21 @@
         </div>
       </div>
     </ng-container>
+  </div>
+</ng-template>
+
+
+<ng-template #addIconTemplate let-lineOutOfBottom='lineOutOfBottom'>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="2 2 20 20" class="cursor-pointer m-auto"
+    style="width: 2.5rem;height: 2.5rem; animation: pulse 2s cubic-bezier(0.4, 0.5, 0.6, 0.75) infinite; "
+    stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+  <div *ngIf="lineOutOfBottom" style="width: 40px;height: 40px;" class="m-auto">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24" style="width: 40px;height: 40px; "
+      stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 5 L 12 -25 Z" />
+    </svg>
   </div>
 </ng-template>

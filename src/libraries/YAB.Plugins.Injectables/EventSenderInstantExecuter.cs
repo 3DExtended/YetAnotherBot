@@ -170,27 +170,6 @@ namespace YAB.Plugins.Injectables
 
         private IEnumerable<Type> GetParentClassesAndSelf(Type childType)
         {
-            //AppDomain root = AppDomain.CurrentDomain;
-
-            //var assembliesToSearchParentClassIn = root.GetAssemblies()
-            //                .Where(a => !a.IsDynamic);
-
-            //List<Type> parentTypes = new List<Type>();
-
-            //foreach (var assembly in assembliesToSearchParentClassIn)
-            //{
-            //    try
-            //    {
-            //        var parents = assembly
-            //            .GetExportedTypes()
-            //            .Where(t => childType.IsSubclassOf(t) || t == childType);
-            //        parentTypes.AddRange(parents);
-            //    }
-            //    catch { }
-            //}
-
-            //return parentTypes;
-
             for (var current = childType; current != null; current = current.BaseType)
                 yield return current;
         }

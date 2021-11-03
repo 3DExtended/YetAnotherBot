@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { EventReactorConfigurationService } from 'src/app/services/event-reactor-configurations.service';
 import { EventService } from 'src/app/services/event.service';
 import { FilterOperator, IFilter, IFilterBase, IFilterGroup, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
 import { PipelineBlock } from 'src/stories/components/pipeline-element/pipeline-element.component';
@@ -30,13 +31,15 @@ export class PipelinePageComponent implements OnInit {
   constructor(private readonly _pipelinesService: PipelinesService,
     private readonly _activatedRoute: ActivatedRoute,
     private readonly _eventsService: EventService,
+    private readonly _eventReactorConfigurationService: EventReactorConfigurationService,
     private readonly _router: Router) { }
 
   ngOnInit(): void {
     this.pipelineId = this._activatedRoute.snapshot.paramMap.get("guid");
 
     const pipelineLoader = this._pipelinesService.GetRegisteredPipelineById(this.pipelineId as string);
-    forkJoin([pipelineLoader]).subscribe(async res => {
+    const eventReactorConfigurationsLoader = this._eventReactorConfigurationService.GetAllEventReactorConfigurations();
+    forkJoin([pipelineLoader, eventReactorConfigurationsLoader]).subscribe(async res => {
       if (res.some(r => !r.successful)) {
         await this._router.navigateByUrl("/login");
       }
@@ -53,11 +56,13 @@ export class PipelinePageComponent implements OnInit {
         description: "TODO GET ME",
       };
 
-      this.filterBlock = {
-        title: "Filter",
-        description: "Filter allow you to specify, which events should trigger this pipeline.",
-        properties: [] // we use a custom template to render the filter.
-      };
+      this.filterBlock = res[0].data.eventFilter && ((res[0].data.eventFilter as any).filters?.$values?.length > 0 || (res[0].data.eventFilter as any).filterValue)
+        ? {
+          title: "Filter",
+          description: "Filter allow you to specify, which events should trigger this pipeline.",
+          properties: [] // we use a custom template to render the filter.
+        }
+        : null;
 
       this.eventReactorConfigurations = res[0].data.serializedEventReactorConfiguration.$values.map(v => {
         const config = this.stringifyEventReactorConfiguration(v);

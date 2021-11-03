@@ -97,7 +97,7 @@ namespace YAB.Api.Contracts.Controllers
                 eventReactorConfigurations.Add(configuration);
             }
 
-            var newPipeline = new Pipeline(pipelineDto.Name, pipelineDto.Description, eventType.GetType(), pipelineDto.EventFilter, eventReactorConfigurations);
+            var newPipeline = new Pipeline(pipelineDto.Name, pipelineDto.Description, eventType.GetType(), pipelineDto.EventFilter, eventReactorConfigurations, Guid.NewGuid());
 
             _pipelineStore.Pipelines.Add(newPipeline);
             return Task.FromResult<IActionResult>(Ok());
