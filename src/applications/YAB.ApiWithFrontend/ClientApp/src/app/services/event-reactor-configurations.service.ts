@@ -17,6 +17,11 @@ export class EventReactorConfigurationService {
     return this._httpClient.get<HttpResponse<List<EventReactorConfiguration>>>(this.baseUrl + "api/EventReactorConfigurations/all")
       .pipe(errorHandler<List<EventReactorConfiguration>>());;
   }
+
+  public GetRegisteredPipelineByIdAllowedEventBases(guid: string): Observable<ErrorHandledResult<List<string>>> {
+    return this._httpClient.get<List<string>>(this.baseUrl + "api/EventReactorConfigurations/pipelines/" + guid + "/eventbases", { observe: 'response' })
+      .pipe(errorHandler<List<string>>());
+  }
 }
 
 export interface EventReactorConfiguration {

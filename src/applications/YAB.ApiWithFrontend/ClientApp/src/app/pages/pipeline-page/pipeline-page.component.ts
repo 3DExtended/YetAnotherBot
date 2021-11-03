@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { EventReactorConfigurationService } from 'src/app/services/event-reactor-configurations.service';
+import { EventReactorConfiguration, EventReactorConfigurationService } from 'src/app/services/event-reactor-configurations.service';
 import { EventService } from 'src/app/services/event.service';
 import { FilterOperator, IFilter, IFilterBase, IFilterGroup, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
 import { PipelineBlock } from 'src/stories/components/pipeline-element/pipeline-element.component';
@@ -26,7 +26,9 @@ export class PipelinePageComponent implements OnInit {
 
   public eventReactorConfigurations: PipelineBlock[] = [];
 
-  pipelineId: string | null = null;
+  private eventBases: string[] | null = null;
+  private pipelineId: string | null = null;
+  private validEventConfigurations: EventReactorConfiguration[] | null = null;
 
   constructor(private readonly _pipelinesService: PipelinesService,
     private readonly _activatedRoute: ActivatedRoute,
@@ -39,7 +41,8 @@ export class PipelinePageComponent implements OnInit {
 
     const pipelineLoader = this._pipelinesService.GetRegisteredPipelineById(this.pipelineId as string);
     const eventReactorConfigurationsLoader = this._eventReactorConfigurationService.GetAllEventReactorConfigurations();
-    forkJoin([pipelineLoader, eventReactorConfigurationsLoader]).subscribe(async res => {
+    const registeredPipelineByIdAllowedEventBasesLoader = this._eventReactorConfigurationService.GetRegisteredPipelineByIdAllowedEventBases(this.pipelineId as string);
+    forkJoin([pipelineLoader, eventReactorConfigurationsLoader, registeredPipelineByIdAllowedEventBasesLoader]).subscribe(async res => {
       if (res.some(r => !r.successful)) {
         await this._router.navigateByUrl("/login");
       }
@@ -50,9 +53,12 @@ export class PipelinePageComponent implements OnInit {
       this.pipelineName = res[0].data.name;
       this.pipelineDescription = res[0].data.description;
 
+      this.eventBases = res[2].data.$values;
+      const allEventConfigurations = res[1].data.$values;
+      this.validEventConfigurations = allEventConfigurations.filter(c => this.eventBases?.some(eb => eb === c.eventTypeName));
       this.event = {
         title: eventFullNameSplits[eventFullNameSplits.length - 1],
-        properties: ["TODO GET ME"],
+        properties: this.eventBases,
         description: "TODO GET ME",
       };
 
