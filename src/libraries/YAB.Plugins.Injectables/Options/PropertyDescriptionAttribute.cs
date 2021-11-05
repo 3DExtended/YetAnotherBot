@@ -3,15 +3,16 @@
 namespace YAB.Plugins.Injectables.Options
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class OptionPropertyDescriptionAttribute : Attribute
+    public class PropertyDescriptionAttribute : Attribute
     {
-        public OptionPropertyDescriptionAttribute(bool isSecret, string description)
+        public PropertyDescriptionAttribute(bool isSecret, string description)
         {
             IsSecret = isSecret;
             Description = description;
         }
 
-        public bool IsSecret { get; set; }
         public string Description { get; set; }
+
+        public bool IsSecret { get; set; }
     }
 }

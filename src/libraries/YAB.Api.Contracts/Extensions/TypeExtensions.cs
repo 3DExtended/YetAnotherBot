@@ -51,8 +51,8 @@ namespace YAB.Api.Contracts.Extensions
             foreach (var optionProperty in optionProperties)
             {
                 var propertyDescriptionAttribute = optionProperty
-                    .GetCustomAttributes(typeof(OptionPropertyDescriptionAttribute), true)
-                    .Cast<OptionPropertyDescriptionAttribute>()
+                    .GetCustomAttributes(typeof(PropertyDescriptionAttribute), true)
+                    .Cast<PropertyDescriptionAttribute>()
                     .FirstOrDefault();
 
                 PropertyDescriptionDto descriptor = new PropertyDescriptionDto
