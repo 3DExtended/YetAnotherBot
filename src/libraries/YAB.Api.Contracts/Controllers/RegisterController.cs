@@ -47,25 +47,7 @@ namespace YAB.Api.Contracts.Controllers
 
             foreach (var option in _optionsToLoad)
             {
-                var optionPropertyDescriptions = new List<PropertyDescriptionDto>();
-
-                var optionProperties = option.GetType().GetProperties();
-
-                foreach (var optionProperty in optionProperties)
-                {
-                    var propertyDescriptionAttribute = optionProperty
-                        .GetCustomAttributes(typeof(OptionPropertyDescriptionAttribute), true)
-                        .Cast<OptionPropertyDescriptionAttribute>()
-                        .FirstOrDefault();
-
-                    optionPropertyDescriptions.Add(new PropertyDescriptionDto
-                    {
-                        PropertyName = optionProperty.Name,
-                        ValueType = optionProperty.PropertyType.GetValueType(),
-                        PropertyDescription = propertyDescriptionAttribute?.Description,
-                        IsSecret = propertyDescriptionAttribute?.IsSecret ?? true
-                    });
-                }
+                var optionPropertyDescriptions = option.GetType().GetPropertyDescriptorsForType();
 
                 var optionAsDescription = new OptionsDescriptionDto
                 {

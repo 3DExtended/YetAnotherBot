@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using YAB.Api.Contracts.Models.Plugins.OptionDescriptions;
+using YAB.Plugins.Injectables.Options;
 
 namespace YAB.Api.Contracts.Extensions
 {
@@ -32,6 +35,43 @@ namespace YAB.Api.Contracts.Extensions
             {
                 throw new NotImplementedException($"Could not translate value {value} to {type.FullName}.");
             }
+        }
+
+        public static List<PropertyDescriptionDto> GetPropertyDescriptorsForType(this Type configurationType, object? instance = null)
+        {
+            var propertyDescriptions = new List<PropertyDescriptionDto>();
+            var optionProperties = configurationType.GetProperties();
+
+            dynamic instanceCasted = null;
+            if (instance != null)
+            {
+                instanceCasted = Convert.ChangeType(instance, configurationType);
+            }
+
+            foreach (var optionProperty in optionProperties)
+            {
+                var propertyDescriptionAttribute = optionProperty
+                    .GetCustomAttributes(typeof(OptionPropertyDescriptionAttribute), true)
+                    .Cast<OptionPropertyDescriptionAttribute>()
+                    .FirstOrDefault();
+
+                PropertyDescriptionDto descriptor = new PropertyDescriptionDto
+                {
+                    PropertyName = optionProperty.Name,
+                    ValueType = optionProperty.PropertyType.GetValueType(),
+                    PropertyDescription = propertyDescriptionAttribute?.Description,
+                    IsSecret = propertyDescriptionAttribute?.IsSecret ?? true
+                };
+
+                if (instance is not null)
+                {
+                    descriptor.CurrentValue = optionProperty.GetValue(instanceCasted).ToString();
+                }
+
+                propertyDescriptions.Add(descriptor);
+            }
+
+            return propertyDescriptions;
         }
 
         public static PropertyValueTypeDto GetValueType(this Type type)

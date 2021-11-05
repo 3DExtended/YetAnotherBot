@@ -31,6 +31,33 @@ namespace YAB.Api.Contracts.Controllers
             _availableEvents = availableEvents;
         }
 
+        [HttpPost("pipelines/{pipelineId}/newAction")]
+        public async Task<IActionResult> AddNewActionToPipelineAsync(
+            [FromRoute] string pipelineId,
+            [FromBody] string serializedEventReactorConfiguration,
+            CancellationToken cancellationToken)
+        {
+            // first get pipeline by its id
+            // than deserialize its configuration (and check if it is deserializable)
+            // add it to pipeline
+            // save pipeline store to file
+            var pipelineIdParsed = Guid.Parse(pipelineId);
+            var pipelineStore = _containerAccessor.Container.GetInstance<IPipelineStore>();
+            var pipeline = pipelineStore.Pipelines.SingleOrDefault(p => p.PipelineId == pipelineIdParsed);
+            if (pipeline == null)
+            {
+                return NotFound();
+            }
+
+            var configuration = JsonConvert.DeserializeObject<IEventReactorConfiguration>(serializedEventReactorConfiguration, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+
+            pipeline.PipelineHandlerConfigurations.Add(configuration);
+
+            await pipelineStore.SavePipelinesAsync(cancellationToken).ConfigureAwait(false);
+
+            return Ok();
+        }
+
         [HttpGet("registered/{pipelineId}")]
         public Task<IActionResult> GetRegisteredPipelineAsync([FromRoute] string pipelineId, CancellationToken cancellationToken)
         {

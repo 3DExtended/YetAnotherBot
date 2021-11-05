@@ -1,0 +1,8 @@
+<div class="dropdown" (mouseleave)="hideContent()">
+  <div class="dropbtn" (click)="showContent()">
+    <ng-content></ng-content>
+  </div>
+  <div class="dropdown-content" [ngClass]="{'show-dropdown-content': showOptions}" (mouseleave)="hideContent()">
+    <div *ngFor="let entry of entries" class="p-2" (click)="selected(entry)">{{entry.label}}</div>
+  </div>
+</div>

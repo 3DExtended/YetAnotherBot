@@ -4,7 +4,8 @@ import { forkJoin } from 'rxjs';
 import { EventReactorConfiguration, EventReactorConfigurationService } from 'src/app/services/event-reactor-configurations.service';
 import { EventService } from 'src/app/services/event.service';
 import { FilterOperator, IFilter, IFilterBase, IFilterGroup, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
-import { PipelineBlock } from 'src/stories/components/pipeline-element/pipeline-element.component';
+import { DropdownMenuEntry } from 'src/stories/components/dropdown-menu/dropdown-menu.component';
+import { PipelineBlock, PipelineBlockIcon } from 'src/stories/components/pipeline-element/pipeline-element.component';
 
 @Component({
   selector: 'app-pipeline-page',
@@ -14,8 +15,15 @@ import { PipelineBlock } from 'src/stories/components/pipeline-element/pipeline-
 export class PipelinePageComponent implements OnInit {
 
   public showFilterDetails = false;
-
   public allowEdit = false;
+
+  public allBlockIcons: any = {
+    filter: PipelineBlockIcon.Filter,
+    action: PipelineBlockIcon.Action,
+    event: PipelineBlockIcon.Event
+  };
+
+  public addNewActionDropdownEntries: DropdownMenuEntry[] = [];
 
   public pipelineName: string | null = null;
   public pipelineDescription: string | null = null;
@@ -56,6 +64,17 @@ export class PipelinePageComponent implements OnInit {
       this.eventBases = res[2].data.$values;
       const allEventConfigurations = res[1].data.$values;
       this.validEventConfigurations = allEventConfigurations.filter(c => this.eventBases?.some(eb => eb === c.eventTypeName));
+
+      this.addNewActionDropdownEntries = this.validEventConfigurations.map(c => {
+        const deserializedConfig = JSON.parse(c.seralizedEventReactorConfiguration);
+
+        const label = (deserializedConfig.$type as string).split(", ")[0].split(".").pop() + " (" + (deserializedConfig.$type as string).split(", ")[1] + ")";
+        return {
+          label: label,
+          selector: deserializedConfig.$type,
+        };
+      });
+
       this.event = {
         title: eventFullNameSplits[eventFullNameSplits.length - 1],
         properties: this.eventBases,
@@ -81,6 +100,16 @@ export class PipelinePageComponent implements OnInit {
     });
   }
 
+  public addNewActionToPipeline(selector: string) {
+    const addedActionType = this.validEventConfigurations?.filter(c => c.seralizedEventReactorConfiguration.indexOf(selector) !== -1)[0];
+    const details = this.stringifyEventReactorConfiguration(addedActionType?.seralizedEventReactorConfiguration as string);
+    this.eventReactorConfigurations.push({
+      title: details.typeName,
+      properties: details.properties,
+      description: "TODO GET ME",
+    });
+  }
+
   private stringifyEventReactorConfiguration(configuration: string): { typeName: string, properties: string[] } {
     const parsedConfig = JSON.parse(configuration);
     let type = parsedConfig["$type"].split(", ")[0].split(".")[parsedConfig["$type"].split(", ")[0].split(".").length - 1] as string;
@@ -89,6 +118,8 @@ export class PipelinePageComponent implements OnInit {
 
     return { typeName: type, properties: properties };
   }
+
+
 
   public isFilterBaseFilter(filterBase: IFilterBase) {
     return (filterBase.$type.indexOf('YAB.Core.Pipelines.Filter.Filter,') !== -1);

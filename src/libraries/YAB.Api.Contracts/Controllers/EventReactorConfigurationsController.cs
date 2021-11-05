@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Newtonsoft.Json;
 
+using YAB.Api.Contracts.Extensions;
 using YAB.Api.Contracts.Models.EventReactors;
 using YAB.Core.EventReactor;
 using YAB.Plugins.Injectables;
@@ -44,6 +45,7 @@ namespace YAB.Api.Contracts.Controllers
 
                     result.Add(new EventReactorConfigurationDto
                     {
+                        Properties = configurationType.GetPropertyDescriptorsForType(),
                         EventTypeName = eventType.FullName,
                         SeralizedEventReactorConfiguration = JsonConvert.SerializeObject(configurationInstance, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })
                     });
@@ -54,7 +56,7 @@ namespace YAB.Api.Contracts.Controllers
         }
 
         [HttpGet("pipelines/{pipelineId}/eventbases")]
-        public Task<IActionResult> GetRegisteredPipelineAsync([FromRoute] string pipelineId, CancellationToken cancellationToken)
+        public Task<IActionResult> GetRegisteredPipelineParentEventsAsync([FromRoute] string pipelineId, CancellationToken cancellationToken)
         {
             var pipelineIdParsed = Guid.Parse(pipelineId);
             var pipelineStore = _containerAccessor.Container.GetInstance<IPipelineStore>();

@@ -20,7 +20,8 @@
             <span *ngIf="pipelineDescription" class="select-none">{{pipelineDescription}}</span>
           </div>
 
-          <app-pipeline-element [marginXAuto]="true" [elementDetails]="event" [icon]="'EVENT'" [borderDefinition]="{
+          <app-pipeline-element [marginXAuto]="true" [elementDetails]="event" [icon]="allBlockIcons.event"
+            [borderDefinition]="{
               'topLeft': false,
               'topRight': false,
               'bottomLeft': false,
@@ -38,7 +39,7 @@
           </ng-container>
 
           <app-pipeline-element *ngIf="filterBlock" [marginXAuto]="true" [elementDetails]="filterBlock"
-            [icon]="'FILTER'" [borderDefinition]="{
+            [icon]="allBlockIcons.filter" [borderDefinition]="{
             'topLeft': false,
             'topRight': false,
             'bottomLeft': false,
@@ -60,7 +61,7 @@
 
           <ng-container
             *ngFor="let eventConfiguration of eventReactorConfigurations; let lastConfig = last;let firstConfig = first; let index = index;">
-            <app-pipeline-element [marginXAuto]="true" [icon]="'ACTION'" [borderDefinition]="{
+            <app-pipeline-element [marginXAuto]="true" [icon]="allBlockIcons.action" [borderDefinition]="{
               'topLeft': firstConfig,
               'topRight': false,
               'bottomLeft': false,
@@ -74,9 +75,11 @@
             </app-pipeline-element>
           </ng-container>
 
-          <ng-container *ngIf="allowEdit" [ngTemplateOutlet]="addIconTemplate"
-            [ngTemplateOutletContext]="{lineOutOfBottom: false }">
-          </ng-container>
+          <app-dropdown-menu [entries]="addNewActionDropdownEntries" (valueChanged)="addNewActionToPipeline($event)">
+            <ng-container *ngIf="allowEdit" [ngTemplateOutlet]="addIconTemplate"
+              [ngTemplateOutletContext]="{lineOutOfBottom: false }">
+            </ng-container>
+          </app-dropdown-menu>
 
 
         </div>

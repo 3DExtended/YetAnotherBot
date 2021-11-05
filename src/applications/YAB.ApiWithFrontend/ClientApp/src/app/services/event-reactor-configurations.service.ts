@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ErrorHandledResult } from '../shared/errorHandledResult';
 import { errorHandler } from '../shared/errorHandler';
 import { List } from './pipelines.service';
+import { PropertyDescription } from './register.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,6 @@ export class EventReactorConfigurationService {
 export interface EventReactorConfiguration {
   $type: "YAB.Api.Contracts.Models.EventReactors.EventReactorConfigurationDto, YAB.Api.Contracts",
   eventTypeName: string,
-  seralizedEventReactorConfiguration: string
+  seralizedEventReactorConfiguration: string,
+  properties: List<PropertyDescription>;
 }
