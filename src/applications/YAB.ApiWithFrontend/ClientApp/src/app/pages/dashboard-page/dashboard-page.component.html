@@ -21,6 +21,9 @@
           </ng-container>
         </app-dropdown-menu>
 
+        <app-custom-dialog>
+        </app-custom-dialog>
+
         <app-table [showShadow]="false" (doubleClickHandler)="pipelineConfigurationDoubleClicked($event)"
           [title]="'Registered Pipelines:'" [data]="pipelineTableConfiguration">
         </app-table>

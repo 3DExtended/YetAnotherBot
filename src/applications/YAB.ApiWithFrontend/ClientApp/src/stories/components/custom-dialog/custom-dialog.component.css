@@ -1,0 +1,27 @@
+@import '../../../styles.css';
+
+.dialoghost {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background-color: #0000008c;
+}
+
+.dialog {
+  width: fit-content;
+  margin: auto;
+  height: fit-content;
+}
+
+.dialogcontainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}

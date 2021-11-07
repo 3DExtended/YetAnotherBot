@@ -8,6 +8,7 @@ import { ChartsModule } from 'ng2-charts';
 import { BotStatusIndicatorComponent } from 'src/stories/components/bot-status-indicator/bot-status-indicator.component';
 import { BubbleWithIconComponent } from 'src/stories/components/bubble-with-icon/bubble-with-icon.component';
 import { ButtonComponent } from 'src/stories/components/button/button.component';
+import { CustomDialogComponent } from 'src/stories/components/custom-dialog/custom-dialog.component';
 import { DropdownMenuComponent } from 'src/stories/components/dropdown-menu/dropdown-menu.component';
 import { InputFieldComponent } from 'src/stories/components/input-field/input-field.component';
 import { LineGrpahComponent } from 'src/stories/components/line-graph/line-graph.component';
@@ -51,7 +52,8 @@ export function getBaseUrl(): string {
     TableComponent,
     PipelineElementComponent,
     RegisterPageComponent,
-    DropdownMenuComponent
+    DropdownMenuComponent,
+    CustomDialogComponent
   ],
   imports: [
     BrowserModule,
