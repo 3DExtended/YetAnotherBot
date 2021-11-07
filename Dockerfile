@@ -41,7 +41,7 @@ RUN dotnet restore "/src/src/applications/YAB.ApiWithFrontend/YAB.ApiWithFronten
 RUN dotnet build "/src/src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "/src/src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.csproj" -c Release --no-build -o /app/publish
+RUN dotnet publish "/src/src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
