@@ -28,6 +28,7 @@ export class EventReactorConfigurationService {
 export interface EventReactorConfiguration {
   $type: "YAB.Api.Contracts.Models.EventReactors.EventReactorConfigurationDto, YAB.Api.Contracts",
   eventTypeName: string,
+  description: string,
   seralizedEventReactorConfiguration: string,
   properties: List<PropertyDescription>;
 }

@@ -1,6 +1,7 @@
 <div class="custom-table-wrapper" (mousemove)="generalResizeHandlerMouseMove($event)"
   (mouseup)="generalResizeHandlerResetHandler()">
-  <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-4 pl-4 pb-4 pt-2">
+  <div class="bg-white rounded-lg pr-4 pl-4 pb-4 pt-2"
+    [ngClass]="{'shadow-md': showShadow, 'hover:shadow-xl': showShadow }">
     <h3 class="font-bold text-lg px-2 mb-1.5 pt-3">{{title}}</h3>
     <div class="custom-table-block-scrollable overflow-auto  p-2">
 

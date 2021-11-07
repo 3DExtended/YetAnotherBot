@@ -46,6 +46,8 @@ export class TableComponent implements OnInit {
     return this._data;
   }
 
+  @Input() public showShadow = true;
+
   @Input()
   public title: string = "";
 

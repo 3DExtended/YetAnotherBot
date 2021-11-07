@@ -13,7 +13,7 @@ export interface TableOfOptionsToFill {
   title: string;
 };
 
-const TableOfOptionsToFillColumns: TableColumn[] = [
+export const TableOfOptionsToFillColumns: TableColumn[] = [
   {
     title: 'Setting',
     selector: 'propertyName',

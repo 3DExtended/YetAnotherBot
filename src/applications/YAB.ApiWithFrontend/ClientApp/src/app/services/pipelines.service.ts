@@ -3,6 +3,8 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ErrorHandledResult } from '../shared/errorHandledResult';
 import { errorHandler } from '../shared/errorHandler';
+import { EventReactorConfiguration } from './event-reactor-configurations.service';
+import { PropertyDescription } from './register.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,28 @@ export class PipelinesService {
 
   public GetRegisteredPipelineById(guid: string): Observable<ErrorHandledResult<IPipelineDto>> {
     return this._httpClient.get<IPipelineDto>(this.baseUrl + "api/Pipelines/registered/" + guid, { observe: 'response' }).pipe(errorHandler());
+  }
+
+  public AddNewActionToPipeline(guid: string, eventConfig: EventReactorConfiguration, propertiesOfConfig: PropertyDescription[]): Observable<ErrorHandledResult<any>> {
+    const detailedConfig = this.stringifyEventReactorConfiguration(eventConfig.seralizedEventReactorConfiguration);
+
+    let configToAdd = {
+      $type: detailedConfig.fullname,
+    } as any;
+
+    for (const property of propertiesOfConfig) {
+      configToAdd[property.propertyName] = property.value;
+    }
+    return this._httpClient.post<any>(this.baseUrl + "api/Pipelines/pipelines/" + guid + "/newAction", { seralizedEventReactorConfiguration: JSON.stringify(configToAdd) }).pipe(errorHandler());
+  }
+
+  private stringifyEventReactorConfiguration(configuration: string): { typeName: string, properties: string[], uncleanedTypeName: string, fullname: string } {
+    const parsedConfig = JSON.parse(configuration);
+    let type = parsedConfig["$type"].split(", ")[0].split(".")[parsedConfig["$type"].split(", ")[0].split(".").length - 1] as string;
+    const cleanedType = type.substr(0, type.lastIndexOf("ReactorConfiguration"));
+    const properties = Object.entries(parsedConfig).filter(t => t[0] !== "$type").map(t => t[0] + ": \"" + t[1] + "\"");
+
+    return { typeName: cleanedType, properties: properties, uncleanedTypeName: type, fullname: parsedConfig.$type };
   }
 }
 

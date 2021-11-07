@@ -12,6 +12,7 @@ using YAB.Api.Contracts.Extensions;
 using YAB.Api.Contracts.Models.EventReactors;
 using YAB.Core.EventReactor;
 using YAB.Plugins.Injectables;
+using YAB.Plugins.Injectables.Options;
 
 namespace YAB.Api.Contracts.Controllers
 {
@@ -43,8 +44,13 @@ namespace YAB.Api.Contracts.Controllers
                     var configurationInstance = (IEventReactorConfiguration)Activator.CreateInstance(configurationType);
                     var eventType = eventReactor2Interface.GetGenericArguments()[1];
 
+                    var descriptionAttribute = configurationType.GetCustomAttributes(typeof(ReactorConfigurationDescriptionAttribute), true)
+                        .Cast<ReactorConfigurationDescriptionAttribute>()
+                        .FirstOrDefault();
+
                     result.Add(new EventReactorConfigurationDto
                     {
+                        Description = descriptionAttribute?.Description,
                         Properties = configurationType.GetPropertyDescriptorsForType(),
                         EventTypeName = eventType.FullName,
                         SeralizedEventReactorConfiguration = JsonConvert.SerializeObject(configurationInstance, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })

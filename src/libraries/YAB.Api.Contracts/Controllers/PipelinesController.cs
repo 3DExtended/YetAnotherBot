@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Newtonsoft.Json;
 
+using YAB.Api.Contracts.Models.EventReactors;
 using YAB.Api.Contracts.Models.Pipelines;
 using YAB.Core.EventReactor;
 using YAB.Core.Events;
@@ -34,7 +35,7 @@ namespace YAB.Api.Contracts.Controllers
         [HttpPost("pipelines/{pipelineId}/newAction")]
         public async Task<IActionResult> AddNewActionToPipelineAsync(
             [FromRoute] string pipelineId,
-            [FromBody] string serializedEventReactorConfiguration,
+            [FromBody] EventReactorConfigurationDto dto,
             CancellationToken cancellationToken)
         {
             // first get pipeline by its id
@@ -49,7 +50,7 @@ namespace YAB.Api.Contracts.Controllers
                 return NotFound();
             }
 
-            var configuration = JsonConvert.DeserializeObject<IEventReactorConfiguration>(serializedEventReactorConfiguration, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+            var configuration = JsonConvert.DeserializeObject<IEventReactorConfiguration>(dto.SeralizedEventReactorConfiguration, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
 
             pipeline.PipelineHandlerConfigurations.Add(configuration);
 

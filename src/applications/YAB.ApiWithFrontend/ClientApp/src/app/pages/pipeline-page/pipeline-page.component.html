@@ -75,11 +75,23 @@
             </app-pipeline-element>
           </ng-container>
 
-          <app-dropdown-menu [entries]="addNewActionDropdownEntries" (valueChanged)="addNewActionToPipeline($event)">
-            <ng-container *ngIf="allowEdit" [ngTemplateOutlet]="addIconTemplate"
-              [ngTemplateOutletContext]="{lineOutOfBottom: false }">
+          <app-dropdown-menu *ngIf="allowEdit && !tableOfPropertiesOfReactorConfig"
+            [entries]="addNewActionDropdownEntries" (valueChanged)="addNewActionToPipeline($event)">
+            <ng-container [ngTemplateOutlet]="addIconTemplate" [ngTemplateOutletContext]="{lineOutOfBottom: false }">
             </ng-container>
           </app-dropdown-menu>
+
+          <div *ngIf="tableOfPropertiesOfReactorConfig" class="bg-white rounded-lg shadow-md hover:shadow-xl ">
+            <app-table [showShadow]='false' [title]="tableOfPropertiesOfReactorConfig.title"
+              [data]="tableOfPropertiesOfReactorConfig">
+            </app-table>
+
+            <div class="text-right ml-auto pb-3 pr-3">
+              <app-button [label]="'Save!'" [primary]="true" class="text-right" [bigButton]="true"
+                [disabled]="!isNewActionCompletlyConfigured()" (clicked)="saveNewAction()">
+              </app-button>
+            </div>
+          </div>
 
 
         </div>
