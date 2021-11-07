@@ -40,6 +40,12 @@ stages:
       inputs:
         dockerVersion: '20.10.7'
     
+    - task: Docker@2
+      displayName: Login to docker registry
+      inputs:
+        containerRegistry: '3dextended registry azure'
+        command: 'login'
+
     - task: CmdLine@2
       displayName: Build image for platform linux/arm/v7
       inputs:
@@ -47,23 +53,12 @@ stages:
           docker --version
           docker run --privileged --rm tonistiigi/binfmt --install all
           docker buildx use ci-builder
-          docker buildx build -t $(tag)-raspberrypi . --platform linux/arm/v7 --build-arg BASE_IMAGE=aspnet:5.0.11-buster-slim-arm64v8 --build-arg BUILD_IMAGE=sdk:5.0.402-buster-slim-arm64v8 --push
-       
-    - task: Docker@2
-      displayName: Login to docker registry
-      inputs:
-        containerRegistry: '3dextended registry azure'
-        command: 'login'
+          docker buildx build -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --platform linux/arm/v7 --build-arg BASE_IMAGE=aspnet:5.0.11-buster-slim-arm64v8 --build-arg BUILD_IMAGE=sdk:5.0.402-buster-slim-arm64v8
 
-#    - task: CmdLine@2
-#      inputs:
-#        script: |
-#          docker image push registry-host:5000/myadmin/rhel-httpd:$(tag)-raspberrypi
-#
     - task: Docker@2
       displayName: push custom platform version of image
       inputs:
         containerRegistry: '3dextended registry azure'
         repository: 'yetanotherbot'
         command: 'push'
-        tags: '$(tag)-raspberrypi'
+        tags: '$(tag)raspberrypi'
