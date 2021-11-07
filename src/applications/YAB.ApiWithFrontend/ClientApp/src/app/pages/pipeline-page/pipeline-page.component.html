@@ -14,8 +14,7 @@
         margin-right: auto !important;
         margin-left: 0cm !important;">
           <div class="pr-4 pl-4 pb-4 pt-2 mb-1 mt-4 mx-auto" style="max-width: 420px;text-align: center;">
-            <!-- TODO remove this click handler and this cursor pointer class -->
-            <h3 class="font-bold text-xl px-2 mb-1.5 pt-3 cursor-pointer" (click)="allowEdit = !allowEdit">
+            <h3 class="font-bold text-xl px-2 mb-1.5 pt-3 ">
               {{pipelineName}}</h3>
             <span *ngIf="pipelineDescription" class="select-none">{{pipelineDescription}}</span>
           </div>
@@ -80,20 +79,17 @@
             <ng-container [ngTemplateOutlet]="addIconTemplate" [ngTemplateOutletContext]="{lineOutOfBottom: false }">
             </ng-container>
           </app-dropdown-menu>
+        </div>
+        <div *ngIf="tableOfPropertiesOfReactorConfig" class="bg-white rounded-lg shadow-md hover:shadow-xl ">
+          <app-table [showShadow]='false' [title]="tableOfPropertiesOfReactorConfig.title"
+            [data]="tableOfPropertiesOfReactorConfig">
+          </app-table>
 
-          <div *ngIf="tableOfPropertiesOfReactorConfig" class="bg-white rounded-lg shadow-md hover:shadow-xl ">
-            <app-table [showShadow]='false' [title]="tableOfPropertiesOfReactorConfig.title"
-              [data]="tableOfPropertiesOfReactorConfig">
-            </app-table>
-
-            <div class="text-right ml-auto pb-3 pr-3">
-              <app-button [label]="'Save!'" [primary]="true" class="text-right" [bigButton]="true"
-                [disabled]="!isNewActionCompletlyConfigured()" (clicked)="saveNewAction()">
-              </app-button>
-            </div>
+          <div class="text-right ml-auto pb-3 pr-3">
+            <app-button [label]="'Save!'" [primary]="true" class="text-right" [bigButton]="true"
+              [disabled]="!isNewActionCompletlyConfigured()" (clicked)="saveNewAction()">
+            </app-button>
           </div>
-
-
         </div>
       </div>
     </div>

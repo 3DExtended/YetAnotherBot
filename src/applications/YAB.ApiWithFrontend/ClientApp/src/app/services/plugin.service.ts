@@ -22,11 +22,22 @@ export class PluginService {
     return this._httpClient.get<any>(this.baseUrl + "api/plugins/installed")
       .pipe(errorHandler<List<InstalledPluginTupleDto>>());
   }
+
+  public GetAllEvents(): Observable<ErrorHandledResult<EventType[]>> {
+    return this._httpClient.get<any>(this.baseUrl + "api/plugins/events")
+      .pipe(errorHandler<EventType[]>());
+  }
 }
 
 export interface InstalledPluginTupleDto {
   item1: SupportedPluginDto;
   item2: boolean;
+}
+
+export interface EventType {
+  $type: string;
+  id: string;
+  [key: string]: any;
 }
 
 export interface SupportedPluginsDto {

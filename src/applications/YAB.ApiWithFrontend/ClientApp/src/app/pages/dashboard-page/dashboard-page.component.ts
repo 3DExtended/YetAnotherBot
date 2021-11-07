@@ -4,6 +4,7 @@ import { forkJoin, Subject, timer } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { EventLoggingEntryDto, EventService } from 'src/app/services/event.service';
 import { FilterOperator, IFilter, IFilterBase, IFilterGroup, List, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
+import { DropdownMenuEntry } from 'src/stories/components/dropdown-menu/dropdown-menu.component';
 import { LineGraphDataset } from 'src/stories/components/line-graph/line-graph-dataset';
 import { TableColumn, TableColumnType, TableRow } from 'src/stories/components/table/table.component';
 
@@ -76,6 +77,8 @@ export class DashboardPageComponent implements OnInit {
     ],
     dataItems: []
   };
+
+  public addNewPipelineDropdownEntries: DropdownMenuEntry[] = [];
 
   public past24HourEvents: List<EventLoggingEntryDto> | null = null;
 

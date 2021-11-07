@@ -17,7 +17,7 @@ import { TableOfOptionsToFill, TableOfOptionsToFillColumns } from '../register-p
 export class PipelinePageComponent implements OnInit {
 
   public showFilterDetails = false;
-  public allowEdit = false;
+  public allowEdit = true;
 
   public allBlockIcons: any = {
     filter: PipelineBlockIcon.Filter,
