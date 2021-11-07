@@ -74,7 +74,7 @@
             </app-pipeline-element>
           </ng-container>
 
-          <app-dropdown-menu *ngIf="allowEdit && !tableOfPropertiesOfReactorConfig"
+          <app-dropdown-menu *ngIf="allowEdit && !tableOfPropertiesOfReactorConfig" [topOfButton]="true"
             [entries]="addNewActionDropdownEntries" (valueChanged)="addNewActionToPipeline($event)">
             <ng-container [ngTemplateOutlet]="addIconTemplate" [ngTemplateOutletContext]="{lineOutOfBottom: false }">
             </ng-container>

@@ -4,6 +4,7 @@ import { forkJoin, Subject, timer } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { EventLoggingEntryDto, EventService } from 'src/app/services/event.service';
 import { FilterOperator, IFilter, IFilterBase, IFilterGroup, List, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
+import { PluginService } from 'src/app/services/plugin.service';
 import { DropdownMenuEntry } from 'src/stories/components/dropdown-menu/dropdown-menu.component';
 import { LineGraphDataset } from 'src/stories/components/line-graph/line-graph-dataset';
 import { TableColumn, TableColumnType, TableRow } from 'src/stories/components/table/table.component';
@@ -82,14 +83,29 @@ export class DashboardPageComponent implements OnInit {
 
   public past24HourEvents: List<EventLoggingEntryDto> | null = null;
 
-  constructor(private readonly _pipelinesService: PipelinesService,
+  constructor(
+    private readonly _pluginService: PluginService,
+    private readonly _pipelinesService: PipelinesService,
     private readonly _eventsService: EventService,
     private readonly _router: Router) { }
 
   ngOnInit(): void {
-    const botStatusLoader = this._pipelinesService.GetRegisteredPipelines();
-    forkJoin([botStatusLoader]).subscribe(res => {
+    const pipelinesLoader = this._pipelinesService.GetRegisteredPipelines();
+    const eventsLoader = this._pluginService.GetAllEvents();
+    forkJoin([pipelinesLoader, eventsLoader]).subscribe(async res => {
       console.log(res);
+      if (res.some(r => !r.successful)) {
+        await this._router.navigateByUrl("/login");
+      }
+
+      this.addNewPipelineDropdownEntries = res[1].data.map(e => {
+        const parts = (e.$type.split(".").pop() as string).split(", ");
+        return {
+          label: parts[0] + " (" + parts[1] + ")",
+          selector: e.$type,
+        };
+      });
+
       this.pipelineTableConfiguration.dataItems = res[0].data.$values.map(
         p => {
           return {

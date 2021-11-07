@@ -15,7 +15,8 @@
       </div>
 
       <div class="bg-white rounded-lg shadow-md hover:shadow-xl ">
-        <app-dropdown-menu [entries]="addNewPipelineDropdownEntries" (valueChanged)="addNewActionToPipeline($event)">
+        <app-dropdown-menu class="float-right p-2" [entries]="addNewPipelineDropdownEntries" [leftOfButton]="true"
+          (valueChanged)="addNewActionToPipeline($event)">
           <ng-container [ngTemplateOutlet]="addIconTemplate" [ngTemplateOutletContext]="{lineOutOfBottom: false }">
           </ng-container>
         </app-dropdown-menu>

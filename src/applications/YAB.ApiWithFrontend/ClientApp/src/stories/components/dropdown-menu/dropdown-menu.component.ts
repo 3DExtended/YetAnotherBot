@@ -15,6 +15,10 @@ export class DropdownMenuComponent {
   @Input() entries: DropdownMenuEntry[] = [];
   @Output() valueChanged: EventEmitter<string> = new EventEmitter();
 
+  @Input() leftOfButton = false;
+  @Input() topOfButton = false;
+
+
   public showOptions: boolean = false;
 
   public showContent() {
