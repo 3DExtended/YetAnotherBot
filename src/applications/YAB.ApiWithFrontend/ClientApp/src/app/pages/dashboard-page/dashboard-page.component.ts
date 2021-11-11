@@ -15,9 +15,9 @@ import { TableColumn, TableColumnType, TableRow } from 'src/stories/components/t
   styleUrls: ['./dashboard-page.component.css']
 })
 export class DashboardPageComponent implements OnInit {
-
+  public newPipelineOptions: { title: string, description: string, eventTypeFullName: string } | null = null;
   private refreshRateOfEventsInMs = 5000;
-
+  public showNewPipelineDialog = false;
   public eventGraphValues: LineGraphDataset = {
     lines: [],
     xAxisLabels: [
@@ -88,6 +88,8 @@ export class DashboardPageComponent implements OnInit {
     private readonly _pipelinesService: PipelinesService,
     private readonly _eventsService: EventService,
     private readonly _router: Router) { }
+
+
 
   ngOnInit(): void {
     const pipelinesLoader = this._pipelinesService.GetRegisteredPipelines();
@@ -214,8 +216,27 @@ export class DashboardPageComponent implements OnInit {
       });
   }
 
+  public async newPipelineDialogClosed(event: string) {
+    if (event === "cancel" || !this.newPipelineOptions) {
+      this.newPipelineOptions = null;
+      this.showNewPipelineDialog = false;
+      return;
+    }
+
+    // create new empty pipeline and open it
+    const createResponse = await this._pipelinesService.CreateNewPipeline(this.newPipelineOptions.title, this.newPipelineOptions.description, this.newPipelineOptions.eventTypeFullName).toPromise();
+    if (createResponse.successful) {
+      await this._router.navigateByUrl("/pipelines/" + createResponse.data);
+    }
+  }
+
   public async pipelineConfigurationDoubleClicked(event: TableRow) {
     await this._router.navigateByUrl("/pipelines/" + event.pipelineId);
+  }
+
+  public addNewPipeline(eventFullName: string) {
+    this.newPipelineOptions = { title: "", description: "", eventTypeFullName: eventFullName };
+    this.showNewPipelineDialog = true;
   }
 
   private stringifyEventReactorConfiguration(configuration: string) {
@@ -224,7 +245,11 @@ export class DashboardPageComponent implements OnInit {
     return type + ": {" + Object.entries(parsedConfig).filter(t => t[0] !== "$type").map(t => "\"" + t[0] + "\": \"" + t[1] + "\"").join(", ") + "}";
   }
 
-  private stringifyEventFilters(eventFilter: IFilterBase): string {
+  private stringifyEventFilters(eventFilter: IFilterBase | null): string {
+    if (!eventFilter) {
+      return "";
+    }
+
     if (eventFilter.$type.indexOf('YAB.Core.Pipelines.Filter.Filter, ') !== -1) {
       const filter = eventFilter as IFilter;
       const filterOperation = Object.entries(FilterOperator).filter(o => o[1] === filter.operator)[0][0];

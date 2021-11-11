@@ -50,6 +50,7 @@ export class PipelineElementComponent implements OnInit {
 
   @Input() icon: PipelineBlockIcon = PipelineBlockIcon.Event;
   @Input() marginXAuto: boolean = false;
+  @Input() centerAligned: boolean = false;
 
   @ContentChild('content', { static: false }) injectedContentTemplate: TemplateRef<any> | undefined;
 

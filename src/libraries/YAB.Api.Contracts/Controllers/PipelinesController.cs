@@ -59,6 +59,47 @@ namespace YAB.Api.Contracts.Controllers
             return Ok();
         }
 
+        [HttpPost("pipelines/create")]
+        public async Task<IActionResult> CreateNewPipelineAsync(
+            [FromBody] PipelineDto dto,
+            CancellationToken cancellationToken)
+        {
+            // validate name and description
+            if (string.IsNullOrEmpty(dto.Name) || string.IsNullOrEmpty(dto.Description))
+            {
+                return BadRequest();
+            }
+
+            // find event type for name
+            var allEvents = _containerAccessor.Container.GetAllInstances<IEventBase>().ToList();
+
+            var eventForPipeline = allEvents.SingleOrDefault(e => e.GetType().FullName == dto.EventName.Split(", ")[0]);
+            if (eventForPipeline is null)
+            {
+                return NotFound();
+            }
+
+            // create new guid
+            var newPipelineId = Guid.NewGuid();
+
+            // create new pipeline in store
+            _pipelineStore.Pipelines.Add(new Pipeline
+            (
+                description: dto.Description,
+                name: dto.Name,
+                eventType: eventForPipeline.GetType(),
+                eventFilter: null,
+                pipelineHandlerConfigurations: new List<IEventReactorConfiguration>(),
+                pipelineId: newPipelineId
+            ));
+
+            // save store to file
+            await _pipelineStore.SavePipelinesAsync(cancellationToken).ConfigureAwait(false);
+
+            // return pipeline id
+            return Ok(newPipelineId);
+        }
+
         [HttpGet("registered/{pipelineId}")]
         public Task<IActionResult> GetRegisteredPipelineAsync([FromRoute] string pipelineId, CancellationToken cancellationToken)
         {

@@ -18,6 +18,14 @@ export class PipelinesService {
     return this._httpClient.get<List<IPipelineDto>>(this.baseUrl + "api/Pipelines/registered", { observe: 'response' }).pipe(errorHandler());
   }
 
+  public CreateNewPipeline(pipelineName: string, pipelineDescription: string, eventName: string): Observable<ErrorHandledResult<string>> {
+    return this._httpClient.post<any>(this.baseUrl + "api/Pipelines/pipelines/create", {
+      name: pipelineName,
+      description: pipelineDescription,
+      eventName: eventName,
+    }, { observe: "body" }).pipe(errorHandler());
+  }
+
   public GetRegisteredPipelineById(guid: string): Observable<ErrorHandledResult<IPipelineDto>> {
     return this._httpClient.get<IPipelineDto>(this.baseUrl + "api/Pipelines/registered/" + guid, { observe: 'response' }).pipe(errorHandler());
   }

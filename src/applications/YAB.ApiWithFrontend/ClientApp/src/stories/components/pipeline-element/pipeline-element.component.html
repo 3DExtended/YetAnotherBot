@@ -18,11 +18,13 @@
               [ngTemplateOutletContext]="{rotate90Deg:true, hide: !borderDefinition.lineFromLeftIntoRight }">
             </ng-container>
           </div>
-          <div class="justify-self-center" style="width: 420px;">
+          <div [ngClass]="{'justify-self-left': !centerAligned, 'justify-self-center': centerAligned}"
+            style="width: min-content; min-width: 420px;">
             <ng-container [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{ }">
             </ng-container>
           </div>
           <div class="justify-self-center"></div>
+
 
           <!-- bottom three cells -->
           <div class="justify-self-center"></div>

@@ -15,13 +15,13 @@ export class NavbarComponent implements OnInit {
       showOn: () => { return true; }
     },
     {
-      href: "#/pipelines",
-      titleKey: 'Pipelines',
+      href: "#/register",
+      titleKey: 'Extensions',
       showOn: () => { return true; }
     },
     {
-      href: "#/extensions",
-      titleKey: 'Extensions',
+      href: "#/tutorials",
+      titleKey: 'Tutorials',
       showOn: () => { return true; }
     },
   ];

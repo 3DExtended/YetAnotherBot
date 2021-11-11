@@ -1,8 +1,10 @@
 <div class="dialoghost">
-  <div class="dialogcontainer">
+  <div class="dialogcontainer ">
     <div class="dialog bg-white rounded-lg shadow-md hover:shadow-xl p-3">
-      <ng-content></ng-content>
-      <div class="flex" style="gap: 12px; justify-content: right;">
+      <div class="dialog-content">
+        <ng-content></ng-content>
+      </div>
+      <div class="flex" style="gap: 12px; justify-content: right; padding-top: 12px;">
         <app-button *ngFor="let button of buttons" [label]="button.label" [primary]="!!button.primary" class=""
           [bigButton]="false" (clicked)="buttonClicked(button.selector)" [disabled]="false">
         </app-button>

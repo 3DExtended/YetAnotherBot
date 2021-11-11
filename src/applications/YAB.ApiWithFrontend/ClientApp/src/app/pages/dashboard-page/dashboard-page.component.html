@@ -16,12 +16,22 @@
 
       <div class="bg-white rounded-lg shadow-md hover:shadow-xl ">
         <app-dropdown-menu class="float-right p-2" [entries]="addNewPipelineDropdownEntries" [leftOfButton]="true"
-          (valueChanged)="addNewActionToPipeline($event)">
+          (valueChanged)="addNewPipeline($event)">
           <ng-container [ngTemplateOutlet]="addIconTemplate" [ngTemplateOutletContext]="{lineOutOfBottom: false }">
           </ng-container>
         </app-dropdown-menu>
 
-        <app-custom-dialog>
+        <app-custom-dialog *ngIf="showNewPipelineDialog && newPipelineOptions"
+          (valueChanged)="newPipelineDialogClosed($event)">
+          <div style="min-width: 300px; width: 30vw;">
+            <h3 style="    font-weight: bold;">Create a new pipeline</h3>
+            <span style="padding-bottom: 1rem;">For event
+              "{{newPipelineOptions.eventTypeFullName.split(".").pop()}}"</span>
+            <app-input-field [placeholder]="'Pipeline Name'" [inputType]="'text'"
+              (valueChanged)="newPipelineOptions.title = $event"></app-input-field>
+            <app-input-field [placeholder]="'Description'" [inputType]="'text'"
+              (valueChanged)="newPipelineOptions.description = $event"></app-input-field>
+          </div>
         </app-custom-dialog>
 
         <app-table [showShadow]="false" (doubleClickHandler)="pipelineConfigurationDoubleClicked($event)"
