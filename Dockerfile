@@ -17,7 +17,7 @@ ARG rpi
 # env variable for slim-buster images
 ARG DEBIAN_FRONTEND=noninteractive
 
-FROM mcr.microsoft.com/dotnet/core/$BASE_IMAGE AS base
+FROM mcr.microsoft.com/dotnet/$BASE_IMAGE AS base
 WORKDIR /app
 run apt-get update -y && apt-get install -y curl npm && npm install -g npm@6.14.13
 
@@ -28,7 +28,7 @@ run apt-get install -y nodejs
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/core/$BUILD_IMAGE AS buildbase
+FROM mcr.microsoft.com/dotnet/$BUILD_IMAGE AS buildbase
 run apt-get update -y && apt-get install -y curl npm && npm install -g npm@6.14.13
 
 run curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
