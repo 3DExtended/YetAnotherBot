@@ -51,7 +51,7 @@ stages:
       inputs:
         script: |
           docker --version
-          docker build -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --platform linux/arm/v7 --build-arg rpi=42
+          docker build -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --build-arg rpi=42
     
     - task: CmdLine@2
       displayName: Build image for platform linux/arm/v7
