@@ -51,7 +51,7 @@ stages:
       inputs:
         script: |
           docker --version
-          docker build -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi .
+          docker build --no-cache -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --build-arg rpi=42
     
     - task: CmdLine@2
       displayName: Build image for platform linux/arm/v7
@@ -60,7 +60,7 @@ stages:
           docker --version
           docker run --privileged --rm tonistiigi/binfmt --install all
           docker buildx use ci-builder
-          docker buildx build -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --platform linux/arm/v7 --build-arg rpi=42
+          docker buildx build --no-cache -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --platform linux/arm/v7 --build-arg rpi=42
 
     - task: Docker@2
       displayName: push custom platform version of image
