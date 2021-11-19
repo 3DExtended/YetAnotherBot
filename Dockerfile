@@ -9,6 +9,8 @@ run curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
 run sh ./setup_14.sh
 run apt-get install -y nodejs
 
+ENV ASPNETCORE_URLS=http://+:80  
+EXPOSE 80
 EXPOSE 5000
 EXPOSE 5001
 
@@ -42,6 +44,9 @@ FROM base AS final
 WORKDIR /app
 VOLUME /app2
 COPY --from=publish /app/publish .
+
+ENV ASPNETCORE_URLS=http://+:80  
+EXPOSE 80
 EXPOSE 5000
 EXPOSE 5001
 
