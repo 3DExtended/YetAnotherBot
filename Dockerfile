@@ -43,10 +43,10 @@ RUN ls -la ../
 FROM base AS final
 WORKDIR /app
 # VOLUME /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app/publish /app
 EXPOSE 80
 EXPOSE 443
 
 # ENTRYPOINT ["dotnet", "YAB.ApiWithFrontend.dll"]
-ENTRYPOINT ["ls", "-la", "./"]
+ENTRYPOINT ["ls", "-la", "/app"]
 # ENTRYPOINT ["realpath", "."]
