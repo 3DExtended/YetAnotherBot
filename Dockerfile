@@ -18,7 +18,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
-run apt-get update -y && apt-get install -y curl npm && npm install -g npm@6.14.13
+run apt-get update -y && apt-get install -y curl npm && npm config set unsafe-perm true && npm install -g npm@6.14.13
 
 run curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
 run sh ./setup_14.sh
@@ -32,7 +32,7 @@ ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
 
-run apt-get update -y && apt-get install -y curl npm && npm install -g npm@6.14.13
+run apt-get update -y && apt-get install -y curl npm && npm config set unsafe-perm true && npm install -g npm@6.14.13
 
 run curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
 run sh ./setup_14.sh
