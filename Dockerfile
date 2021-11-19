@@ -39,7 +39,7 @@ RUN dotnet publish "/src/src/applications/YAB.ApiWithFrontend/YAB.ApiWithFronten
 
 FROM base AS final
 WORKDIR /app
-VOLUME /app
+# VOLUME /app
 COPY --from=publish /app/publish .
 EXPOSE 80
 EXPOSE 443
