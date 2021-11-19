@@ -41,8 +41,8 @@ RUN ls -la
 RUN ls -la ../
 
 FROM base AS final
+VOLUME /app
 WORKDIR /app
-# VOLUME /app
 COPY --from=publish /app/publish .
 EXPOSE 80
 EXPOSE 443
