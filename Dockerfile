@@ -9,8 +9,8 @@ run curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
 run sh ./setup_14.sh
 run apt-get install -y nodejs
 
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5000
+EXPOSE 5001
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:5.0 AS buildbase
 ARG TARGETPLATFORM
@@ -42,8 +42,8 @@ FROM base AS final
 WORKDIR /app
 VOLUME /app2
 COPY --from=publish /app/publish .
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5000
+EXPOSE 5001
 
 ENTRYPOINT ["dotnet", "YAB.ApiWithFrontend.dll"]
 # ENTRYPOINT ["ls", "-la"]
