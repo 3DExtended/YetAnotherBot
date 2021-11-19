@@ -17,18 +17,38 @@ stages:
   jobs:
   - job: BuildAMDVersion
     displayName: Build
-    pool:
-      vmImage: ubuntu-latest
+    pool: Tower DOCKER
     steps:
 
-    - task: Docker@2
-      displayName: Build and push image for linux/amd64
+    - task: DockerInstaller@0
+      displayName: Install Docker 20.X
       inputs:
-       containerRegistry: '3dextended registry azure'
-       repository: 'yetanotherbot'
-       command: 'buildAndPush'
-       Dockerfile: '**/Dockerfile'
-       tags: '$(tag)'
+        dockerVersion: '20.10.7'
+    
+    - task: Docker@2
+      displayName: Login to docker registry
+      inputs:
+        containerRegistry: '3dextended registry azure'
+        command: 'login'
+
+    - task: CmdLine@2
+      displayName: Build image for platform linux/amd64
+      enabled: true
+      inputs:
+        script: |
+          docker --version
+          sudo docker run --privileged --rm tonistiigi/binfmt --install all
+          sudo docker buildx use ci-builder
+          sudo docker buildx inspect --bootstrap
+          sudo docker buildx build -t 3dextended.azurecr.io/yetanotherbot:$(tag) . --platform linux/amd64
+
+    - task: Docker@2
+      displayName: push custom platform version of image
+      inputs:
+        containerRegistry: '3dextended registry azure'
+        repository: 'yetanotherbot'
+        command: 'push'
+        tags: '$(tag)'
 
   - job: BuildARMVersion
     displayName: Build
