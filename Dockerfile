@@ -36,6 +36,9 @@ RUN dotnet build "/src/src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.
 FROM build AS publish
 RUN dotnet publish "/src/src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.csproj" -c Release -o /app/publish
 # RUN if [ -z "$rpi" ] ; then dotnet publish "/src/src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.csproj" -c Release -o /app/publish ; else dotnet publish "/src/src/applications/YAB.ApiWithFrontend/YAB.ApiWithFrontend.csproj" -c Release -o /app/publish -r linux-arm  --self-contained false; fi
+WORKDIR /app/publish
+RUN ls -la
+RUN ls -la ../
 
 FROM base AS final
 WORKDIR /app
