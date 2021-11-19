@@ -15,42 +15,7 @@ stages:
 - stage: Build
   displayName: Build image
   jobs:
-  - job: BuildAMDVersion
-    displayName: Build
-    pool: Tower DOCKER
-    steps:
-
-    - task: DockerInstaller@0
-      displayName: Install Docker 20.X
-      inputs:
-        dockerVersion: '20.10.7'
-    
-    - task: Docker@2
-      displayName: Login to docker registry
-      inputs:
-        containerRegistry: '3dextended registry azure'
-        command: 'login'
-
-    - task: CmdLine@2
-      displayName: Build image for platform linux/amd64
-      enabled: true
-      inputs:
-        script: |
-          docker --version
-          sudo docker run --privileged --rm tonistiigi/binfmt --install all
-          sudo docker buildx use ci-builder
-          sudo docker buildx inspect --bootstrap
-          sudo docker buildx build -t 3dextended.azurecr.io/yetanotherbot:$(tag) . --platform linux/amd64
-
-    - task: Docker@2
-      displayName: push custom platform version of image
-      inputs:
-        containerRegistry: '3dextended registry azure'
-        repository: 'yetanotherbot'
-        command: 'push'
-        tags: '$(tag)'
-
-  - job: BuildARMVersion
+  - job: Build
     displayName: Build
     pool: Tower DOCKER
     steps:
@@ -76,6 +41,7 @@ stages:
           sudo docker buildx use ci-builder
           sudo docker buildx inspect --bootstrap
           sudo docker buildx build -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --platform linux/arm/v7
+          sudo docker buildx build -t 3dextended.azurecr.io/yetanotherbot:$(tag) . --platform linux/amd64
 
     - task: Docker@2
       displayName: push custom platform version of image
@@ -84,3 +50,11 @@ stages:
         repository: 'yetanotherbot'
         command: 'push'
         tags: '$(tag)raspberrypi'
+
+    - task: Docker@2
+      displayName: push custom platform version of image
+      inputs:
+        containerRegistry: '3dextended registry azure'
+        repository: 'yetanotherbot'
+        command: 'push'
+        tags: '$(tag)'
