@@ -51,10 +51,12 @@ stages:
       inputs:
         script: |
           docker --version
+          docker run --privileged --rm tonistiigi/binfmt --install all
           docker build --no-cache -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --build-arg rpi=42
     
     - task: CmdLine@2
       displayName: Build image for platform linux/arm/v7
+      enabled: false
       inputs:
         script: |
           docker --version
