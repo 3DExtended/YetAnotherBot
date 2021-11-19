@@ -45,5 +45,5 @@ EXPOSE 80
 EXPOSE 443
 
 # ENTRYPOINT ["dotnet", "YAB.ApiWithFrontend.dll"]
-# ENTRYPOINT ["ls", "-la", "../"]
-ENTRYPOINT ["realpath", "."]
+ENTRYPOINT ["ls", "-la"]
+# ENTRYPOINT ["realpath", "."]
