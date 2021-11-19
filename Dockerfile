@@ -1,22 +1,7 @@
 # syntax=docker/dockerfile:1
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-# defines which image should be used for running the APP.
-# For raspberry pi, use an arm based image
-# see list here:
-# https://mcr.microsoft.com/v2/dotnet/aspnet/tags/list
-# ARG BASE_IMAGE=aspnet:5.0
-
-# defines which image should be used for building the APP.
-# For raspberry pi use an arm based image.
-# See list here:
-# https://mcr.microsoft.com/v2/dotnet/sdk/tags/list
-# ARG BUILD_IMAGE=sdk:5.0
-
-# env variable for slim-buster images
-ARG DEBIAN_FRONTEND=noninteractive
-
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+# FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS base
 WORKDIR /app
 run apt-get update -y && apt-get install -y curl npm && npm config set unsafe-perm true && npm install -g npm@6.14.13
 
