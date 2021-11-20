@@ -80,5 +80,6 @@ stages:
       inputs:
         script: |
           docker --version
+          sudo docker login -u 3dextended -p $(DOCKERHUBPASSWORD)
           sudo docker push 3dextended/yetanotherbot:$(tag)raspberrypi
           sudo docker push 3dextended/yetanotherbot:$(tag)
