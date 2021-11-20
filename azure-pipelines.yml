@@ -67,7 +67,6 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'Dockerhub 3DExtended'
-        repository: 'yetanotherbot'
         command: 'push'
         tags: |
           3dextended/yetanotherbot:$(tag)raspberrypi
