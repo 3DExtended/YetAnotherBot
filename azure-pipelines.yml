@@ -65,6 +65,7 @@ stages:
         command: 'login'
     
     - task: Docker@2
+      enabled: false
       inputs:
         containerRegistry: 'Dockerhub 3DExtended'
         command: 'push'
@@ -72,3 +73,12 @@ stages:
         tags: |
           3dextended/yetanotherbot:$(tag)raspberrypi
           3dextended/yetanotherbot:$(tag)
+          
+    - task: CmdLine@2
+      displayName: Build image for platform linux/arm/v7
+      enabled: true
+      inputs:
+        script: |
+          docker --version
+          sudo docker push 3dextended/yetanotherbot:$(tag)raspberrypi
+          sudo docker push 3dextended/yetanotherbot:$(tag)
