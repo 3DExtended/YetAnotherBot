@@ -40,8 +40,8 @@ stages:
           sudo docker run --privileged --rm tonistiigi/binfmt --install all
           sudo docker buildx use ci-builder
           sudo docker buildx inspect --bootstrap
-          sudo docker buildx build -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --platform linux/arm/v7
-          sudo docker buildx build -t 3dextended.azurecr.io/yetanotherbot:$(tag) . --platform linux/amd64
+          sudo docker buildx build -t 3dextended/yetanotherbot:$(tag)raspberrypi -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --platform linux/arm/v7
+          sudo docker buildx build -t 3dextended/yetanotherbot:$(tag) -t 3dextended.azurecr.io/yetanotherbot:$(tag) . --platform linux/amd64
 
     - task: Docker@2
       displayName: push custom platform version of image
@@ -58,3 +58,17 @@ stages:
         repository: 'yetanotherbot'
         command: 'push'
         tags: '$(tag)'
+    
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Dockerhub 3DExtended'
+        command: 'login'
+    
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Dockerhub 3DExtended'
+        repository: 'yetanotherbot'
+        command: 'push'
+        tags: |
+          3dextended/yetanotherbot:$(tag)raspberrypi
+          3dextended/yetanotherbot:$(tag)
