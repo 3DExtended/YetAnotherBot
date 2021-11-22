@@ -20,6 +20,13 @@ stages:
     pool: Tower DOCKER
     steps:
 
+    - task: CmdLine@2
+      displayName: Cleanup and delete all images on machine
+      enabled: true
+      inputs:
+        script: |
+          sudo docker image prune -a --filter "until=24h" -f
+
     - task: DockerInstaller@0
       displayName: Install Docker 20.X
       inputs:
