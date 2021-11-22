@@ -25,7 +25,7 @@ stages:
       enabled: true
       inputs:
         script: |
-          sudo docker image prune -a --filter "until=24h" -f
+          sudo docker system prune --all -f
 
     - task: DockerInstaller@0
       displayName: Install Docker 20.X
@@ -96,4 +96,4 @@ stages:
       enabled: true
       inputs:
         script: |
-          sudo docker image prune -a --filter "until=24h" -f
+          sudo docker system prune --all -f
