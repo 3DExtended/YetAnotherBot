@@ -91,6 +91,11 @@ namespace YAB.Api.Contracts.Controllers
                 /*var options = _containerAccessor.Container.GetInstance<TwitchOptions>();
                 options.Load(botPassword);*/
 
+                var isRegistered = await _pipelineStore.IsRegistrationCompletedAsync(cancellationToken).ConfigureAwait(false);
+                if (!isRegistered) { 
+                await _pipelineStore.SavePipelinesAsync(cancellationToken).ConfigureAwait(false);
+                }
+
                 foreach (var option in _optionsToLoad)
                 {
                     option.Load(botPassword);
