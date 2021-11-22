@@ -89,4 +89,4 @@ stages:
       enabled: true
       inputs:
         script: |
-          sudo docker rmi -f $(sudo docker images -aq)
+          sudo docker image prune -a --filter "until=24h" -f
