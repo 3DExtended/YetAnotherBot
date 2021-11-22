@@ -91,7 +91,7 @@ namespace YAB.Plugins.Injectables
                         cfg.CreateMap(configuration.GetType(), correctConfigurationType);
                     });
 
-                    var mapper = new AutoMapper.Mapper(config);
+                    var mapper = new Mapper(config);
 
                     // public Task RunAsync(TConfiguration config, TEvent evt, CancellationToken cancellationToken);
                     var runAsyncMethod = ((Type)(handlerInstance.GetType()))

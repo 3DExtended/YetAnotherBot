@@ -19,6 +19,12 @@ namespace YAB.Plugins
         public void RegisterEventReactors(Action<Type> registerer);
 
         /// <summary>
+        /// Please register all FilterExtension your plugin provides.
+        /// </summary>
+        /// <param name="registerer">Call this action for each of your FilterExtension.</param>
+        public void RegisterFilterExtensions(Action<Type> registerer);
+
+        /// <summary>
         /// Please register all the events your plugin provides such that the user can register event reators on those.
         /// </summary>
         /// <param name="registerer">Call this action for each of your events.</param>

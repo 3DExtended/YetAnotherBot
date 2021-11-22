@@ -8,6 +8,7 @@ using SimpleInjector;
 
 using YAB.Core.EventReactor;
 using YAB.Core.Events;
+using YAB.Core.FilterExtension;
 using YAB.Plugins;
 using YAB.Plugins.Injectables.Options;
 
@@ -36,6 +37,7 @@ namespace YAB.Services.Common
             var loadedEvents = new List<Type>();
             var loadedOptions = new List<IOptions> { new BotOptions() };
             var loadedEventReactors = new List<Type>();
+            var loadedFilterExtensions = new List<Type>();
             var loadedBackgroundTasks = new List<Type>();
 
             var lastCounterOfExceptionsWhileLoading = int.MaxValue;
@@ -90,6 +92,12 @@ namespace YAB.Services.Common
                                 loadedEventReactors.Add(t);
                             });
 
+                            moduleInstance.RegisterFilterExtensions((t) =>
+                            {
+                                container.Register(t);
+                                loadedFilterExtensions.Add(t);
+                            });
+
                             moduleInstance.RegisterPluginEvents((t) =>
                             {
                                 container.Register(t);
@@ -113,6 +121,7 @@ namespace YAB.Services.Common
             container.Options.AllowOverridingRegistrations = false;
             container.Collection.Register(typeof(IBackgroundTask), loadedBackgroundTasks);
             container.Collection.Register(typeof(IEventReactor), loadedEventReactors);
+            container.Collection.Register(typeof(IFilterExtension), loadedFilterExtensions);
             container.Collection.Register(typeof(IEventBase), loadedEvents);
             container.Collection.Register(typeof(IOptions), loadedOptions);
         }
