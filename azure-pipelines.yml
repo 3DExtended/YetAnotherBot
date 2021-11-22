@@ -75,7 +75,7 @@ stages:
           3dextended/yetanotherbot:$(tag)
           
     - task: CmdLine@2
-      displayName: Build image for platform linux/arm/v7
+      displayName: Push images to dockerhub
       enabled: true
       inputs:
         script: |
@@ -83,3 +83,10 @@ stages:
           sudo docker login -u 3dextended -p $(DOCKERHUBPASSWORD)
           sudo docker push 3dextended/yetanotherbot:$(tag)raspberrypi
           sudo docker push 3dextended/yetanotherbot:$(tag)
+
+    - task: CmdLine@2
+      displayName: Cleanup and delete all images on machine
+      enabled: true
+      inputs:
+        script: |
+          sudo docker rmi -f $(sudo docker images -aq)
