@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 using AutoMapper;
+using AutoMapper.Configuration;
 
 using Microsoft.Extensions.Logging;
 
@@ -20,6 +22,8 @@ namespace YAB.Plugins.Injectables
         private readonly IFrontendLogging _frontendLogging;
         private readonly ILogger _logger;
         private readonly IPipelineStore _pipelineStore;
+
+        private Dictionary<Guid, System.Timers.Timer> _timers = new Dictionary<Guid, System.Timers.Timer>();
 
         public EventSenderInstantExecuter(IPipelineStore pipelineStore, ILogger logger, IList<IEventReactor> allEventReactors, IFrontendLogging frontendLogging)
         {
@@ -47,7 +51,7 @@ namespace YAB.Plugins.Injectables
 
             _logger.LogInformation($"Found {pipelinesToExecute.Count()} pipelines to execute for event of type {evt.GetType().Name}.");
 
-            var eventParentClasses = GetParentClassesAndSelf(evt.GetType()).Select((value, index) => new { value, index }).ToList();
+            var eventParentClasses = GetParentClassesAndSelf(evt.GetType()).Select((value, index) => (value, index)).ToList();
 
             // execute all pipelines (should not be many...)
             foreach (var pipeline in pipelinesToExecute)
@@ -66,41 +70,62 @@ namespace YAB.Plugins.Injectables
                     var typeOfHandler = interfaceWithHandlerDetails.GetGenericArguments()[0];
                     var handlerInstance = (dynamic)_allEventReactors.Single(r => r.GetType().Name == typeOfHandler.Name);
 
-                    IEnumerable<Type> handlerInterfacesWithTwoGenericArguments = ((Type)(handlerInstance.GetType()))
-                        .GetInterfaces()
-                        .Where(i => i.IsGenericType && i.GetGenericArguments().Length == 2);
-
-                    var highestInterfaceByInheritanceOrder = handlerInterfacesWithTwoGenericArguments
-                        .Select(i => eventParentClasses.FirstOrDefault(t => t.value.FullName.Contains(i.GetGenericArguments()[1].FullName)))
-                        .Where(i => i != null)
-                        .OrderBy(i => i.index)
-                        .First();
-
-                    var interfaceGenericArguments = handlerInterfacesWithTwoGenericArguments
-                        .First(i => highestInterfaceByInheritanceOrder.value.FullName.Contains(i.GetGenericArguments()[1].FullName))
-                        .GetGenericArguments();
-
-                    var correctConfigurationType = interfaceGenericArguments[0];
-                    var correctEventType = interfaceGenericArguments[1];
-                    var castMethodToCorrectEventType = GetType().GetMethods().Single(m => m.Name.Contains("CastObject")).MakeGenericMethod(correctEventType);
-                    var castedEvt = (dynamic)castMethodToCorrectEventType.Invoke(null, new[] { evt });
-
-                    // we have to use a mapper here in order to convert a Api based configuration into the type of the plugin (or vice versa)
-                    var config = new MapperConfiguration(cfg =>
+                    if (configuration.DelayTaskForSeconds is not null)
                     {
-                        cfg.CreateMap(configuration.GetType(), correctConfigurationType);
-                    });
-
-                    var mapper = new Mapper(config);
-
-                    // public Task RunAsync(TConfiguration config, TEvent evt, CancellationToken cancellationToken);
-                    var runAsyncMethod = ((Type)(handlerInstance.GetType()))
-                        .GetMethods()
-                        .Single(m => m.Name.Contains("RunAsync")
-                            && m.GetParameters()[1].ParameterType.FullName.Contains(correctEventType.FullName));
-                    await runAsyncMethod.Invoke(handlerInstance, new[] { mapper.Map(configuration, configuration.GetType(), correctConfigurationType), (object)evt, cancellationToken }).ConfigureAwait(false);
+                        var timerId = Guid.NewGuid();
+                        var timer = new System.Timers.Timer(configuration.DelayTaskForSeconds.Value * 1000);
+                        timer.AutoReset = false;
+                        timer.Enabled = true;
+                        timer.Elapsed += async (sender, e) =>
+                        {
+                            await ExecuteEventReactorForConfiguration(evt, eventParentClasses, configuration, typeOfConfig, interfaceWithHandlerDetails, typeOfHandler, handlerInstance, cancellationToken).ConfigureAwait(false);
+                            _timers.Remove(timerId);
+                        };
+                        timer.Start();
+                        _timers.Add(timerId, timer);
+                    }
+                    else { 
+                        await ExecuteEventReactorForConfiguration(evt, eventParentClasses, configuration, typeOfConfig, interfaceWithHandlerDetails, typeOfHandler, handlerInstance, cancellationToken).ConfigureAwait(false);
+                    }
                 }
             }
+        }
+
+        private static async Task ExecuteEventReactorForConfiguration(IEventBase evt, List<(Type value, int index)> eventParentClasses, IEventReactorConfiguration configuration, Type typeOfConfig, Type interfaceWithHandlerDetails, Type typeOfHandler, dynamic handlerInstance, CancellationToken cancellationToken)
+        {
+            IEnumerable<Type> handlerInterfacesWithTwoGenericArguments = ((Type)handlerInstance.GetType())
+                .GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericArguments().Length == 2);
+
+            var highestInterfaceByInheritanceOrder = handlerInterfacesWithTwoGenericArguments
+                .Select(i => eventParentClasses.FirstOrDefault(t => t.value.FullName.Contains(i.GetGenericArguments()[1].FullName)))
+                .Where(i => i.value != null)
+                .OrderBy(i => i.index)
+                .First();
+
+            var interfaceGenericArguments = handlerInterfacesWithTwoGenericArguments
+                .First(i => highestInterfaceByInheritanceOrder.value.FullName.Contains(i.GetGenericArguments()[1].FullName))
+                .GetGenericArguments();
+
+            var correctConfigurationType = interfaceGenericArguments[0];
+            var correctEventType = interfaceGenericArguments[1];
+            var castMethodToCorrectEventType = typeof(EventSenderInstantExecuter).GetMethods().Single(m => m.Name.Contains("CastObject")).MakeGenericMethod(correctEventType);
+            var castedEvt = (dynamic)castMethodToCorrectEventType.Invoke(null, new[] { evt });
+
+            // we have to use a mapper here in order to convert a Api based configuration into the type of the plugin (or vice versa)
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap(configuration.GetType(), correctConfigurationType);
+            });
+
+            var mapper = new Mapper(config);
+
+            // public Task RunAsync(TConfiguration config, TEvent evt, CancellationToken cancellationToken);
+            var runAsyncMethod = ((Type)(handlerInstance.GetType()))
+                .GetMethods()
+                .Single(m => m.Name.Contains("RunAsync")
+                    && m.GetParameters()[1].ParameterType.FullName.Contains(correctEventType.FullName));
+            await runAsyncMethod.Invoke(handlerInstance, new[] { mapper.Map(configuration, configuration.GetType(), correctConfigurationType), (object)evt, cancellationToken }).ConfigureAwait(false);
         }
 
         private bool FiltersAllowExecution(FilterBase filterBase, IEventBase evt)

@@ -93,7 +93,7 @@ namespace YAB.Api.Contracts.Controllers
 
                 var isRegistered = await _pipelineStore.IsRegistrationCompletedAsync(cancellationToken).ConfigureAwait(false);
                 if (!isRegistered) { 
-                await _pipelineStore.SavePipelinesAsync(cancellationToken).ConfigureAwait(false);
+                    await _pipelineStore.SavePipelinesAsync(cancellationToken).ConfigureAwait(false);
                 }
 
                 foreach (var option in _optionsToLoad)

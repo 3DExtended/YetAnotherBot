@@ -76,7 +76,7 @@ namespace YAB.Api.Contracts.Extensions
 
         public static PropertyValueTypeDto GetValueType(this Type type)
         {
-            if (type == typeof(int))
+            if (type == typeof(int) || type == typeof(int?))
             {
                 return PropertyValueTypeDto.Int;
             }
