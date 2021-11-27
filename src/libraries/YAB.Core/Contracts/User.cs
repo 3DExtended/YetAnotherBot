@@ -1,18 +1,13 @@
-﻿namespace YAB.Core.Contracts
+﻿using YAB.Core.Annotations;
+
+namespace YAB.Core.Contracts
 {
     public class User
     {
-        /// <summary>
-        /// Normally the user name shown in chats and feeds.
-        /// </summary>
+        [PropertyDescription(false, "Normally the user name shown in chats and feeds.")]
         public string DisplayName { get; set; }
 
-        /// <summary>
-        /// Unique identifier for this plattform.
-        /// This has to be some identifier which does not change for a given user.
-        /// </summary>
+        [PropertyDescription(false, "Unique identifier for this plattform. This has to be some identifier which does not change for a given user.")]
         public string Id { get; set; }
-
-        public PluginPlattform Plattform { get; set; }
     }
 }
