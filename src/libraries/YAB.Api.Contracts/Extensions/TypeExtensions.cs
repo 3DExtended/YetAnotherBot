@@ -37,7 +37,7 @@ namespace YAB.Api.Contracts.Extensions
             }
         }
 
-        public static List<PropertyDescriptionDto> GetPropertyDescriptorsForType(this Type configurationType, object? instance = null)
+        public static List<PropertyDescriptionDto> GetPropertyDescriptorsForType(this Type configurationType, object instance = null)
         {
             var propertyDescriptions = new List<PropertyDescriptionDto>();
             var optionProperties = configurationType.GetProperties();
@@ -65,7 +65,7 @@ namespace YAB.Api.Contracts.Extensions
                     propertyValueType = null;
                 }
 
-                PropertyDescriptionDto descriptor = new PropertyDescriptionDto
+                var descriptor = new PropertyDescriptionDto
                 {
                     PropertyName = optionProperty.Name,
                     ValueType = propertyValueType ?? PropertyValueTypeDto.Complex,
@@ -100,7 +100,6 @@ namespace YAB.Api.Contracts.Extensions
             }
             else
             {
-                throw new NotImplementedException($"Could not translate type {type.FullName} to PropertyValueTypeDto.");
                 return PropertyValueTypeDto.Complex;
             }
         }

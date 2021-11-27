@@ -41,7 +41,7 @@ namespace YAB.Api.Contracts.Controllers
         }
 
         [HttpGet("optionsToFill")]
-        public async Task<IActionResult> GetOptionsToFillAsync(string password, CancellationToken cancellationToken)
+        public IActionResult GetOptionsToFill(string password, CancellationToken cancellationToken)
         {
             var result = new List<OptionsDescriptionDto>();
 
@@ -74,7 +74,7 @@ namespace YAB.Api.Contracts.Controllers
                         propertyDiscriptor.CurrentValue = value;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }

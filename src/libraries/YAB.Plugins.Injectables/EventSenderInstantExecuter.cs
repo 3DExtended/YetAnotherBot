@@ -92,7 +92,7 @@ namespace YAB.Plugins.Injectables
 
         private static async Task ExecuteEventReactorForConfiguration(IEventBase evt, List<(Type value, int index)> eventParentClasses, IEventReactorConfiguration configuration, Type typeOfConfig, Type interfaceWithHandlerDetails, Type typeOfHandler, dynamic handlerInstance, CancellationToken cancellationToken)
         {
-            IEnumerable<Type> handlerInterfacesWithTwoGenericArguments = ((Type)handlerInstance.GetType())
+            var handlerInterfacesWithTwoGenericArguments = ((Type)handlerInstance.GetType())
                 .GetInterfaces()
                 .Where(i => i.IsGenericType && i.GetGenericArguments().Length == 2);
 
