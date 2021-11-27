@@ -1,5 +1,7 @@
 ﻿using System.IO;
 
+using YAB.Core.Annotations;
+
 namespace YAB.Plugins.Injectables.Options
 {
     public class BotOptions : Options<BotOptions>

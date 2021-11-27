@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using YAB.Api.Contracts.Models.Plugins.OptionDescriptions;
-using YAB.Plugins.Injectables.Options;
+using YAB.Core.Annotations;
 
 namespace YAB.Api.Contracts.Extensions
 {

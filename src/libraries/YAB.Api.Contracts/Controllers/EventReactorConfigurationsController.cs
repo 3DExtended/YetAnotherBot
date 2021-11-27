@@ -10,9 +10,9 @@ using Newtonsoft.Json;
 
 using YAB.Api.Contracts.Extensions;
 using YAB.Api.Contracts.Models.EventReactors;
+using YAB.Core.Annotations;
 using YAB.Core.EventReactor;
 using YAB.Plugins.Injectables;
-using YAB.Plugins.Injectables.Options;
 
 namespace YAB.Api.Contracts.Controllers
 {
