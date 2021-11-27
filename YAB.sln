@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31105.61
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAB.CLI", "src\applications\YAB.CLI\YAB.CLI.csproj", "{0D8A9D43-5F1E-4349-82C4-0EE572A79F99}"
 EndProject
@@ -24,6 +24,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAB.ApiWithFrontend", "src\applications\YAB.ApiWithFrontend\YAB.ApiWithFrontend.csproj", "{065BE4D4-56F1-4817-A2E9-0330CBE252FD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAB.Api.Contracts", "src\libraries\YAB.Api.Contracts\YAB.Api.Contracts.csproj", "{5916AEBF-956B-43F9-AF1E-6483C9B1B6A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{818F0A57-2E7D-48F7-9B87-D336621F179A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

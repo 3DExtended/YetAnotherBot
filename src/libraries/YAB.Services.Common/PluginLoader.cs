@@ -16,9 +16,8 @@ namespace YAB.Services.Common
 {
     public static class PluginLoader
     {
-
         public static string PluginsDirectory = "/plugins/";
-        
+
         public static void LoadAllPlugins(this Container container)
         {
             Console.WriteLine(Directory.GetCurrentDirectory());

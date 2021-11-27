@@ -8,7 +8,6 @@ import { errorHandler } from '../shared/errorHandler';
   providedIn: 'root'
 })
 export class BotStatusService {
-
   constructor(private readonly _httpClient: HttpClient,
     @Inject('API_BASE_URL') private readonly baseUrl: string) { }
 

@@ -58,13 +58,12 @@ namespace YAB.Api.Contracts.Extensions
                 PropertyValueTypeDto? propertyValueType = null;
                 try
                 {
-                    propertyValueType=optionProperty.PropertyType.GetValueType();
+                    propertyValueType = optionProperty.PropertyType.GetValueType();
                 }
                 catch (Exception)
                 {
-                    propertyValueType=null;
+                    propertyValueType = null;
                 }
-
 
                 PropertyDescriptionDto descriptor = new PropertyDescriptionDto
                 {

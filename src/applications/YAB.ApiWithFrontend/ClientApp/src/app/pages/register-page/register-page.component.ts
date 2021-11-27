@@ -158,7 +158,6 @@ export class RegisterPageComponent implements OnInit {
       }
       this.allPlugins = res[0].data;
 
-
       this.pluginsTableConfig.dataItems = this.allPlugins.$values.map(p => {
         return {
           "installed": p.item2,

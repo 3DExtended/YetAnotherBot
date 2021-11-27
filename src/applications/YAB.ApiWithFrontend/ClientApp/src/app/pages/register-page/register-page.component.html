@@ -5,18 +5,17 @@
       <!-- <app-navbar></app-navbar> -->
       <!-- this has to become the wizard steps counter -->
       <app-wizard-step-indicator [title]="'Plugins'" [completed]="maxCurrentStepReached >= 0 && currentStep !== 0"
-        [primary]="false" [active]="currentStep === 0">
+                                 [primary]="false" [active]="currentStep === 0">
       </app-wizard-step-indicator>
       <app-wizard-step-indicator [title]="'Basic Settings'"
-        [completed]="maxCurrentStepReached >= 1 && currentStep !== 1" [primary]="false" [active]="currentStep === 1">
+                                 [completed]="maxCurrentStepReached >= 1 && currentStep !== 1" [primary]="false" [active]="currentStep === 1">
       </app-wizard-step-indicator>
       <app-wizard-step-indicator [title]="'Options'" [completed]="maxCurrentStepReached >= 2 && currentStep !== 2"
-        [primary]="false" [active]="currentStep === 2">
+                                 [primary]="false" [active]="currentStep === 2">
       </app-wizard-step-indicator>
       <app-wizard-step-indicator [title]="'Save and Login'" [completed]="false" [primary]="true"
-        [active]="currentStep === 3">
+                                 [active]="currentStep === 3">
       </app-wizard-step-indicator>
-
     </div>
     <div class="pb-4 pl-2 pt-2 pr-6 overflow-x-hidden">
       <div style="max-width: 1000px;">
@@ -30,18 +29,20 @@
         <ng-container *ngIf="currentStep === 0">
           <div>
             <app-table [title]="'Supported plugins:'" [data]="pluginsTableConfig"
-              (valueChanged)="installedPluginsValueChanged($event)">
+                       (valueChanged)="installedPluginsValueChanged($event)">
             </app-table>
           </div>
           <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 my-4">
             <div class="grid " style="grid-template-columns: auto 1fr;">
               <div>
-                <h4 *ngIf="pluginsChanged" class="font-bold text-lg px-2 mb-1.5 pt-3">Since you changed your plugins,
+                <h4 *ngIf="pluginsChanged" class="font-bold text-lg px-2 mb-1.5 pt-3">
+                  Since you changed your plugins,
                   you have to restart your
-                  bot to install them.</h4>
+                  bot to install them.
+                </h4>
               </div>
               <app-button [label]="'Next'" [primary]="true" class="text-right ml-auto" [bigButton]="true"
-                (clicked)="navigateForward()" [disabled]="pluginsChanged">
+                          (clicked)="navigateForward()" [disabled]="pluginsChanged">
               </app-button>
             </div>
           </div>
@@ -53,16 +54,16 @@
             <h3 class="font-bold text-lg px-2 mb-1.5 pt-3">Login Credentials</h3>
             <div>
               <app-input-field class="w-full" [placeholder]="'Password'" [inputType]="'password'"
-                [startValue]="password" (valueChanged)="password = $event"></app-input-field>
+                               [startValue]="password" (valueChanged)="password = $event"></app-input-field>
               <app-input-field class="w-full" [placeholder]="'Repeat Password'" [inputType]="'password'"
-                [startValue]="repeatedPassword" (valueChanged)="repeatedPassword = $event"></app-input-field>
+                               [startValue]="repeatedPassword" (valueChanged)="repeatedPassword = $event"></app-input-field>
             </div>
           </div>
 
           <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 my-4">
             <div>
               <app-button [label]="'Next'" [primary]="true" class="text-right ml-auto py-4" [bigButton]="true"
-                (clicked)="navigateForward()" [disabled]="!password || password !== repeatedPassword">
+                          (clicked)="navigateForward()" [disabled]="!password || password !== repeatedPassword">
               </app-button>
             </div>
           </div>
@@ -78,12 +79,14 @@
           <div class="bg-white rounded-lg shadow-md hover:shadow-xl pr-3 pl-3 pb-3 pt-3 my-4">
             <div class="grid " style="grid-template-columns: auto 1fr;">
               <div>
-                <h4 *ngIf="!areAllOptionsValid()" class="font-bold text-lg px-2 mb-1.5 pt-3">Please enter values for all
+                <h4 *ngIf="!areAllOptionsValid()" class="font-bold text-lg px-2 mb-1.5 pt-3">
+                  Please enter values for all
                   those
-                  options.</h4>
+                  options.
+                </h4>
               </div>
               <app-button [label]="'Next'" [primary]="true" class="text-right ml-auto" [bigButton]="true"
-                (clicked)="navigateForward()" [disabled]="!areAllOptionsValid()">
+                          (clicked)="navigateForward()" [disabled]="!areAllOptionsValid()">
               </app-button>
             </div>
           </div>
@@ -95,7 +98,7 @@
             <h4 class="font-bold text-lg px-2 mb-1.5 pt-3">Ready to configure your bot?</h4>
           </div>
           <app-button [label]="'Save!'" [primary]="true" class="text-right ml-auto" [bigButton]="true"
-            (clicked)="saveSettingsToBot()">
+                      (clicked)="saveSettingsToBot()">
           </app-button>
         </div>
       </div>

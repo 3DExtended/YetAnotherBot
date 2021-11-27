@@ -24,7 +24,6 @@ export interface PipelineElementBorderParts {
   lineFromLeftIntoRight: boolean;
 };
 
-
 @Component({
   selector: 'app-pipeline-element',
   templateUrl: './pipeline-element.component.html',
@@ -32,7 +31,6 @@ export interface PipelineElementBorderParts {
   // encapsulation: ViewEncapsulation.None
 })
 export class PipelineElementComponent implements OnInit {
-
   private borderStyle = '4px solid';
 
   @Input() elementDetails: PipelineBlock | null = null;
@@ -65,7 +63,6 @@ export class PipelineElementComponent implements OnInit {
     if (!this.borderDefinition.topLeft && !this.borderDefinition.topRight) {
       return {}; // no additional borders needed
     } else {
-
       return {
         'border-top': this.borderStyle,
         'border-image': 'linear-gradient(to right, '

@@ -1,5 +1,5 @@
 <ngx-graph [links]="links" [nodes]="nodes" class="chart-container" [layoutSettings]="layoutSettings"
-  [draggingEnabled]="false" [enableZoom]="true">
+           [draggingEnabled]="false" [enableZoom]="true">
   <ng-template #defsTemplate>
     <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
       <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
@@ -11,7 +11,7 @@
 
       <svg:foreignObject [attr.width]="node.dimension.width" [attr.height]="node.dimension.height">
         <xhtml:div class="cardContainer" xmlns="http://www.w3.org/1999/xhtml"
-          style="justify-content: center;display: flex; height: 100%; width: 100%;">
+                   style="justify-content: center;display: flex; height: 100%; width: 100%;">
           <app-bubble-with-icon style="margin: auto;" [title]="'asdf'"></app-bubble-with-icon>
         </xhtml:div>
       </svg:foreignObject>

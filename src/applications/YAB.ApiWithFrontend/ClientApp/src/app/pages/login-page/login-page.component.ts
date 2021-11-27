@@ -9,7 +9,6 @@ import { LoginService } from 'src/app/services/login.service';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent implements OnInit {
-
   public password: string | null = null;
   constructor(private readonly _loginService: LoginService,
     private readonly _activatedRoute: ActivatedRoute,

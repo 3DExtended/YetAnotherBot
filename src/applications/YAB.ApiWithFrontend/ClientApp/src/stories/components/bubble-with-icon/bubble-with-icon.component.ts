@@ -7,7 +7,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   // encapsulation: ViewEncapsulation.None
 })
 export class BubbleWithIconComponent implements OnInit {
-
   @Input() title: string = "";
   @Input() message: string = "";
 

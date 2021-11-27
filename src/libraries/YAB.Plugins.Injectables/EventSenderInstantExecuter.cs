@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 
 using AutoMapper;
-using AutoMapper.Configuration;
 
 using Microsoft.Extensions.Logging;
 
@@ -84,7 +82,8 @@ namespace YAB.Plugins.Injectables
                         timer.Start();
                         _timers.Add(timerId, timer);
                     }
-                    else { 
+                    else
+                    {
                         await ExecuteEventReactorForConfiguration(evt, eventParentClasses, configuration, typeOfConfig, interfaceWithHandlerDetails, typeOfHandler, handlerInstance, cancellationToken).ConfigureAwait(false);
                     }
                 }

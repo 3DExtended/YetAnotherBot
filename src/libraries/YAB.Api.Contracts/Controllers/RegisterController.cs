@@ -92,7 +92,8 @@ namespace YAB.Api.Contracts.Controllers
                 options.Load(botPassword);*/
 
                 var isRegistered = await _pipelineStore.IsRegistrationCompletedAsync(cancellationToken).ConfigureAwait(false);
-                if (!isRegistered) { 
+                if (!isRegistered)
+                {
                     await _pipelineStore.SavePipelinesAsync(cancellationToken).ConfigureAwait(false);
                 }
 

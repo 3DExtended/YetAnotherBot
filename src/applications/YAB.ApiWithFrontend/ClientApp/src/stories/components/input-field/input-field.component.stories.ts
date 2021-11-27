@@ -7,7 +7,6 @@ export default {
   component: InputFieldComponent
 } as Meta;
 
-
 export const Basic: Story = () => ({
   props: {
     value: "3DExtended",

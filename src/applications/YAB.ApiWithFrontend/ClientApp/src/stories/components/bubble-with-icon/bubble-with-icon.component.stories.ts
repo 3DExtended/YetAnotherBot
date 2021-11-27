@@ -7,7 +7,6 @@ export default {
   component: BubbleWithIconComponent
 } as Meta;
 
-
 export const Basic: Story = () => ({
   props: {
     title: "You got a new message",

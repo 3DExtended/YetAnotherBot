@@ -14,10 +14,10 @@ button.primary-button {
   filter: brightness(100%);
 }
 
-button.primary-button:hover {
-  background-color: var(--primary-button-color);
-  filter: var(--hover-background-color-brightness-filter);
-}
+  button.primary-button:hover {
+    background-color: var(--primary-button-color);
+    filter: var(--hover-background-color-brightness-filter);
+  }
 
 .big-button {
   padding: 9px;
@@ -31,17 +31,17 @@ button.secondary-button {
   filter: brightness(100%);
 }
 
-button.secondary-button:hover {
-  background-color: var(--secondary-button-color);
-  filter: var(--hover-background-color-brightness-filter);
-}
+  button.secondary-button:hover {
+    background-color: var(--secondary-button-color);
+    filter: var(--hover-background-color-brightness-filter);
+  }
 
 button:disabled {
   filter: saturate(0);
   cursor: default;
 }
 
-button:disabled:hover {
-  filter: saturate(0);
-  cursor: default;
-}
+  button:disabled:hover {
+    filter: saturate(0);
+    cursor: default;
+  }

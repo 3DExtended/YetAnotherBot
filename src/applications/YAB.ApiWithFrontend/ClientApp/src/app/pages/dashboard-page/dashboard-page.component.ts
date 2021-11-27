@@ -89,8 +89,6 @@ export class DashboardPageComponent implements OnInit {
     private readonly _eventsService: EventService,
     private readonly _router: Router) { }
 
-
-
   ngOnInit(): void {
     const pipelinesLoader = this._pipelinesService.GetRegisteredPipelines();
     const eventsLoader = this._pluginService.GetAllEvents();
@@ -157,7 +155,6 @@ export class DashboardPageComponent implements OnInit {
 
             Object.entries(groupsByEventType).forEach((groupEntry: [string, EventLoggingEntryDto[]], index: number, _) => {
               const groupsByHours: { [key: string]: any[] } = {};
-
 
               groupEntry[1].forEach(event => {
                 const differenceInHoursToNow = Math.abs((new Date(event.timeOfEvent)).getTime() - utc_timestamp) / 36e5;
@@ -262,4 +259,3 @@ export class DashboardPageComponent implements OnInit {
     }
   }
 }
-

@@ -8,7 +8,6 @@ import { errorHandler } from '../shared/errorHandler';
   providedIn: 'root'
 })
 export class LoginService {
-
   constructor(private readonly _httpClient: HttpClient,
     @Inject('API_BASE_URL') private readonly baseUrl: string) { }
 
@@ -22,7 +21,3 @@ export class LoginService {
       .pipe(errorHandler<boolean>());;
   }
 }
-
-
-
-

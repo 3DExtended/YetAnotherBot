@@ -7,7 +7,6 @@ export default {
   component: TableComponent
 } as Meta;
 
-
 export const Empty: Story = () => ({
   props: {},
   moduleMetadata: {
@@ -16,7 +15,6 @@ export const Empty: Story = () => ({
     ]
   }
 });
-
 
 export const Sample: Story = () => ({
   props: {

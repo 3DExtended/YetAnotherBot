@@ -20,7 +20,6 @@ export interface Employee {
   // encapsulation: ViewEncapsulation.None
 })
 export class PipelineGraphComponent implements OnInit {
-
   @Input() employees: Employee[] = [];
 
   public nodes: Node[] = [];
@@ -121,7 +120,6 @@ export class PipelineGraphComponent implements OnInit {
   public getStyles(node: Node): any {
     return {
       'background-color': node.data.backgroundColor,
-
     };
   }
 }

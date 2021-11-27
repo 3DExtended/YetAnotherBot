@@ -1,7 +1,7 @@
 <div class="custom-table-wrapper" (mousemove)="generalResizeHandlerMouseMove($event)"
-  (mouseup)="generalResizeHandlerResetHandler()">
+     (mouseup)="generalResizeHandlerResetHandler()">
   <div class="bg-white rounded-lg pr-4 pl-4 pb-4 pt-2"
-    [ngClass]="{'shadow-md': showShadow, 'hover:shadow-xl': showShadow }">
+       [ngClass]="{'shadow-md': showShadow, 'hover:shadow-xl': showShadow }">
     <h3 class="font-bold text-lg px-2 mb-1.5 pt-3">{{title}}</h3>
     <div class="custom-table-block-scrollable overflow-auto  p-2">
 
@@ -10,28 +10,27 @@
         <thead class="custom-table-header ">
           <tr>
             <th *ngFor="let column of data.columns; let index=index"
-              class="custom-table-column-header border-b text-left p-0 ">
+                class="custom-table-column-header border-b text-left p-0 ">
               <div class="column-header-wrapper grid pr-0  border-b border-r-0 border-l-0"
-                style="border-left-width: 0px !important;">
+                   style="border-left-width: 0px !important;">
                 <p class="flex cursor-pointer" (mousedown)="toggleSorting($event, column)">
                   <span [ngStyle]="{'width': (column.widthInPixels - 15) + 'px'}"
-                    class="py-1 pl-2 overflow-hidden overflow-ellipsis whitespace-nowrap">{{column.title}}</span>
+                        class="py-1 pl-2 overflow-hidden overflow-ellipsis whitespace-nowrap">{{column.title}}</span>
 
                   <svg *ngIf="column.sort === 'asc'" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 self-center"
-                    fill="none" viewBox="0 0 24 24" stroke="#444444">
+                       fill="none" viewBox="0 0 24 24" stroke="#444444">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M16 17l-4 4m0 0l-4-4m4 4V3" />
+                          d="M16 17l-4 4m0 0l-4-4m4 4V3" />
                   </svg>
 
                   <svg *ngIf="column.sort === 'desc'" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 self-center"
-                    fill="none" viewBox="0 0 24 24" stroke="#444444">
+                       fill="none" viewBox="0 0 24 24" stroke="#444444">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M8 7l4-4m0 0l4 4m-4-4v18" />
+                          d="M8 7l4-4m0 0l4 4m-4-4v18" />
                   </svg>
-
                 </p>
                 <span class="resize-handler border-r " (mousedown)="resizeHandlerClickHandler($event, true, column)"
-                  (mouseup)="resizeHandlerClickHandler($event, false, column)"></span>
+                      (mouseup)="resizeHandlerClickHandler($event, false, column)"></span>
               </div>
             </th>
           </tr>
@@ -39,34 +38,31 @@
 
         <tbody class="custom-table-body">
           <tr *ngFor="let row of data.dataItems;let lastRow = last; let index = index" class="custom-table-row"
-            (dblclick)="handleDoubleClick($event, row)" [ngClass]="{'border-b': !lastRow}">
+              (dblclick)="handleDoubleClick($event, row)" [ngClass]="{'border-b': !lastRow}">
             <td *ngFor="let column of data.columns; let index=index; let lastColumn = last"
-              class="pl-2 py-1  border-t-0 border-l-0" [ngClass]="{'border-r': !lastColumn}">
+                class="pl-2 py-1  border-t-0 border-l-0" [ngClass]="{'border-r': !lastColumn}">
               <div [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
                 <ng-container [ngTemplateOutlet]="columnContent"
-                  [ngTemplateOutletContext]="{dataItem:row, column:column, index:index}">
+                              [ngTemplateOutletContext]="{dataItem:row, column:column, index:index}">
                 </ng-container>
               </div>
-
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-
 </div>
-
 
 <ng-template #columnContent let-dataItem='dataItem' let-column='column' let-index='index'>
   <!-- normal column with text -->
   <div *ngIf="column.columnType === 'normal'">
     <div *ngIf="column.singleLineRow" class="custom-table-column text-left break-words"
-      [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+         [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
       {{dataItem[column.selector]}}
     </div>
     <div *ngIf="!column.singleLineRow" class="custom-table-column text-left overflow-hidden overflow-ellipsis"
-      [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+         [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
       {{dataItem[column.selector]}}
     </div>
   </div>
@@ -75,10 +71,9 @@
   <div *ngIf="column.columnType === 'booleanToogleColumn'">
 
     <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
-      [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+         [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
       <app-toggle-switch [value]="dataItem[column.selector]"
-        (valueChanged)="booleanToogleColumnValueChanged(dataItem, column, $event)">
-
+                         (valueChanged)="booleanToogleColumnValueChanged(dataItem, column, $event)">
       </app-toggle-switch>
     </div>
   </div>
@@ -86,48 +81,43 @@
   <!-- customizableInputColumn: column with configurable input elements -->
   <div *ngIf="column.columnType === 'customizableInputColumn'">
     <!-- boolean field -->
-    <div
-      *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'boolean'">
+    <div *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'boolean'">
       <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
-        [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+           [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
         <app-toggle-switch [value]="dataItem[column.selector]"
-          (valueChanged)="booleanToogleColumnValueChanged(dataItem, column, $event)">
-
+                           (valueChanged)="booleanToogleColumnValueChanged(dataItem, column, $event)">
         </app-toggle-switch>
       </div>
     </div>
 
     <!-- string field -->
-    <div
-      *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'string'">
+    <div *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'string'">
       <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
-        [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+           [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
         <app-input-field class="w-full" (valueChanged)="$event" [name]="column.title + index"
-          (valueChanged)="textFieldChangedHandler(dataItem, column, $event)" [startValue]="dataItem.value">
+                         (valueChanged)="textFieldChangedHandler(dataItem, column, $event)" [startValue]="dataItem.value">
         </app-input-field>
       </div>
     </div>
 
     <!-- password field -->
-    <div
-      *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'password'">
+    <div *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'password'">
       <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
-        [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+           [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
         <app-input-field class="w-full" [inputType]="'password'" (valueChanged)="$event" [name]="column.title + index"
-          (valueChanged)="textFieldChangedHandler(dataItem, column, $event)" [startValue]="dataItem.value">
+                         (valueChanged)="textFieldChangedHandler(dataItem, column, $event)" [startValue]="dataItem.value">
         </app-input-field>
       </div>
     </div>
 
     <!-- int field -->
-    <div
-      *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'int'">
+    <div *ngIf="column.customizableInputColumnDefinition && column.customizableInputColumnDefinition(dataItem) === 'int'">
       <div class="custom-table-column text-left overflow-hidden overflow-ellipsis"
-        [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
+           [ngStyle]="{'width': (column.widthInPixels - 6) + 'px'}">
 
         <!-- todo add int number valdation -->
         <app-input-field class="w-full" (valueChanged)="$event" [name]="column.title + index"
-          (valueChanged)="textFieldChangedHandler(dataItem, column, $event)" [startValue]="dataItem.value">
+                         (valueChanged)="textFieldChangedHandler(dataItem, column, $event)" [startValue]="dataItem.value">
         </app-input-field>
       </div>
     </div>

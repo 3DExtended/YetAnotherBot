@@ -9,7 +9,6 @@ import { LineGraphDataset } from './line-graph-dataset';
   // encapsulation: ViewEncapsulation.None,
 })
 export class LineGrpahComponent implements OnInit {
-
   private _graphValues: LineGraphDataset | null = null;
   public get graphValues(): LineGraphDataset | null {
     return this._graphValues;
@@ -81,8 +80,5 @@ export class LineGrpahComponent implements OnInit {
     this.lineChartLegend = this.graphValues ? this.graphValues.showChartLegend : false;
   }
 
-
-
   public lineChartPlugins: any[] = [];
-
 }

@@ -9,7 +9,6 @@ export default {
   component: ToggleSwitchComponent
 } as Meta;
 
-
 export const TrueState: Story = () => ({
   props: {
     value: true,

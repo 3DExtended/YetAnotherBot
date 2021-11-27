@@ -1,7 +1,7 @@
 @import '../../../styles.css';
 
-input:focus+label,
-input:not(:placeholder-shown)+label {
+input:focus + label,
+input:not(:placeholder-shown) + label {
   top: -3px;
   left: 11px;
   padding-left: 5px;
@@ -11,7 +11,8 @@ input:not(:placeholder-shown)+label {
   margin: 0px;
 }
 
-input:focus-within {}
+input:focus-within {
+}
 
 label,
 input {

@@ -26,7 +26,6 @@ import { PipelinePageComponent } from './pages/pipeline-page/pipeline-page.compo
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
 export function getBaseUrl(): string {
-
   if (window.location.origin.includes("4200")) {
     return "https://localhost:5001/"
   }

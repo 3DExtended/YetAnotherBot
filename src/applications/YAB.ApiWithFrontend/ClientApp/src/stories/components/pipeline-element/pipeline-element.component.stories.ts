@@ -10,7 +10,6 @@ export default {
   component: PipelineElementComponent
 } as Meta;
 
-
 export const PrimaryBasic: Story = () => ({
   props: {
     label: "Username",

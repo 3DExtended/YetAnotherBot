@@ -15,7 +15,6 @@ import { TableOfOptionsToFill, TableOfOptionsToFillColumns } from '../register-p
   styleUrls: ['./pipeline-page.component.css']
 })
 export class PipelinePageComponent implements OnInit {
-
   public showFilterDetails = false;
   public allowEdit = true;
   public displayNewFilterBlock = false;
@@ -294,7 +293,6 @@ export class PipelinePageComponent implements OnInit {
     }
   }
 
-
   public stringifyEventFilters(eventFilter: IFilterBase): string {
     if (!eventFilter) {
       return "";
@@ -311,4 +309,3 @@ export class PipelinePageComponent implements OnInit {
     }
   }
 }
-

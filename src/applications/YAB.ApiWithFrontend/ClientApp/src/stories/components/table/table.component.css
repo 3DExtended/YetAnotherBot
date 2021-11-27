@@ -21,12 +21,12 @@
   border-radius: 5px;
 }
 
-/* Handle on hover */
-.custom-table-block-scrollable::-webkit-scrollbar-thumb:hover {
-  background: #84828a;
-}
+  /* Handle on hover */
+  .custom-table-block-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #84828a;
+  }
 
-tbody.custom-table-body>tr.custom-table-row:hover {
+tbody.custom-table-body > tr.custom-table-row:hover {
   background-color: #ebebeb;
 }
 
@@ -34,9 +34,9 @@ tbody.custom-table-body>tr.custom-table-row:hover {
   cursor: col-resize;
 }
 
-.resize-handler:hover {
-  border-color: lightskyblue;
-}
+  .resize-handler:hover {
+    border-color: lightskyblue;
+  }
 
 .column-header-wrapper {
   grid-template-columns: auto 2px;

@@ -16,43 +16,44 @@
 
       <div class="bg-white rounded-lg shadow-md hover:shadow-xl ">
         <app-dropdown-menu class="float-right p-2" [entries]="addNewPipelineDropdownEntries" [leftOfButton]="true"
-          (valueChanged)="addNewPipeline($event)">
+                           (valueChanged)="addNewPipeline($event)">
           <ng-container [ngTemplateOutlet]="addIconTemplate" [ngTemplateOutletContext]="{lineOutOfBottom: false }">
           </ng-container>
         </app-dropdown-menu>
 
         <app-custom-dialog *ngIf="showNewPipelineDialog && newPipelineOptions"
-          (valueChanged)="newPipelineDialogClosed($event)">
+                           (valueChanged)="newPipelineDialogClosed($event)">
           <div style="min-width: 300px; width: 30vw;">
             <h3 style="    font-weight: bold;">Create a new pipeline</h3>
-            <span style="padding-bottom: 1rem;">For event
-              "{{newPipelineOptions.eventTypeFullName.split(".").pop()}}"</span>
+            <span style="padding-bottom: 1rem;">
+              For event
+              "{{newPipelineOptions.eventTypeFullName.split(".").pop()}}"
+            </span>
             <app-input-field [placeholder]="'Pipeline Name'" [inputType]="'text'"
-              (valueChanged)="newPipelineOptions.title = $event"></app-input-field>
+                             (valueChanged)="newPipelineOptions.title = $event"></app-input-field>
             <app-input-field [placeholder]="'Description'" [inputType]="'text'"
-              (valueChanged)="newPipelineOptions.description = $event"></app-input-field>
+                             (valueChanged)="newPipelineOptions.description = $event"></app-input-field>
           </div>
         </app-custom-dialog>
 
         <app-table [showShadow]="false" (doubleClickHandler)="pipelineConfigurationDoubleClicked($event)"
-          [title]="'Registered Pipelines:'" [data]="pipelineTableConfiguration">
+                   [title]="'Registered Pipelines:'" [data]="pipelineTableConfiguration">
         </app-table>
       </div>
     </div>
   </div>
 </div>
 
-
 <ng-template #addIconTemplate let-lineOutOfBottom='lineOutOfBottom'>
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="2 2 20 20" class="cursor-pointer m-auto"
-    style="width: 2.5rem;height: 2.5rem; animation: pulse 2s cubic-bezier(0.4, 0.5, 0.6, 0.75) infinite; "
-    stroke="currentColor">
+       style="width: 2.5rem;height: 2.5rem; animation: pulse 2s cubic-bezier(0.4, 0.5, 0.6, 0.75) infinite; "
+       stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
   <div *ngIf="lineOutOfBottom" style="width: 40px;height: 40px;" class="m-auto">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24" style="width: 40px;height: 40px; "
-      stroke="currentColor">
+         stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 5 L 12 -25 Z" />
     </svg>
   </div>

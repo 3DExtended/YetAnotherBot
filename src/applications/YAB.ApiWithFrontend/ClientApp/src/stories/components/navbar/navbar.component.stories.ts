@@ -6,7 +6,6 @@ export default {
   component: NavbarComponent
 } as Meta;
 
-
 export const Basic: Story = () => ({
   props: {},
 });

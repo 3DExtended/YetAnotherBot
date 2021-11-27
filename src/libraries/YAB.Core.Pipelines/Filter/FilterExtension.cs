@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-using YAB.Core.FilterExtension;
+﻿using YAB.Core.FilterExtension;
 
 namespace YAB.Core.Pipelines.Filter
 {
     public class FilterExtension : FilterBase
     {
-        public IFilterExtension CustomFilter{ get; set; }
+        public IFilterExtension CustomFilter { get; set; }
     }
 }

@@ -6,9 +6,9 @@
         <span>Automate your workflows from one place!</span>
       </div>
       <app-input-field class="w-full" [placeholder]="'Password'" [inputType]="'password'"
-        (valueChanged)="password = $event"></app-input-field>
+                       (valueChanged)="password = $event"></app-input-field>
       <app-button [label]="'Login'" [primary]="true" class="text-right ml-auto" [bigButton]="true" (clicked)="login()"
-        [disabled]="!password">
+                  [disabled]="!password">
       </app-button>
     </div>
   </div>

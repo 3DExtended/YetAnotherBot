@@ -84,7 +84,7 @@ namespace YAB.Api.Contracts.BackgroundTasks
                     //    .Where(t => IsTaskStillRunning(t))
                     //    .ToList()
                     //    .ForEach(t => t.Dispose());
-                    
+
                     _runningTasks = _runningTasks
                         .Where(t => IsTaskStillRunning(t))
                         .ToList();
@@ -93,7 +93,8 @@ namespace YAB.Api.Contracts.BackgroundTasks
                     {
                         Console.WriteLine("OHOH");
                     }
-                    else {
+                    else
+                    {
                         break;
                     }
                 }
@@ -101,12 +102,12 @@ namespace YAB.Api.Contracts.BackgroundTasks
                 _runningTasks = _runningTasks
                     .Where(t => IsTaskStillRunning(t))
                     .ToList();
-                
+
                 if (_runningTasks.Count > 0)
                 {
                     Console.WriteLine("OHOH");
                 }
-                
+
                 _cancellationTokenSource = new CancellationTokenSource();
                 _cancellationToken = _cancellationTokenSource.Token;
                 _taskFactory = new TaskFactory(_cancellationToken);

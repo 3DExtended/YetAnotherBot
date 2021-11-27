@@ -10,7 +10,6 @@ import { PropertyDescription } from './register.service';
   providedIn: 'root'
 })
 export class EventReactorConfigurationService {
-
   constructor(private readonly _httpClient: HttpClient,
     @Inject('API_BASE_URL') private readonly baseUrl: string) { }
 

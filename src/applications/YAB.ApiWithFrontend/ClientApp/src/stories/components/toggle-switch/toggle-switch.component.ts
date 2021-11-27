@@ -7,7 +7,6 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Outp
   // encapsulation: ViewEncapsulation.None
 })
 export class ToggleSwitchComponent implements OnInit, AfterViewInit {
-
   @Input() label: string = "";
 
   @Output() valueChanged: EventEmitter<boolean> = new EventEmitter();
@@ -43,5 +42,4 @@ export class ToggleSwitchComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
   }
-
 }

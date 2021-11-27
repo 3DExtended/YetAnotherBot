@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
   // encapsulation: ViewEncapsulation.None
 })
 export class NavbarComponent implements OnInit {
-
   private navbarElements = [
     {
       href: "#/dashboard",

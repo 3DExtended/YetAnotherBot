@@ -10,7 +10,6 @@ import { PropertyDescription } from './register.service';
   providedIn: 'root'
 })
 export class PipelinesService {
-
   constructor(private readonly _httpClient: HttpClient,
     @Inject('API_BASE_URL') private readonly baseUrl: string) { }
 
@@ -52,7 +51,6 @@ export class PipelinesService {
     return { typeName: cleanedType, properties: properties, uncleanedTypeName: type, fullname: parsedConfig.$type };
   }
 }
-
 
 export interface List<T> {
   $values: T[];

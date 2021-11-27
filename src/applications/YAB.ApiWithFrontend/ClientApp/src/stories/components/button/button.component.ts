@@ -7,7 +7,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   // encapsulation: ViewEncapsulation.None
 })
 export class ButtonComponent implements OnInit {
-
   @Input() label: string = "";
 
   @Input() primary = true;

@@ -10,7 +10,6 @@ export default {
   component: PipelineGraphComponent
 } as Meta;
 
-
 export const Basic: Story = () => ({
   props: {
   },

@@ -9,7 +9,6 @@ import { List } from './pipelines.service';
   providedIn: 'root'
 })
 export class PluginService {
-
   constructor(private readonly _httpClient: HttpClient,
     @Inject('API_BASE_URL') private readonly baseUrl: string) { }
 
