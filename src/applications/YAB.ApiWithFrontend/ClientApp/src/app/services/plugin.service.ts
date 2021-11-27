@@ -13,17 +13,17 @@ export class PluginService {
     @Inject('API_BASE_URL') private readonly baseUrl: string) { }
 
   public OfficiallySupportedPlugins(): Observable<ErrorHandledResult<SupportedPluginsDto>> {
-    return this._httpClient.get<any>(this.baseUrl + "api/plugins")
+    return this._httpClient.get<any>(this.baseUrl + 'api/plugins')
       .pipe(errorHandler<SupportedPluginsDto>());
   }
 
   public InstalledStatusOfSupportedPlugins(): Observable<ErrorHandledResult<List<InstalledPluginTupleDto>>> {
-    return this._httpClient.get<any>(this.baseUrl + "api/plugins/installed")
+    return this._httpClient.get<any>(this.baseUrl + 'api/plugins/installed')
       .pipe(errorHandler<List<InstalledPluginTupleDto>>());
   }
 
   public GetAllEvents(): Observable<ErrorHandledResult<EventType[]>> {
-    return this._httpClient.get<any>(this.baseUrl + "api/plugins/events")
+    return this._httpClient.get<any>(this.baseUrl + 'api/plugins/events')
       .pipe(errorHandler<EventType[]>());
   }
 }
@@ -40,12 +40,12 @@ export interface EventType {
 }
 
 export interface SupportedPluginsDto {
-  $type: "YAB.Core.Contracts.SupportedPlugins.SupportedPlugins, YAB.Core";
+  $type: 'YAB.Core.Contracts.SupportedPlugins.SupportedPlugins, YAB.Core';
   plugins: List<SupportedPluginDto>;
 }
 
 export interface SupportedPluginDto {
-  $type: "YAB.Core.Contracts.SupportedPlugins.SupportedPlugin, YAB.Core";
+  $type: 'YAB.Core.Contracts.SupportedPlugins.SupportedPlugin, YAB.Core';
   dllPath: string;
   pluginName: string;
   repositoryUrl: string;

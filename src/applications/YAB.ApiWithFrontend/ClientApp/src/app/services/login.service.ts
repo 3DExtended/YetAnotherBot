@@ -12,12 +12,12 @@ export class LoginService {
     @Inject('API_BASE_URL') private readonly baseUrl: string) { }
 
   public Login(password: string): Observable<ErrorHandledResult<any>> {
-    return this._httpClient.post<any>(this.baseUrl + "api/login", { password: password })
-      .pipe(errorHandler<any>());;
+    return this._httpClient.post<any>(this.baseUrl + 'api/login', { password: password })
+      .pipe(errorHandler<any>());
   }
 
   public IsRegistrationCompleted(): Observable<ErrorHandledResult<boolean>> {
-    return this._httpClient.get<any>(this.baseUrl + "api/login")
-      .pipe(errorHandler<boolean>());;
+    return this._httpClient.get<any>(this.baseUrl + 'api/login')
+      .pipe(errorHandler<boolean>());
   }
 }

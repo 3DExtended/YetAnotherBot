@@ -10,10 +10,10 @@ export class AppComponent {
   public graphData = {
     lines: [
       {
-        label: "Test Graph",
+        label: 'Test Graph',
         lineColorSettings: {
-          backgroundColor: "rgba(255,0,0,0.3)",
-          borderColor: "black"
+          backgroundColor: 'rgba(255,0,0,0.3)',
+          borderColor: 'black'
         },
         values: [
           5.0,
@@ -23,7 +23,7 @@ export class AppComponent {
       }
     ],
     showChartLegend: true,
-    xAxisLabels: ["January", "February", "March"]
+    xAxisLabels: ['January', 'February', 'March']
   };
 
   title = 'YetAnotherBotClient';

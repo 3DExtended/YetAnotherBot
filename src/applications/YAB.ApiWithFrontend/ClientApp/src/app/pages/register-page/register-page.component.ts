@@ -11,7 +11,7 @@ export interface TableOfOptionsToFill {
   columns: TableColumn[];
   dataItems: TableRow[];
   title: string;
-};
+}
 
 export const TableOfOptionsToFillColumns: TableColumn[] = [
   {
@@ -46,13 +46,13 @@ export const TableOfOptionsToFillColumns: TableColumn[] = [
         return InputColumnValueType.password;
       }
 
-      if (dataItem.valueType === PropertyValueType["string"]) {
+      if (dataItem.valueType === PropertyValueType['string']) {
         return InputColumnValueType.string;
       }
-      if (dataItem.valueType === PropertyValueType["int"]) {
+      if (dataItem.valueType === PropertyValueType['int']) {
         return InputColumnValueType.int;
       }
-      if (dataItem.valueType === PropertyValueType["floatingPoint"]) {
+      if (dataItem.valueType === PropertyValueType['floatingPoint']) {
         return InputColumnValueType.floatingPoint;
       }
 
@@ -73,19 +73,10 @@ export class RegisterPageComponent implements OnInit {
   public pluginsChanged = false;
 
   public currentStep = 0;
-  public password = "";
-  public repeatedPassword = "";
+  public password = '';
+  public repeatedPassword = '';
 
   public maxCurrentStepReached = -1;
-
-  public navigateForward() {
-    this.currentStep++;
-    this.maxCurrentStepReached = this.currentStep;
-
-    if (this.currentStep === 2) {
-      this.loadOptionsToFill();
-    }
-  }
 
   public pluginsTableConfig: { columns: TableColumn[]; dataItems: TableRow[]; } = {
     columns: [
@@ -126,6 +117,15 @@ export class RegisterPageComponent implements OnInit {
     private readonly _activatedRoute: ActivatedRoute,
     private readonly _router: Router) { }
 
+  public navigateForward() {
+    this.currentStep++;
+    this.maxCurrentStepReached = this.currentStep;
+
+    if (this.currentStep === 2) {
+      this.loadOptionsToFill();
+    }
+  }
+
   loadOptionsToFill() {
     const optionsToFillLoader = this._registerService.GetOptionsToFill(this.password);
     forkJoin([optionsToFillLoader]).subscribe((res) => {
@@ -136,14 +136,14 @@ export class RegisterPageComponent implements OnInit {
           columns: cloneDeep(TableOfOptionsToFillColumns),
           dataItems: v.properties.$values.map(pv => {
             return {
-              "propertyName": pv.propertyName,
-              "propertyDescription": pv.propertyDescription,
-              "value": pv.currentValue ?? "",
-              "isSecret": pv.isSecret,
-              "valueType": pv.valueType
+              'propertyName': pv.propertyName,
+              'propertyDescription': pv.propertyDescription,
+              'value': pv.currentValue ?? '',
+              'isSecret': pv.isSecret,
+              'valueType': pv.valueType
             };
           }),
-          title: v.optionFullName.split(".")[v.optionFullName.split(".").length - 1],
+          title: v.optionFullName.split('.')[v.optionFullName.split('.').length - 1],
           internalName: v.optionFullName
         };
       });
@@ -160,26 +160,26 @@ export class RegisterPageComponent implements OnInit {
 
       this.pluginsTableConfig.dataItems = this.allPlugins.$values.map(p => {
         return {
-          "installed": p.item2,
-          "pluginName": p.item1.pluginName,
-          "repository": p.item1.repositoryUrl,
+          'installed': p.item2,
+          'pluginName': p.item1.pluginName,
+          'repository': p.item1.repositoryUrl,
         };
-      })
+      });
     });
   }
 
   public saveSettingsToBot() {
     const updates: OptionsDescription[] = [];
     this.tableOfOptionsToFill.forEach(options => {
-      const optionsName = (options as any)["internalName"];
+      const optionsName = (options as any)['internalName'];
       const updateRequest: OptionsDescription = {
-        $type: "YAB.Api.Contracts.Models.Plugins.OptionDescriptions.OptionsDescriptionDto, YAB.Api.Contracts",
+        $type: 'YAB.Api.Contracts.Models.Plugins.OptionDescriptions.OptionsDescriptionDto, YAB.Api.Contracts',
         optionFullName: optionsName,
         properties: {
-          $type: "",
+          $type: '',
           $values: options.dataItems.map(asdf => {
             const propertyDescription: PropertyDescription = {
-              $type: "YAB.Api.Contracts.Models.Plugins.OptionDescriptions.PropertyDescriptionDto, YAB.Api.Contracts",
+              $type: 'YAB.Api.Contracts.Models.Plugins.OptionDescriptions.PropertyDescriptionDto, YAB.Api.Contracts',
               propertyDescription: asdf.propertyDescription as string,
               propertyName: asdf.propertyName as string,
               isSecret: asdf.isSecret as boolean,
@@ -196,7 +196,7 @@ export class RegisterPageComponent implements OnInit {
 
     this._registerService.UpdateOptionsToFill(this.password, updates).subscribe(async res => {
       // navigate to login
-      await this._router.navigateByUrl("/login");
+      await this._router.navigateByUrl('/login');
     });
   }
 
@@ -213,10 +213,10 @@ export class RegisterPageComponent implements OnInit {
   public async installedPluginsValueChanged(event: { selector: string, dataItem: TableRow }) {
     this.pluginsChanged = true;
     if (event.dataItem[event.selector] === true) {
-      console.log("install extension");
+      console.log('install extension');
       await this._registerService.InstallPlugin(event.dataItem['pluginName'].toString()).toPromise();
     } else {
-      console.log("uninstall extension");
+      console.log('uninstall extension');
       // TODO how to uninstall extensions?...
     }
   }

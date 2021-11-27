@@ -22,27 +22,27 @@ export class LoginPageComponent implements OnInit {
         return;
       } else {
         if (res[0].data === false) {
-          await this._router.navigateByUrl("/register");
+          await this._router.navigateByUrl('/register');
         }
       }
     });
   }
 
   public async login() {
-    console.log("login clicked");
-    await this._loginService.Login(this.password ?? "").toPromise()
+    console.log('login clicked');
+    await this._loginService.Login(this.password ?? '').toPromise()
       .then(async r => {
         console.log(r);
         if (!r.successful && r.statusCode === 404) {
           // some options were not registered correctly. start registering
-          await this._router.navigateByUrl("/register");
+          await this._router.navigateByUrl('/register');
           return;
         } else if (!r.successful) {
           return;
         }
 
         // open the status page of the frontend
-        await this._router.navigateByUrl("/dashboard");
+        await this._router.navigateByUrl('/dashboard');
       });
   }
 

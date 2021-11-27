@@ -1,4 +1,4 @@
-import { ErrorKind } from "./errorKind";
+import { ErrorKind } from './errorKind';
 
 export class ErrorHandledResult<T> {
   readonly data: T;

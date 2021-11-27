@@ -28,23 +28,23 @@ export class PipelinePageComponent implements OnInit {
   public addNewActionDropdownEntries: DropdownMenuEntry[] = [];
   public addNewFilterParts: DropdownMenuEntry[] = [
     {
-      label: "Event Filter",
-      selector: "eventFilter"
+      label: 'Event Filter',
+      selector: 'eventFilter'
     },
     {
-      label: "Filter Group",
-      selector: "filterGroup"
+      label: 'Filter Group',
+      selector: 'filterGroup'
     },
   ];
 
   public filterGroupOperatorDropdownEntries: DropdownMenuEntry[] = [
     {
-      label: "And",
-      selector: "and"
+      label: 'And',
+      selector: 'and'
     },
     {
-      label: "Or",
-      selector: "or"
+      label: 'Or',
+      selector: 'or'
     },
   ];
 
@@ -71,18 +71,18 @@ export class PipelinePageComponent implements OnInit {
     private readonly _router: Router) { }
 
   ngOnInit(): void {
-    this.pipelineId = this._activatedRoute.snapshot.paramMap.get("guid");
+    this.pipelineId = this._activatedRoute.snapshot.paramMap.get('guid');
 
     const pipelineLoader = this._pipelinesService.GetRegisteredPipelineById(this.pipelineId as string);
     const eventReactorConfigurationsLoader = this._eventReactorConfigurationService.GetAllEventReactorConfigurations();
     const registeredPipelineByIdAllowedEventBasesLoader = this._eventReactorConfigurationService.GetRegisteredPipelineByIdAllowedEventBases(this.pipelineId as string);
     forkJoin([pipelineLoader, eventReactorConfigurationsLoader, registeredPipelineByIdAllowedEventBasesLoader]).subscribe(async res => {
       if (res.some(r => !r.successful)) {
-        await this._router.navigateByUrl("/login");
+        await this._router.navigateByUrl('/login');
       }
       this.filter = res[0].data.eventFilter;
 
-      const eventFullNameSplits = res[0].data.eventName.split(".");
+      const eventFullNameSplits = res[0].data.eventName.split('.');
 
       this.pipelineName = res[0].data.name;
       this.pipelineDescription = res[0].data.description;
@@ -94,7 +94,7 @@ export class PipelinePageComponent implements OnInit {
       this.addNewActionDropdownEntries = this.validEventConfigurations.map(c => {
         const deserializedConfig = JSON.parse(c.seralizedEventReactorConfiguration);
 
-        const label = (deserializedConfig.$type as string).split(", ")[0].split(".").pop() + " (" + (deserializedConfig.$type as string).split(", ")[1] + ")";
+        const label = (deserializedConfig.$type as string).split(', ')[0].split('.').pop() + ' (' + (deserializedConfig.$type as string).split(', ')[1] + ')';
         return {
           label: label,
           selector: deserializedConfig.$type,
@@ -104,13 +104,13 @@ export class PipelinePageComponent implements OnInit {
       this.event = {
         title: eventFullNameSplits[eventFullNameSplits.length - 1],
         properties: this.eventBases,
-        description: "TODO GET ME",
+        description: 'TODO GET ME',
       };
 
       this.filterBlock = res[0].data.eventFilter && ((res[0].data.eventFilter as any).filters?.$values?.length > 0 || (res[0].data.eventFilter as any).filterValue)
         ? {
-          title: "Filter",
-          description: "Filter allow you to specify, which events should trigger this pipeline.",
+          title: 'Filter',
+          description: 'Filter allow you to specify, which events should trigger this pipeline.',
           properties: [] // we use a custom template to render the filter.
         }
         : null;
@@ -118,44 +118,44 @@ export class PipelinePageComponent implements OnInit {
       this.eventReactorConfigurations = res[0].data.serializedEventReactorConfiguration.$values.map(v => {
         const config = this.stringifyEventReactorConfiguration(v);
 
-        var configurationWithDetails = this.validEventConfigurations?.filter(c => c.seralizedEventReactorConfiguration.indexOf(config.uncleanedTypeName) !== -1)[0];
+        const configurationWithDetails = this.validEventConfigurations?.filter(c => c.seralizedEventReactorConfiguration.indexOf(config.uncleanedTypeName) !== -1)[0];
         return {
           title: config.typeName,
           properties: config.properties,
-          description: configurationWithDetails?.description ?? "",
+          description: configurationWithDetails?.description ?? '',
         };
       });
     });
   }
 
   public changeFilterGroupOperatorTo(filterBase: IFilterBase, event: string) {
-    if (event === "and") {
+    if (event === 'and') {
       (filterBase as IFilterGroup).operator = LogicalOperator.and as number;
-    } else if (event === "or") {
+    } else if (event === 'or') {
       (filterBase as IFilterGroup).operator = LogicalOperator.or as number;
     } else {
-      throw new Error("Unknown operator");
+      throw new Error('Unknown operator');
     }
   }
 
   public addNewFilterPartToBase(event: string) {
     if (!this.filter) {
-      if (event === "eventFilter") {
+      if (event === 'eventFilter') {
         this.filter = {
-          $type: "YAB.Core.Pipelines.Filter.Filter, YAB.Core.Pipelines",
-          filterValue: "29",
+          $type: 'YAB.Core.Pipelines.Filter.Filter, YAB.Core.Pipelines',
+          filterValue: '29',
           ignoreValueCasing: false,
-          propertyName: "MinuteOfHour",
+          propertyName: 'MinuteOfHour',
 
           // instance of FilterOperator
           operator: 0,
         } as IFilterBase;
-      } else if (event === "filterGroup") {
+      } else if (event === 'filterGroup') {
         this.filter = {
-          $type: "YAB.Core.Pipelines.Filter.FilterGroup, YAB.Core.Pipelines",
+          $type: 'YAB.Core.Pipelines.Filter.FilterGroup, YAB.Core.Pipelines',
 
           filters: {
-            $type: "System.Collections.ObjectModel.ReadOnlyCollection`1[[YAB.Core.Pipelines.Filter.FilterBase, YAB.Core.Pipelines]], System.Private.CoreLib",
+            $type: 'System.Collections.ObjectModel.ReadOnlyCollection`1[[YAB.Core.Pipelines.Filter.FilterBase, YAB.Core.Pipelines]], System.Private.CoreLib',
             $values: [],
           },
 
@@ -169,22 +169,22 @@ export class PipelinePageComponent implements OnInit {
   public addFilterPartToFilterBase(filterBase: IFilterBase, event: string) {
     const arrayOfFilterPartsToAddPartTo = (filterBase as IFilterGroup).filters.$values;
 
-    if (event === "eventFilter") {
+    if (event === 'eventFilter') {
       arrayOfFilterPartsToAddPartTo.push({
-        $type: "YAB.Core.Pipelines.Filter.Filter, YAB.Core.Pipelines",
-        filterValue: "29",
+        $type: 'YAB.Core.Pipelines.Filter.Filter, YAB.Core.Pipelines',
+        filterValue: '29',
         ignoreValueCasing: false,
-        propertyName: "MinuteOfHour",
+        propertyName: 'MinuteOfHour',
 
         // instance of FilterOperator
         operator: 0,
       } as IFilterBase);
-    } else if (event === "filterGroup") {
+    } else if (event === 'filterGroup') {
       arrayOfFilterPartsToAddPartTo.push({
-        $type: "YAB.Core.Pipelines.Filter.FilterGroup, YAB.Core.Pipelines",
+        $type: 'YAB.Core.Pipelines.Filter.FilterGroup, YAB.Core.Pipelines',
 
         filters: {
-          $type: "System.Collections.ObjectModel.ReadOnlyCollection`1[[YAB.Core.Pipelines.Filter.FilterBase, YAB.Core.Pipelines]], System.Private.CoreLib",
+          $type: 'System.Collections.ObjectModel.ReadOnlyCollection`1[[YAB.Core.Pipelines.Filter.FilterBase, YAB.Core.Pipelines]], System.Private.CoreLib',
           $values: [],
         },
 
@@ -211,14 +211,14 @@ export class PipelinePageComponent implements OnInit {
     });
 
     // make request to backend
-    await this._pipelinesService.AddNewActionToPipeline(this.pipelineId ?? "", this.lastChosenEventReactorConfigToAdd, propertiesFromTable).toPromise();
+    await this._pipelinesService.AddNewActionToPipeline(this.pipelineId ?? '', this.lastChosenEventReactorConfigToAdd, propertiesFromTable).toPromise();
 
     this.eventReactorConfigurations.push({
       title: config.typeName,
       properties: propertiesFromTable.map(pr => {
-        return pr.propertyName + ": \"" + pr.value + "\"";
+        return pr.propertyName + ': "' + pr.value + '"';
       }),
-      description: this.lastChosenEventReactorConfigToAdd?.description ?? "",
+      description: this.lastChosenEventReactorConfigToAdd?.description ?? '',
     });
 
     this.tableOfPropertiesOfReactorConfig = null;
@@ -232,7 +232,7 @@ export class PipelinePageComponent implements OnInit {
   public addNewActionToPipeline(selector: string) {
     const addedActionType = this.validEventConfigurations?.filter(c => c.seralizedEventReactorConfiguration.indexOf(selector) !== -1)[0];
     const config = this.stringifyEventReactorConfiguration(addedActionType?.seralizedEventReactorConfiguration as string);
-    var configurationWithDetails = this.validEventConfigurations?.filter(c => c.seralizedEventReactorConfiguration.indexOf(config.uncleanedTypeName) !== -1)[0];
+    const configurationWithDetails = this.validEventConfigurations?.filter(c => c.seralizedEventReactorConfiguration.indexOf(config.uncleanedTypeName) !== -1)[0];
 
     this.lastChosenEventReactorConfigToAdd = configurationWithDetails;
 
@@ -240,24 +240,15 @@ export class PipelinePageComponent implements OnInit {
       columns: TableOfOptionsToFillColumns,
       dataItems: (configurationWithDetails?.properties.$values ?? [] as PropertyDescription[]).map(pv => {
         return {
-          "propertyName": pv.propertyName,
-          "propertyDescription": pv.propertyDescription,
-          "value": pv.currentValue ?? "",
-          "isSecret": pv.isSecret,
-          "valueType": pv.valueType
+          'propertyName': pv.propertyName,
+          'propertyDescription': pv.propertyDescription,
+          'value': pv.currentValue ?? '',
+          'isSecret': pv.isSecret,
+          'valueType': pv.valueType
         };
       }),
-      title: "Add new \"" + config.typeName + "\""
+      title: 'Add new "' + config.typeName + '"'
     };
-  }
-
-  private stringifyEventReactorConfiguration(configuration: string): { typeName: string, properties: string[], uncleanedTypeName: string } {
-    const parsedConfig = JSON.parse(configuration);
-    let type = parsedConfig["$type"].split(", ")[0].split(".")[parsedConfig["$type"].split(", ")[0].split(".").length - 1] as string;
-    const cleanedType = type.substr(0, type.lastIndexOf("ReactorConfiguration"));
-    const properties = Object.entries(parsedConfig).filter(t => t[0] !== "$type").map(t => t[0] + ": \"" + t[1] + "\"");
-
-    return { typeName: cleanedType, properties: properties, uncleanedTypeName: type };
   }
 
   public isFilterBaseFilter(filterBase: IFilterBase) {
@@ -279,14 +270,11 @@ export class PipelinePageComponent implements OnInit {
   public getBorderImageForEventConfigurationBlockAndIndex(index: number) {
     if (this.eventReactorConfigurations.length === 0) {
       return 'linear-gradient(to right, rgb(0, 0, 0) 50%, rgb(0, 0, 0) 50%) 100% 1';
-    }
-    else if (this.eventReactorConfigurations.length === 1) {
+    } else if (this.eventReactorConfigurations.length === 1) {
       return 'linear-gradient(to right, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 50%) 100% 1';
-    }
-    else if (index === 0) {
+    } else if (index === 0) {
       return 'linear-gradient(to right, rgba(255, 255, 255, 0) 50%, rgb(0, 0, 0) 50%) 100% 1';
-    }
-    else if (index === this.eventReactorConfigurations.length - 1) {
+    } else if (index === this.eventReactorConfigurations.length - 1) {
       return 'linear-gradient(to right, rgb(0, 0, 0) 50%, rgba(255, 255, 255, 0) 50%) 100% 1';
     } else {
       return 'linear-gradient(to right, rgb(0, 0, 0) 50%, rgb(0, 0, 0) 50%) 100% 1';
@@ -295,17 +283,26 @@ export class PipelinePageComponent implements OnInit {
 
   public stringifyEventFilters(eventFilter: IFilterBase): string {
     if (!eventFilter) {
-      return "";
+      return '';
     }
     if (eventFilter.$type.indexOf('YAB.Core.Pipelines.Filter.Filter, ') !== -1) {
       const filter = eventFilter as IFilter;
       const filterOperation = Object.entries(FilterOperator).filter(o => o[1] === filter.operator)[0][0];
-      return "event." + filter.propertyName + " " + filterOperation + " \"" + filter.filterValue + "\" (ignoreCasing: " + filter.ignoreValueCasing + ")";
+      return 'event.' + filter.propertyName + ' ' + filterOperation + ' "' + filter.filterValue + '" (ignoreCasing: ' + filter.ignoreValueCasing + ')';
     } else {
       const filterGroup = eventFilter as IFilterGroup;
       const opEntries = Object.entries(LogicalOperator);
       const logicOperator = opEntries.filter(o => o[1] === filterGroup.operator)[0][0];
       return logicOperator;
     }
+  }
+
+  private stringifyEventReactorConfiguration(configuration: string): { typeName: string, properties: string[], uncleanedTypeName: string } {
+    const parsedConfig = JSON.parse(configuration);
+    const type = parsedConfig['$type'].split(', ')[0].split('.')[parsedConfig['$type'].split(', ')[0].split('.').length - 1] as string;
+    const cleanedType = type.substr(0, type.lastIndexOf('ReactorConfiguration'));
+    const properties = Object.entries(parsedConfig).filter(t => t[0] !== '$type').map(t => t[0] + ': "' + t[1] + '"');
+
+    return { typeName: cleanedType, properties: properties, uncleanedTypeName: type };
   }
 }

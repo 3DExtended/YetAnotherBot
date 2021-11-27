@@ -16,6 +16,8 @@ export class BotStatusIndicatorComponent implements OnInit {
 
   @ViewChild(ToggleSwitchComponent) toggle: ToggleSwitchComponent | undefined;
 
+  private errorRefreshingBotStatus: Subject<boolean> = new Subject<boolean>();
+
   constructor(private readonly _botStatusService: BotStatusService,
     private readonly _router: Router) { }
 
@@ -47,8 +49,6 @@ export class BotStatusIndicatorComponent implements OnInit {
     }
   }
 
-  private errorRefreshingBotStatus: Subject<boolean> = new Subject<boolean>();
-
   private reloadBotStatusForEver(refreshRate: number) {
     timer(0, refreshRate).pipe(
       takeUntil(this.errorRefreshingBotStatus),
@@ -62,7 +62,7 @@ export class BotStatusIndicatorComponent implements OnInit {
             if (!res.successful) {
               this.errorRefreshingBotStatus.next(false);
 
-              await this._router.navigateByUrl("/login");
+              await this._router.navigateByUrl('/login');
               return;
             }
             this.botIsRunning = res.data;
