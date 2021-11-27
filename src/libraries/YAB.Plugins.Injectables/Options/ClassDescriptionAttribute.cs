@@ -3,9 +3,9 @@
 namespace YAB.Plugins.Injectables.Options
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ReactorConfigurationDescriptionAttribute : Attribute
+    public class ClassDescriptionAttribute : Attribute
     {
-        public ReactorConfigurationDescriptionAttribute(string description)
+        public ClassDescriptionAttribute(string description)
         {
             Description = description;
         }

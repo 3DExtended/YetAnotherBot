@@ -44,8 +44,8 @@ namespace YAB.Api.Contracts.Controllers
                     var configurationInstance = (IEventReactorConfiguration)Activator.CreateInstance(configurationType);
                     var eventType = eventReactor2Interface.GetGenericArguments()[1];
 
-                    var descriptionAttribute = configurationType.GetCustomAttributes(typeof(ReactorConfigurationDescriptionAttribute), true)
-                        .Cast<ReactorConfigurationDescriptionAttribute>()
+                    var descriptionAttribute = configurationType.GetCustomAttributes(typeof(ClassDescriptionAttribute), true)
+                        .Cast<ClassDescriptionAttribute>()
                         .FirstOrDefault();
 
                     result.Add(new EventReactorConfigurationDto
