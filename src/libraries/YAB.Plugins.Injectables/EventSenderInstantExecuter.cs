@@ -56,7 +56,7 @@ namespace YAB.Plugins.Injectables
             // execute all pipelines (should not be many...)
             foreach (var pipeline in pipelinesToExecute)
             {
-                if (!FiltersAllowExecution(pipeline.EventFilter, evt))
+                if (pipeline.EventFilter is not null && !FiltersAllowExecution(pipeline.EventFilter, evt))
                 {
                     continue;
                 }

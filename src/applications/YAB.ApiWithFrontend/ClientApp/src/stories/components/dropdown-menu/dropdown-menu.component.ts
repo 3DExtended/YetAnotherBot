@@ -18,19 +18,27 @@ export class DropdownMenuComponent {
   @Input() leftOfButton = false;
   @Input() topOfButton = false;
 
+  private mouseEnteredContent = false;
 
   public showOptions: boolean = false;
 
   public showContent() {
     this.showOptions = true;
+    this.mouseEnteredContent = false;
   }
 
   public hideContent() {
-    this.showOptions = false;
+    if (this.mouseEnteredContent) {
+      this.showOptions = false;
+    }
+  }
+
+  public allowMouseLeaveToCloseContent() {
+    this.mouseEnteredContent = true;
   }
 
   public selected(entry: DropdownMenuEntry) {
-    this.hideContent();
+    this.showOptions = false;
     this.valueChanged.next(entry.selector);
   }
 

@@ -18,6 +18,7 @@ export class PipelinePageComponent implements OnInit {
 
   public showFilterDetails = false;
   public allowEdit = true;
+  public displayNewFilterBlock = false;
 
   public allBlockIcons: any = {
     filter: PipelineBlockIcon.Filter,
@@ -26,6 +27,27 @@ export class PipelinePageComponent implements OnInit {
   };
 
   public addNewActionDropdownEntries: DropdownMenuEntry[] = [];
+  public addNewFilterParts: DropdownMenuEntry[] = [
+    {
+      label: "Event Filter",
+      selector: "eventFilter"
+    },
+    {
+      label: "Filter Group",
+      selector: "filterGroup"
+    },
+  ];
+
+  public filterGroupOperatorDropdownEntries: DropdownMenuEntry[] = [
+    {
+      label: "And",
+      selector: "and"
+    },
+    {
+      label: "Or",
+      selector: "or"
+    },
+  ];
 
   public pipelineName: string | null = null;
   public pipelineDescription: string | null = null;
@@ -107,6 +129,72 @@ export class PipelinePageComponent implements OnInit {
     });
   }
 
+  public changeFilterGroupOperatorTo(filterBase: IFilterBase, event: string) {
+    if (event === "and") {
+      (filterBase as IFilterGroup).operator = LogicalOperator.and as number;
+    } else if (event === "or") {
+      (filterBase as IFilterGroup).operator = LogicalOperator.or as number;
+    } else {
+      throw new Error("Unknown operator");
+    }
+  }
+
+  public addNewFilterPartToBase(event: string) {
+    if (!this.filter) {
+      if (event === "eventFilter") {
+        this.filter = {
+          $type: "YAB.Core.Pipelines.Filter.Filter, YAB.Core.Pipelines",
+          filterValue: "29",
+          ignoreValueCasing: false,
+          propertyName: "MinuteOfHour",
+
+          // instance of FilterOperator
+          operator: 0,
+        } as IFilterBase;
+      } else if (event === "filterGroup") {
+        this.filter = {
+          $type: "YAB.Core.Pipelines.Filter.FilterGroup, YAB.Core.Pipelines",
+
+          filters: {
+            $type: "System.Collections.ObjectModel.ReadOnlyCollection`1[[YAB.Core.Pipelines.Filter.FilterBase, YAB.Core.Pipelines]], System.Private.CoreLib",
+            $values: [],
+          },
+
+          // instance of LogicalOperator
+          operator: 0
+        } as IFilterBase;
+      }
+    }
+  }
+
+  public addFilterPartToFilterBase(filterBase: IFilterBase, event: string) {
+    const arrayOfFilterPartsToAddPartTo = (filterBase as IFilterGroup).filters.$values;
+
+    if (event === "eventFilter") {
+      arrayOfFilterPartsToAddPartTo.push({
+        $type: "YAB.Core.Pipelines.Filter.Filter, YAB.Core.Pipelines",
+        filterValue: "29",
+        ignoreValueCasing: false,
+        propertyName: "MinuteOfHour",
+
+        // instance of FilterOperator
+        operator: 0,
+      } as IFilterBase);
+    } else if (event === "filterGroup") {
+      arrayOfFilterPartsToAddPartTo.push({
+        $type: "YAB.Core.Pipelines.Filter.FilterGroup, YAB.Core.Pipelines",
+
+        filters: {
+          $type: "System.Collections.ObjectModel.ReadOnlyCollection`1[[YAB.Core.Pipelines.Filter.FilterBase, YAB.Core.Pipelines]], System.Private.CoreLib",
+          $values: [],
+        },
+
+        // instance of LogicalOperator
+        operator: 0
+      } as IFilterBase);
+    }
+  }
+
   public async saveNewAction() {
     // add confirm button which stores those table values into the backend, adds a new action to the pipeline
 
@@ -149,7 +237,6 @@ export class PipelinePageComponent implements OnInit {
 
     this.lastChosenEventReactorConfigToAdd = configurationWithDetails;
 
-    // todo open popup with properties table
     this.tableOfPropertiesOfReactorConfig = {
       columns: TableOfOptionsToFillColumns,
       dataItems: (configurationWithDetails?.properties.$values ?? [] as PropertyDescription[]).map(pv => {

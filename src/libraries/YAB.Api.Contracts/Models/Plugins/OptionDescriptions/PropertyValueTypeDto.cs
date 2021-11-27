@@ -5,5 +5,6 @@
         String,
         Int,
         FloatingPoint,
+        Complex,
     }
 }

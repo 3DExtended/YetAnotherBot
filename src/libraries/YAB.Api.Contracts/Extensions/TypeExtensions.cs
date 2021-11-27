@@ -55,10 +55,21 @@ namespace YAB.Api.Contracts.Extensions
                     .Cast<PropertyDescriptionAttribute>()
                     .FirstOrDefault();
 
+                PropertyValueTypeDto? propertyValueType = null;
+                try
+                {
+                    propertyValueType=optionProperty.PropertyType.GetValueType();
+                }
+                catch (Exception)
+                {
+                    propertyValueType=null;
+                }
+
+
                 PropertyDescriptionDto descriptor = new PropertyDescriptionDto
                 {
                     PropertyName = optionProperty.Name,
-                    ValueType = optionProperty.PropertyType.GetValueType(),
+                    ValueType = propertyValueType ?? PropertyValueTypeDto.Complex,
                     PropertyDescription = propertyDescriptionAttribute?.Description,
                     IsSecret = propertyDescriptionAttribute?.IsSecret ?? true
                 };
@@ -84,13 +95,14 @@ namespace YAB.Api.Contracts.Extensions
             {
                 return PropertyValueTypeDto.FloatingPoint;
             }
-            else if (type == typeof(char) || type == typeof(string))
+            else if (type == typeof(char) || type == typeof(string) || type == typeof(Guid))
             {
                 return PropertyValueTypeDto.String;
             }
             else
             {
                 throw new NotImplementedException($"Could not translate type {type.FullName} to PropertyValueTypeDto.");
+                return PropertyValueTypeDto.Complex;
             }
         }
     }

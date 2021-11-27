@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
+using YAB.Api.Contracts.Extensions;
+using YAB.Api.Contracts.Models.Plugins.OptionDescriptions;
 using YAB.Core.Contracts.SupportedPlugins;
 using YAB.Core.Events;
 using YAB.Plugins.Injectables;
@@ -32,6 +35,28 @@ namespace YAB.Api.Contracts.Controllers
         {
             var result = JsonConvert.SerializeObject(_containerAccessor.Container.GetAllInstances<IEventBase>().ToList(), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
             return Ok(result);
+        }
+
+        [HttpGet("events/detailed")]
+        public IActionResult GetAllEventsDetailedAsync()
+        {
+            var events = _containerAccessor.Container.GetAllInstances<IEventBase>().ToList();
+            var result = new List<OptionsDescriptionDto>();
+
+            foreach (var option in events)
+            {
+                var optionPropertyDescriptions = option.GetType().GetPropertyDescriptorsForType();
+
+                var optionAsDescription = new OptionsDescriptionDto
+                {
+                    OptionFullName = option.GetType().FullName,
+                    Properties = optionPropertyDescriptions
+                };
+
+                result.Add(optionAsDescription);
+            }
+
+            return (IActionResult)Ok(result);
         }
 
         [HttpGet("officiallysupported")]
