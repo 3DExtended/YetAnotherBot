@@ -2,7 +2,7 @@ import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/co
 
 export interface PipelineBlock {
   title: string;
-  properties: string[];
+  properties: { label: string, value: string }[];
   description: string | null;
 };
 
@@ -83,6 +83,11 @@ export class PipelineElementComponent implements OnInit {
           + (this.borderDefinition.bottomRight ? 'rgb(0, 0, 0)' : 'rgba(255, 255, 255, 0)') + ' 50%) 100% 1'
       };
     }
+  }
+
+  public splitWordsOnUpperCase(text: string): string[] {
+    const words = text.split(/([A-Z][a-z]+)/).filter(w => w.length > 0);
+    return words;
   }
 
   public getLeftBorderStyle(): any {

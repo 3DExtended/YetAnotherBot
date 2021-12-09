@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { EventReactorConfiguration, EventReactorConfigurationService } from 'src/app/services/event-reactor-configurations.service';
 import { EventService } from 'src/app/services/event.service';
-import { FilterOperator, IFilter, IFilterBase, IFilterGroup, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
-import { PropertyDescription } from 'src/app/services/register.service';
+import { FilterOperator, IFilter, IFilterBase, IFilterGroup, List, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
+import { PluginService } from 'src/app/services/plugin.service';
+import { OptionsDescription, PropertyDescription } from 'src/app/services/register.service';
 import { DropdownMenuEntry } from 'src/stories/components/dropdown-menu/dropdown-menu.component';
 import { PipelineBlock, PipelineBlockIcon } from 'src/stories/components/pipeline-element/pipeline-element.component';
 import { TableOfOptionsToFill, TableOfOptionsToFillColumns } from '../register-page/register-page.component';
@@ -63,8 +64,11 @@ export class PipelinePageComponent implements OnInit {
   private pipelineId: string | null = null;
   private validEventConfigurations: EventReactorConfiguration[] | null = null;
   private lastChosenEventReactorConfigToAdd: EventReactorConfiguration | undefined;
+  public allEventsDetails: List<OptionsDescription> | undefined;
 
-  constructor(private readonly _pipelinesService: PipelinesService,
+  constructor(
+    private readonly _pipelinesService: PipelinesService,
+    private readonly _pluginsService: PluginService,
     private readonly _activatedRoute: ActivatedRoute,
     private readonly _eventsService: EventService,
     private readonly _eventReactorConfigurationService: EventReactorConfigurationService,
@@ -74,15 +78,18 @@ export class PipelinePageComponent implements OnInit {
     this.pipelineId = this._activatedRoute.snapshot.paramMap.get('guid');
 
     const pipelineLoader = this._pipelinesService.GetRegisteredPipelineById(this.pipelineId as string);
+    const eventDetailsLoader = this._pluginsService.GetAllEventsDetailed();
     const eventReactorConfigurationsLoader = this._eventReactorConfigurationService.GetAllEventReactorConfigurations();
     const registeredPipelineByIdAllowedEventBasesLoader = this._eventReactorConfigurationService.GetRegisteredPipelineByIdAllowedEventBases(this.pipelineId as string);
-    forkJoin([pipelineLoader, eventReactorConfigurationsLoader, registeredPipelineByIdAllowedEventBasesLoader]).subscribe(async res => {
+    forkJoin([pipelineLoader, eventReactorConfigurationsLoader, registeredPipelineByIdAllowedEventBasesLoader, eventDetailsLoader]).subscribe(async res => {
       if (res.some(r => !r.successful)) {
         await this._router.navigateByUrl('/login');
       }
       this.filter = res[0].data.eventFilter;
 
-      const eventFullNameSplits = res[0].data.eventName.split('.');
+      this.allEventsDetails = res[3].data;
+      const eventFullName = res[0].data.eventName;
+      const eventFullNameSplits = eventFullName.split('.');
 
       this.pipelineName = res[0].data.name;
       this.pipelineDescription = res[0].data.description;
@@ -101,10 +108,12 @@ export class PipelinePageComponent implements OnInit {
         };
       });
 
+      const eventDetails = this.allEventsDetails.$values.filter(v => v.optionFullName === eventFullName)[0];
+
       this.event = {
         title: eventFullNameSplits[eventFullNameSplits.length - 1],
-        properties: this.eventBases,
-        description: 'TODO GET ME',
+        properties: eventDetails.properties.$values.filter(p => !p.isSecret).map(p => { return { label: p.propertyName, value: p.propertyDescription } }),
+        description: eventDetails.optionFullName,
       };
 
       this.filterBlock = res[0].data.eventFilter && ((res[0].data.eventFilter as any).filters?.$values?.length > 0 || (res[0].data.eventFilter as any).filterValue)
@@ -216,7 +225,7 @@ export class PipelinePageComponent implements OnInit {
     this.eventReactorConfigurations.push({
       title: config.typeName,
       properties: propertiesFromTable.map(pr => {
-        return pr.propertyName + ': "' + pr.value + '"';
+        return { label: pr.propertyName, value: pr.value };
       }),
       description: this.lastChosenEventReactorConfigToAdd?.description ?? '',
     });
@@ -297,11 +306,11 @@ export class PipelinePageComponent implements OnInit {
     }
   }
 
-  private stringifyEventReactorConfiguration(configuration: string): { typeName: string, properties: string[], uncleanedTypeName: string } {
+  private stringifyEventReactorConfiguration(configuration: string): { typeName: string, properties: { label: string, value: string }[], uncleanedTypeName: string } {
     const parsedConfig = JSON.parse(configuration);
     const type = parsedConfig['$type'].split(', ')[0].split('.')[parsedConfig['$type'].split(', ')[0].split('.').length - 1] as string;
     const cleanedType = type.substr(0, type.lastIndexOf('ReactorConfiguration'));
-    const properties = Object.entries(parsedConfig).filter(t => t[0] !== '$type').map(t => t[0] + ': "' + t[1] + '"');
+    const properties = Object.entries(parsedConfig).filter(t => t[0] !== '$type').map(t => { return { label: t[0] as string, value: t[1] as string } });
 
     return { typeName: cleanedType, properties: properties, uncleanedTypeName: type };
   }

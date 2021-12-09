@@ -13,7 +13,7 @@
         width: fit-content;
         margin-right: auto !important;
         margin-left: 0cm !important;">
-          <div class="pr-4 pl-4 pb-4 pt-2 mb-1 mt-4 mx-auto" style="max-width: 420px;text-align: center;">
+          <div class="pr-4 pl-4 pb-4 pt-2 mb-1 mt-4 mx-auto" style="max-width: 500px;text-align: center;">
             <h3 class="font-bold text-xl px-2 mb-1.5 pt-3 " (click)="allowEdit=!allowEdit;">
               {{pipelineName}}
             </h3>
@@ -21,7 +21,7 @@
           </div>
 
           <app-pipeline-element [marginXAuto]="true" [elementDetails]="event" [icon]="allBlockIcons.event"
-                                [centerAligned]="true" [borderDefinition]="{
+            [centerAligned]="true" [borderDefinition]="{
               'topLeft': false,
               'topRight': false,
               'bottomLeft': false,
@@ -35,32 +35,33 @@
           </app-pipeline-element>
 
           <ng-container *ngIf="!filterBlock && allowEdit && !displayNewFilterBlock" [ngTemplateOutlet]="iconTemplate"
-                        [ngTemplateOutletContext]="{lineOutOfBottom: true, icon: 'FILTER'}">
+            [ngTemplateOutletContext]="{lineOutOfBottom: true, icon: 'FILTER'}">
           </ng-container>
 
           <div *ngIf="displayNewFilterBlock">
-            <div class="bg-white rounded-lg shadow-md hover:shadow-xl p-3 text-center">
+            <div class="bg-white rounded-lg shadow-md hover:shadow-xl p-3 text-center"
+              style="max-width: 500px;margin-left: 40px;">
 
-              <app-dropdown-menu *ngIf="allowEdit && !tableOfPropertiesOfReactorConfig" [topOfButton]="false"
-                                 [entries]="addNewFilterParts" (valueChanged)="addNewFilterPartToBase($event)">
+              <!-- <app-dropdown-menu *ngIf="allowEdit && !tableOfPropertiesOfReactorConfig" [topOfButton]="false"
+                [entries]="addNewFilterParts" (valueChanged)="addNewFilterPartToBase($event)">
                 <app-button [label]="'Add filter'" [primary]="false" class="text-right ml-auto" [bigButton]="false">
                 </app-button>
-              </app-dropdown-menu>
+              </app-dropdown-menu> -->
 
               <ng-container [ngTemplateOutlet]="filterDetailsTemplate"
-                            [ngTemplateOutletContext]="{filterBase:filter, depth: 1 }">
+                [ngTemplateOutletContext]="{filterBase:filter, depth: 1 }">
               </ng-container>
             </div>
             <div style="width: 40px;height: 40px;" class="m-auto">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24"
-                   style="width: 40px;height: 40px; " stroke="currentColor">
+                style="width: 40px;height: 40px; " stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 5 L 12 -25 Z" />
               </svg>
             </div>
           </div>
 
           <app-pipeline-element *ngIf="filterBlock" [marginXAuto]="true" [elementDetails]="filterBlock"
-                                [centerAligned]="true" [icon]="allBlockIcons.filter" [borderDefinition]="{
+            [centerAligned]="true" [icon]="allBlockIcons.filter" [borderDefinition]="{
             'topLeft': false,
             'topRight': false,
             'bottomLeft': false,
@@ -74,13 +75,14 @@
             <ng-template #content>
               <div>
                 <ng-container [ngTemplateOutlet]="filterDetailsTemplate"
-                              [ngTemplateOutletContext]="{filterBase:filter, depth: 1 }">
+                  [ngTemplateOutletContext]="{filterBase:filter, depth: 1 }">
                 </ng-container>
               </div>
             </ng-template>
           </app-pipeline-element>
 
-          <ng-container *ngFor="let eventConfiguration of eventReactorConfigurations; let lastConfig = last;let firstConfig = first; let index = index;">
+          <ng-container
+            *ngFor="let eventConfiguration of eventReactorConfigurations; let lastConfig = last;let firstConfig = first; let index = index;">
             <app-pipeline-element [marginXAuto]="true" [icon]="allBlockIcons.action" [borderDefinition]="{
               'topLeft': firstConfig,
               'topRight': false,
@@ -96,19 +98,19 @@
           </ng-container>
 
           <app-dropdown-menu *ngIf="allowEdit && !tableOfPropertiesOfReactorConfig" [topOfButton]="true"
-                             [entries]="addNewActionDropdownEntries" (valueChanged)="addNewActionToPipeline($event)">
+            [entries]="addNewActionDropdownEntries" (valueChanged)="addNewActionToPipeline($event)">
             <ng-container [ngTemplateOutlet]="addIconTemplate" [ngTemplateOutletContext]="{lineOutOfBottom: false }">
             </ng-container>
           </app-dropdown-menu>
         </div>
         <div *ngIf="tableOfPropertiesOfReactorConfig" class="bg-white rounded-lg shadow-md hover:shadow-xl ">
           <app-table [showShadow]='false' [title]="tableOfPropertiesOfReactorConfig.title"
-                     [data]="tableOfPropertiesOfReactorConfig">
+            [data]="tableOfPropertiesOfReactorConfig">
           </app-table>
 
           <div class="text-right ml-auto pb-3 pr-3">
             <app-button [label]="'Save!'" [primary]="true" class="text-right" [bigButton]="true"
-                        [disabled]="!isNewActionCompletlyConfigured()" (clicked)="saveNewAction()">
+              [disabled]="!isNewActionCompletlyConfigured()" (clicked)="saveNewAction()">
             </app-button>
           </div>
         </div>
@@ -119,10 +121,10 @@
 
 <ng-template #filterDetailsTemplate let-filterBase='filterBase' let-depth='depth'>
   <div [ngClass]="'bg-gray-' + (depth * 100)" [ngStyle]="{'color': depth > 4 ? 'white': 'inherit'}"
-       (click)="$event.preventDefault(); $event.stopImmediatePropagation();" class="p-2.5 m-1 rounded-md cursor-default">
+    (click)="$event.preventDefault(); $event.stopImmediatePropagation();" class="p-2.5 m-1 rounded-md cursor-default">
     <ng-container *ngIf="filterBase && isFilterBaseFilter(filterBase)">
-      <div class="grid gap-1" style="grid-template-columns: auto 1fr;">
-        <span>
+      <div class="grid gap-1 " style="grid-template-columns: auto 1fr;">
+        <span class="text-left">
           {{stringifyEventFilters(filterBase)}}
         </span>
         <span *ngIf="allowEdit" style="justify-self: right;">
@@ -134,19 +136,19 @@
     <ng-container *ngIf="filterBase && isFilterBaseFilterGroup(filterBase)">
       <div>
         <div class="grid gap-1 grid-cols-2">
-          <span>
+          <span class="text-left">
             {{stringifyEventFilters(filterBase)}}
           </span>
           <span *ngIf="allowEdit" style="justify-self: right;" class="inline-flex gap-0.5">
 
             <app-dropdown-menu class="float-right" [entries]="filterGroupOperatorDropdownEntries" [leftOfButton]="true"
-                               (valueChanged)="changeFilterGroupOperatorTo(filterBase, $event)">
+              (valueChanged)="changeFilterGroupOperatorTo(filterBase, $event)">
               <ng-container [ngTemplateOutlet]="editButtonTemplate">
               </ng-container>
             </app-dropdown-menu>
 
             <app-dropdown-menu class="float-right" [entries]="addNewFilterParts" [leftOfButton]="true"
-                               (valueChanged)="addFilterPartToFilterBase(filterBase, $event)">
+              (valueChanged)="addFilterPartToFilterBase(filterBase, $event)">
               <ng-container [ngTemplateOutlet]="addButtonTemplate">
               </ng-container>
             </app-dropdown-menu>
@@ -154,8 +156,8 @@
         </div>
         <div style="margin-left: 1em;" class="mt-1 pb-1">
           <ng-container *ngFor="let childFilter of filterBaseAsFilterGroup(filterBase).filters.$values"
-                        [ngTemplateOutlet]="filterDetailsTemplate"
-                        [ngTemplateOutletContext]="{filterBase:childFilter,depth: depth + 1 }">
+            [ngTemplateOutlet]="filterDetailsTemplate"
+            [ngTemplateOutletContext]="{filterBase:childFilter,depth: depth + 1 }">
           </ng-container>
         </div>
       </div>
@@ -165,29 +167,29 @@
 
 <ng-template #editButtonTemplate>
   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24"
-       stroke="currentColor">
+    stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
   </svg>
 </ng-template>
 
 <ng-template #addButtonTemplate>
   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24"
-       stroke="currentColor">
+    stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
   </svg>
 </ng-template>
 
 <ng-template #addIconTemplate let-lineOutOfBottom='lineOutOfBottom'>
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="2 2 20 20" class="cursor-pointer m-auto"
-       style="width: 2.5rem;height: 2.5rem; animation: pulse 2s cubic-bezier(0.4, 0.5, 0.6, 0.75) infinite; "
-       stroke="currentColor">
+    style="width: 2.5rem;height: 2.5rem; animation: pulse 2s cubic-bezier(0.4, 0.5, 0.6, 0.75) infinite; "
+    stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
   <div *ngIf="lineOutOfBottom" style="width: 40px;height: 40px;" class="m-auto">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24" style="width: 40px;height: 40px; "
-         stroke="currentColor">
+      stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 5 L 12 -25 Z" />
     </svg>
   </div>
@@ -197,28 +199,28 @@
 <ng-template #iconTemplate let-icon='icon' let-lineOutOfBottom='lineOutOfBottom'>
   <!-- event -->
   <svg *ngIf="icon === 'EVENT'" xmlns="http://www.w3.org/2000/svg" class="cursor-pointer m-auto"
-       style="width: 40px;height: 40px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    style="width: 40px;height: 40px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
   </svg>
 
   <!-- Filter -->
   <svg *ngIf="icon === 'FILTER'" xmlns="http://www.w3.org/2000/svg" class="cursor-pointer m-auto"
-       (click)="displayNewFilterBlock = true" style="width: 40px;height: 40px;" fill="none" viewBox="0 0 24 24"
-       stroke="currentColor">
+    (click)="displayNewFilterBlock = true" style="width: 40px;height: 40px;" fill="none" viewBox="0 0 24 24"
+    stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
   </svg>
 
   <!-- Action -->
   <svg *ngIf="icon === 'ACTION'" xmlns="http://www.w3.org/2000/svg" class="cursor-pointer m-auto"
-       style="width: 40px;height: 40px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    style="width: 40px;height: 40px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
   </svg>
 
   <div *ngIf="lineOutOfBottom" style="width: 40px;height: 40px;" class="m-auto">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -21 24 24" style="width: 40px;height: 40px; "
-         stroke="currentColor">
+      stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 5 L 12 -25 Z" />
     </svg>
   </div>

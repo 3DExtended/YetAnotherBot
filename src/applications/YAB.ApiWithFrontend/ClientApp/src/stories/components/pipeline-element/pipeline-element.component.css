@@ -3,3 +3,11 @@
 .customLeftBorderStyle {
   border-image-slice: 1 !important;
 }
+
+.elementDetailsTableRow {
+  border-bottom: solid 2px #cccccc73;
+}
+
+.elementDetailsTableCell {
+  border-right: solid 2px #cccccc73;
+}

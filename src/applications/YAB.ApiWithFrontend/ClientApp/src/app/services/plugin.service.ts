@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ErrorHandledResult } from '../shared/errorHandledResult';
 import { errorHandler } from '../shared/errorHandler';
 import { List } from './pipelines.service';
+import { OptionsDescription } from './register.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,11 @@ export class PluginService {
   public GetAllEvents(): Observable<ErrorHandledResult<EventType[]>> {
     return this._httpClient.get<any>(this.baseUrl + 'api/plugins/events')
       .pipe(errorHandler<EventType[]>());
+  }
+
+  public GetAllEventsDetailed(): Observable<ErrorHandledResult<List<OptionsDescription>>> {
+    return this._httpClient.get<any>(this.baseUrl + 'api/plugins/events/detailed')
+      .pipe(errorHandler<List<OptionsDescription>>());
   }
 }
 
