@@ -8,10 +8,10 @@ namespace YAB.Plugins.Injectables.Options
         where T : Options<T>, new()
     {
         [JsonIgnore]
-        protected string decryptPassword = null;
+        protected string _decryptPassword = null;
 
         [JsonIgnore]
-        private JsonSerializerOptions serializerOptions = new JsonSerializerOptions { IncludeFields = true };
+        private readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions { IncludeFields = true };
 
         [JsonIgnore]
         public static string Filename { get => typeof(T).Name.ToLower().Trim().Replace(".", "") + "EncryptedSettings.encjson"; }
@@ -21,18 +21,18 @@ namespace YAB.Plugins.Injectables.Options
             if (File.Exists(Filename))
             {
                 // TODO decrypt file
-                var loadedSettings = JsonSerializer.Deserialize<T>(File.ReadAllText(Filename), serializerOptions);
+                var loadedSettings = JsonSerializer.Deserialize<T>(File.ReadAllText(Filename), _serializerOptions);
 
-                loadedSettings.decryptPassword = password;
+                loadedSettings._decryptPassword = password;
 
-                foreach (var prop in this.GetType().GetProperties())
+                foreach (var prop in GetType().GetProperties())
                 {
                     prop.SetValue(this, prop.GetValue(loadedSettings));
                 }
             }
             else
             {
-                throw new FileNotFoundException($"Could not load file for {this.GetType().Name}. Did you register this option yet?");
+                throw new FileNotFoundException($"Could not load file for {GetType().Name}. Did you register this option yet?");
             }
         }
 

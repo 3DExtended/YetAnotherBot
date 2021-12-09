@@ -127,7 +127,7 @@ namespace YAB.Api.Contracts.Controllers
         public Task<IActionResult> GetRegisteredPipelinesAsync(CancellationToken cancellationToken)
         {
             var pipelineStore = _containerAccessor.Container.GetInstance<IPipelineStore>();
-            List<PipelineDto> resultDtos = pipelineStore.Pipelines.Select(p => new PipelineDto
+            var resultDtos = pipelineStore.Pipelines.Select(p => new PipelineDto
             {
                 Name = p.Name,
                 Description = p.Description,

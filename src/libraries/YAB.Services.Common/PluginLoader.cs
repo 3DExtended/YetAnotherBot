@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 using SimpleInjector;
 
@@ -16,15 +17,15 @@ namespace YAB.Services.Common
 {
     public static class PluginLoader
     {
-        public static string PluginsDirectory = "/plugins/";
+        public static string PLUGINS_DIRECTORY = "/plugins/";
 
         public static void LoadAllPlugins(this Container container)
         {
             Console.WriteLine(Directory.GetCurrentDirectory());
 
-            Directory.CreateDirectory(Directory.GetCurrentDirectory() + PluginsDirectory);
+            Directory.CreateDirectory(Directory.GetCurrentDirectory() + PLUGINS_DIRECTORY);
 
-            var pluginFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + PluginsDirectory, "*.dll", SearchOption.AllDirectories);
+            var pluginFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + PLUGINS_DIRECTORY, "*.dll", SearchOption.AllDirectories);
             pluginFiles = pluginFiles
                 .Where(f => !f.Contains("\\YAB"))
                 .Where(f => f.Split("\\ref\\").Count() == 1)
@@ -123,6 +124,25 @@ namespace YAB.Services.Common
             container.Collection.Register(typeof(IFilterExtension), loadedFilterExtensions);
             container.Collection.Register(typeof(IEventBase), loadedEvents);
             container.Collection.Register(typeof(IOptions), loadedOptions);
+        }
+
+        public static string MD5(string challenge, string password)
+        {
+            // Use input string to calculate MD5 hash
+            using (var md5 = System.Security.Cryptography.MD5.Create())
+            {
+                var inputBytes = System.Text.Encoding.UTF8.GetBytes(challenge + '-' + password);
+                var hashBytes = md5.ComputeHash(inputBytes);
+
+                // Convert the byte array to hexadecimal string
+                var sb = new StringBuilder();
+                for (var i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("X2"));
+                }
+
+                return sb.ToString();
+            }
         }
     }
 }
