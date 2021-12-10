@@ -93,6 +93,17 @@ export interface IFilterGroup extends IFilterBase {
   operator: number;
 }
 
+export interface IFilterExtensionConfiguration {
+  $type: string;
+  [key: string]: any;
+}
+
+export interface IFilterExtension extends IFilterBase {
+  $type: 'YAB.Core.Pipelines.Filter.FilterExtension, YAB.Core.Pipelines';
+
+  customFilterConfiguration: IFilterExtensionConfiguration;
+}
+
 export interface IEventReactorConfiguration {
   $type: string;
 }

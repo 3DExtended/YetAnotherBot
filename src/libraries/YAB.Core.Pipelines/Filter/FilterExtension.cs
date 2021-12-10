@@ -4,6 +4,6 @@ namespace YAB.Core.Pipelines.Filter
 {
     public class FilterExtension : FilterBase
     {
-        public IFilterExtension CustomFilter { get; set; }
+        public IFilterExtensionConfiguration CustomFilterConfiguration { get; set; }
     }
 }

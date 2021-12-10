@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 using YAB.Core.EventReactor;
 using YAB.Core.Events;
+using YAB.Core.FilterExtension;
 using YAB.Core.Pipelines.Filter;
 
 namespace YAB.Plugins.Injectables
@@ -54,7 +55,7 @@ namespace YAB.Plugins.Injectables
             // execute all pipelines (should not be many...)
             foreach (var pipeline in pipelinesToExecute)
             {
-                if (pipeline.EventFilter is not null && !FiltersAllowExecution(pipeline.EventFilter, evt))
+                if (pipeline.EventFilter is not null && !await FiltersAllowExecutionAsync(pipeline.EventFilter, evt, cancellationToken).ConfigureAwait(false))
                 {
                     continue;
                 }
@@ -127,7 +128,7 @@ namespace YAB.Plugins.Injectables
             await runAsyncMethod.Invoke(handlerInstance, new[] { mapper.Map(configuration, configuration.GetType(), correctConfigurationType), (object)evt, cancellationToken }).ConfigureAwait(false);
         }
 
-        private bool FiltersAllowExecution(FilterBase filterBase, IEventBase evt)
+        private async Task<bool> FiltersAllowExecutionAsync(FilterBase filterBase, IEventBase evt, CancellationToken cancellationToken)
         {
             if (filterBase is FilterGroup filterGroup)
             {
@@ -138,7 +139,7 @@ namespace YAB.Plugins.Injectables
 
                 foreach (var filterBaseInGroup in filterGroup.Filters)
                 {
-                    var subFilterAllowsExecution = FiltersAllowExecution(filterBaseInGroup, evt);
+                    var subFilterAllowsExecution = await FiltersAllowExecutionAsync(filterBaseInGroup, evt, cancellationToken).ConfigureAwait(false);
                     switch (filterGroup.Operator)
                     {
                         case LogicalOperator.And:
@@ -160,33 +161,27 @@ namespace YAB.Plugins.Injectables
                     return false;
                 }
             }
-            else if (filterBase is Filter filter)
+            else if (filterBase is FilterExtension filter)
             {
-                var listOfProperties = evt.GetType().GetProperties().Where(p => p.CanRead).ToList();
-                var propertyOfFilterComparison = listOfProperties
-                        .SingleOrDefault(p => p.Name.Equals(filter.PropertyName, StringComparison.CurrentCultureIgnoreCase));
+                var filterExtensionConfigurationType = filter.CustomFilterConfiguration.GetType();
+                var filterExtensionConfigurationInterfaceWithGenericParams = filterExtensionConfigurationType.GetInterfaces()
+                    .Where(i => i.IsGenericType && i.GetGenericArguments().Count() == 2 && i.GetGenericTypeDefinition() == typeof(IFilterExtensionConfiguration<,>))
+                    .Single();
 
-                if (propertyOfFilterComparison == null)
-                {
-                    return false;
-                }
+                var filterExtensionType = filterExtensionConfigurationInterfaceWithGenericParams
+                    .GetGenericArguments()
+                    .First();
 
-                var eventPropertyString = propertyOfFilterComparison.GetValue(evt).ToString();
+                // Create instance of IFilterExtension
+                var filterExtension = Activator.CreateInstance(filterExtensionType);
 
-                switch (filter.Operator)
-                {
-                    case FilterOperator.Contains:
-                        return eventPropertyString.Contains(filter.FilterValue, filter.IgnoreValueCasing ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+                // get following method signature: "public Task<bool> RunAsync(TConfiguration config, TEvent evt, CancellationToken cancellationToken);"
+                var runAsyncMethod = filterExtension.GetType()
+                    .GetMethods()
+                    .Single(m => m.Name == "RunAsync" && m.ReturnType == typeof(Task<bool>) && m.GetParameters().Count() == 3);
 
-                    case FilterOperator.NotContains:
-                        return !eventPropertyString.Contains(filter.FilterValue, filter.IgnoreValueCasing ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
-
-                    case FilterOperator.Equals:
-                        return eventPropertyString.Equals(filter.FilterValue, filter.IgnoreValueCasing ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
-
-                    case FilterOperator.NotEquals:
-                        return !eventPropertyString.Equals(filter.FilterValue, filter.IgnoreValueCasing ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
-                }
+                var runAsyncResult = (Task<bool>)runAsyncMethod.Invoke(filterExtension, new object[] { filter.CustomFilterConfiguration, evt, cancellationToken });
+                return await runAsyncResult.ConfigureAwait(false);
             }
 
             throw new NotImplementedException("This kind of filter type is not implemented.");

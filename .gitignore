@@ -340,3 +340,4 @@ desktop.ini
 /plugin-repos
 /plugins
 /src/applications/YAB.ApiWithFrontend/plugins
+src/applications/YAB.ApiWithFrontend/ClientApp/src/app/pages/dashboard-page/dashboard-page.component.ts

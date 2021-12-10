@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,6 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using YAB.Api.Contracts.Extensions;
 using YAB.Api.Contracts.Models.Plugins.OptionDescriptions;
 using YAB.Api.Contracts.Models.Plugins.OptionDescriptions.UpdateRequest;
+using YAB.Core.EventReactor;
+using YAB.Core.Events;
+using YAB.Core.Filters;
+using YAB.Core.Pipeline;
+using YAB.Core.Pipelines.Filter;
 using YAB.Plugins.Injectables;
 using YAB.Plugins.Injectables.Options;
 

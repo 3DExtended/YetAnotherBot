@@ -1,4 +1,4 @@
-﻿namespace YAB.Core.Pipelines.Filter
+﻿namespace YAB.Core.Filters
 {
     public enum FilterOperator
     {

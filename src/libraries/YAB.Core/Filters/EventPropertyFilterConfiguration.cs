@@ -1,6 +1,9 @@
-﻿namespace YAB.Core.Pipelines.Filter
+﻿using YAB.Core.Events;
+using YAB.Core.FilterExtension;
+
+namespace YAB.Core.Filters
 {
-    public class Filter : FilterBase
+    public class EventPropertyFilterConfiguration : IFilterExtensionConfiguration<EventPropertyFilter, EventBase>
     {
         public string FilterValue { get; set; }
 

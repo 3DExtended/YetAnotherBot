@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { forkJoin, Subject, timer } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { EventLoggingEntryDto, EventService } from 'src/app/services/event.service';
-import { FilterOperator, IFilter, IFilterBase, IFilterGroup, List, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
+import { FilterOperator, IFilter, IFilterBase, IFilterExtension, IFilterGroup, List, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
 import { PluginService } from 'src/app/services/plugin.service';
 import { DropdownMenuEntry } from 'src/stories/components/dropdown-menu/dropdown-menu.component';
 import { LineGraphDataset } from 'src/stories/components/line-graph/line-graph-dataset';
@@ -253,7 +253,15 @@ export class DashboardPageComponent implements OnInit {
       const filter = eventFilter as IFilter;
       const filterOperation = Object.entries(FilterOperator).filter(o => o[1] === filter.operator)[0][0];
       return filter.propertyName + ' ' + filterOperation + ' "' + filter.filterValue + '" (ignoreCasing: ' + filter.ignoreValueCasing + ')';
-    } else {
+    } if (eventFilter.$type.indexOf('YAB.Core.Pipelines.Filter.FilterExtension, ') !== -1) {
+      const filter = eventFilter as IFilterExtension;
+      const configuration = filter.customFilterConfiguration;
+      const configurationName = configuration.$type.split(", ")[0].split('.')[configuration.$type.split(", ")[0].split('.').length - 1];
+
+      const filterOperation = Object.entries(configuration).filter(o => o[0] !== "$type");
+      return configurationName + ': {' + filterOperation.map(t => '"' + t[0] + '": "' + t[1] + '"').join(', ') + '}';
+    }
+    else {
       const filterGroup = eventFilter as IFilterGroup;
       const filterDescriptions = filterGroup.filters.$values.map(v => '(' + this.stringifyEventFilters(v) + ')');
       const logicOperator = Object.entries(LogicalOperator).filter(o => o[1] === filterGroup.operator)[0][0];
