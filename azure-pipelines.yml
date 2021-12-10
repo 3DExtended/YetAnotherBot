@@ -15,6 +15,18 @@ stages:
 - stage: Build
   displayName: Build image
   jobs:
+  - job: SyncToGithub
+    displayName: Sync to GitHub
+    pool: default
+    steps:
+      - task: CmdLine@2
+        inputs:
+          script: |
+            git clone https://3dextended@dev.azure.com/3dextended/YetAnotherbot/_git/YetAnotherbot
+            cd YetAnotherbot
+            git remote add githuborigin https://github.com/3DExtended/YetAnotherBot.git
+            git push -u githuborigin
+
   - job: Build
     displayName: Build
     pool: Tower DOCKER
