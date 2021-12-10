@@ -24,9 +24,7 @@ stages:
           script: |
             git checkout master 
             git status
-            cd YetAnotherbot
-            git remote add githuborigin https://github.com/3DExtended/YetAnotherBot.git
-            git push -u githuborigin
+            git push https://$(GITHUBACCESSTOKEN)@github.com/3DExtended/YetAnotherBot.git
 
   - job: Build
     displayName: Build
