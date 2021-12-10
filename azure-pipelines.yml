@@ -22,7 +22,7 @@ stages:
       - task: CmdLine@2
         inputs:
           script: |
-            git clone https://3dextended@dev.azure.com/3dextended/YetAnotherbot/_git/YetAnotherbot
+            git status
             cd YetAnotherbot
             git remote add githuborigin https://github.com/3DExtended/YetAnotherBot.git
             git push -u githuborigin
