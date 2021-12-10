@@ -22,6 +22,7 @@ stages:
       - task: CmdLine@2
         inputs:
           script: |
+            git checkout master 
             git status
             cd YetAnotherbot
             git remote add githuborigin https://github.com/3DExtended/YetAnotherBot.git
