@@ -22,10 +22,11 @@ stages:
       - task: CmdLine@2
         inputs:
           script: |
-            git pull
             git checkout master 
+            git pull https://$(DEVOPSACCESSTOKEN)@dev.azure.com/3dextended/YetAnotherbot/_git/YetAnotherbot master
             git pull https://$(GITHUBACCESSTOKEN)@github.com/3DExtended/YetAnotherBot.git master
             git status
+            git push https://$(DEVOPSACCESSTOKEN)@dev.azure.com/3dextended/YetAnotherbot/_git/YetAnotherbot
             git push https://$(GITHUBACCESSTOKEN)@github.com/3DExtended/YetAnotherBot.git
 
   - job: Build
