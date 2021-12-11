@@ -23,6 +23,7 @@ stages:
         inputs:
           script: |
             git checkout master 
+            git pull https://$(GITHUBACCESSTOKEN)@github.com/3DExtended/YetAnotherBot.git
             git status
             git push https://$(GITHUBACCESSTOKEN)@github.com/3DExtended/YetAnotherBot.git
 
