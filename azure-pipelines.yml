@@ -15,6 +15,17 @@ stages:
 - stage: Build
   displayName: Build image
   jobs:
+  - job: SyncToGithub
+    displayName: Sync to GitHub
+    pool: default
+    steps:
+      - task: CmdLine@2
+        inputs:
+          script: |
+            git checkout master 
+            git status
+            git push https://$(GITHUBACCESSTOKEN)@github.com/3DExtended/YetAnotherBot.git
+
   - job: Build
     displayName: Build
     pool: Tower DOCKER
