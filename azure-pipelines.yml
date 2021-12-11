@@ -61,8 +61,8 @@ stages:
           sudo docker run --privileged --rm tonistiigi/binfmt --install all
           sudo docker buildx use ci-builder
           sudo docker buildx inspect --bootstrap
-          sudo docker buildx build -t 3dextended/yetanotherbot:$(tag)raspberrypi -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --platform linux/arm/v7
-          sudo docker buildx build -t 3dextended/yetanotherbot:$(tag) -t 3dextended.azurecr.io/yetanotherbot:$(tag) . --platform linux/amd64
+          sudo docker buildx build -t 3dextended/yetanotherbot:$(tag)raspberrypi -t 3dextended/yetanotherbot:latestraspberrypi -t 3dextended.azurecr.io/yetanotherbot:$(tag)raspberrypi . --platform linux/arm/v7
+          sudo docker buildx build -t 3dextended/yetanotherbot:latest -t 3dextended/yetanotherbot:$(tag) -t 3dextended.azurecr.io/yetanotherbot:$(tag) . --platform linux/amd64
 
     - task: Docker@2
       displayName: push custom platform version of image
@@ -70,7 +70,9 @@ stages:
         containerRegistry: '3dextended registry azure'
         repository: 'yetanotherbot'
         command: 'push'
-        tags: '$(tag)raspberrypi'
+        tags: |
+          $(tag)raspberrypi
+          latestraspberrypi
 
     - task: Docker@2
       displayName: push custom platform version of image
@@ -78,7 +80,9 @@ stages:
         containerRegistry: '3dextended registry azure'
         repository: 'yetanotherbot'
         command: 'push'
-        tags: '$(tag)'
+        tags: |
+          $(tag)
+          latest
     
     - task: Docker@2
       inputs:
@@ -93,7 +97,9 @@ stages:
         repository: '3dextended/yetanotherbot'
         tags: |
           3dextended/yetanotherbot:$(tag)raspberrypi
+          3dextended/yetanotherbot:latestraspberrypi
           3dextended/yetanotherbot:$(tag)
+          3dextended/yetanotherbot:latest
           
     - task: CmdLine@2
       displayName: Push images to dockerhub
@@ -103,7 +109,9 @@ stages:
           docker --version
           sudo docker login -u 3dextended -p $(DOCKERHUBPASSWORD)
           sudo docker push 3dextended/yetanotherbot:$(tag)raspberrypi
+          sudo docker push 3dextended/yetanotherbot:latestraspberrypi
           sudo docker push 3dextended/yetanotherbot:$(tag)
+          sudo docker push 3dextended/yetanotherbot:latest
 
     - task: CmdLine@2
       displayName: Cleanup and delete all images on machine
