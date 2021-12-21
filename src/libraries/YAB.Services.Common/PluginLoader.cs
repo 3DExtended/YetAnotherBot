@@ -10,6 +10,7 @@ using SimpleInjector;
 using YAB.Core.EventReactor;
 using YAB.Core.Events;
 using YAB.Core.FilterExtension;
+using YAB.Core.Filters;
 using YAB.Plugins;
 using YAB.Plugins.Injectables.Options;
 
@@ -37,7 +38,9 @@ namespace YAB.Services.Common
             var loadedEvents = new List<Type>();
             var loadedOptions = new List<IOptions> { new BotOptions() };
             var loadedEventReactors = new List<Type>();
-            var loadedFilterExtensions = new List<Type>();
+            var loadedFilterExtensions = new List<Type> {
+                typeof(EventPropertyFilter)
+            };
             var loadedBackgroundTasks = new List<Type>();
 
             var lastCounterOfExceptionsWhileLoading = int.MaxValue;

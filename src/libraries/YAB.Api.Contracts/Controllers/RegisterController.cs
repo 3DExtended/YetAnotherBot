@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -43,6 +43,29 @@ namespace YAB.Api.Contracts.Controllers
             var pluginInstalled = await _availablePluginsHelper.InstallPlugin(extensionName, cancellationToken).ConfigureAwait(false);
 
             return Ok(pluginInstalled);
+        }
+
+        [HttpPost("addpredefinedpipeline")]
+        public async Task<IActionResult> AddPredefinedPipelineAsync(CancellationToken cancellationToken)
+        {
+            _pipelineStore.Pipelines.Add(Pipeline.CreateForEvent<EventBase>(
+                "Test pipeline",
+                "A pipeline intended for testing event filters.",
+                new FilterExtension
+                {
+                    CustomFilterConfiguration = new EventPropertyFilterConfiguration
+                    {
+                        FilterValue = "15",
+                        PropertyName = "asdf",
+                        IgnoreValueCasing = true,
+                        Operator = FilterOperator.Contains
+                    }
+                },
+                new List<IEventReactorConfiguration>()));
+
+            await _pipelineStore.SavePipelinesAsync(cancellationToken).ConfigureAwait(false);
+
+            return Ok();
         }
 
         [HttpGet("optionsToFill")]

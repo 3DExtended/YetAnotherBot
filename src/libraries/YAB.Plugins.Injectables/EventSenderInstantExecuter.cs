@@ -18,18 +18,29 @@ namespace YAB.Plugins.Injectables
     public class EventSenderInstantExecuter : IEventSender
     {
         private readonly IList<IEventReactor> _allEventReactors;
+        private readonly IContainerAccessor _containerAccessor;
+        private readonly IList<Type> _filterExtensionConfigurations;
+        private readonly IList<IFilterExtension> _filterExtensions;
         private readonly IFrontendLogging _frontendLogging;
         private readonly ILogger _logger;
         private readonly IPipelineStore _pipelineStore;
 
         private Dictionary<Guid, System.Timers.Timer> _timers = new Dictionary<Guid, System.Timers.Timer>();
 
-        public EventSenderInstantExecuter(IPipelineStore pipelineStore, ILogger logger, IList<IEventReactor> allEventReactors, IFrontendLogging frontendLogging)
+        public EventSenderInstantExecuter(IPipelineStore pipelineStore, ILogger logger, IList<IEventReactor> allEventReactors, IFrontendLogging frontendLogging, IContainerAccessor containerAccessor, IList<IFilterExtension> filterExtensions)
         {
             _pipelineStore = pipelineStore;
             _logger = logger;
             _allEventReactors = allEventReactors;
             _frontendLogging = frontendLogging;
+            _containerAccessor = containerAccessor;
+            _filterExtensions = filterExtensions;
+            _filterExtensionConfigurations = _filterExtensions
+                .Select(f => f.GetType()
+                    .GetInterfaces()
+                    .Single(i => i.IsGenericType && i.GetGenericArguments().Count() == 2 && i.GetGenericTypeDefinition() == typeof(IFilterExtension<,>))
+                    .GetGenericArguments()[0])
+                .ToList();
         }
 
         public static T CastObject<T>(object obj) where T : class
@@ -172,15 +183,22 @@ namespace YAB.Plugins.Injectables
                     .GetGenericArguments()
                     .First();
 
-                // Create instance of IFilterExtension
-                var filterExtension = Activator.CreateInstance(filterExtensionType);
+                // Get instance of IFilterExtension
+                var instanceOfFilterExtension = _filterExtensions.Single(e => e.GetType().FullName == filterExtensionType.FullName);
+
+                var filterConfiguration = Activator.CreateInstance(_filterExtensionConfigurations.Single(c => c.FullName == filterExtensionConfigurationType.FullName));
+
+                foreach (var property in filterExtensionConfigurationType.GetProperties())
+                {
+                    property.SetValue(filterConfiguration, property.GetValue(filter.CustomFilterConfiguration));
+                }
 
                 // get following method signature: "public Task<bool> RunAsync(TConfiguration config, TEvent evt, CancellationToken cancellationToken);"
-                var runAsyncMethod = filterExtension.GetType()
+                var runAsyncMethod = instanceOfFilterExtension.GetType()
                     .GetMethods()
                     .Single(m => m.Name == "RunAsync" && m.ReturnType == typeof(Task<bool>) && m.GetParameters().Count() == 3);
 
-                var runAsyncResult = (Task<bool>)runAsyncMethod.Invoke(filterExtension, new object[] { filter.CustomFilterConfiguration, evt, cancellationToken });
+                var runAsyncResult = (Task<bool>)runAsyncMethod.Invoke(instanceOfFilterExtension, new object[] { filterConfiguration, evt, cancellationToken });
                 return await runAsyncResult.ConfigureAwait(false);
             }
 

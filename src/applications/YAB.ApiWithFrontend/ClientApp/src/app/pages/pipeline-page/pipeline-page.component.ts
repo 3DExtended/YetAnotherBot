@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { EventReactorConfiguration, EventReactorConfigurationService } from 'src/app/services/event-reactor-configurations.service';
 import { EventService } from 'src/app/services/event.service';
-import { FilterOperator, IFilter, IFilterBase, IFilterGroup, List, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
+import { IFilter, IFilterBase, IFilterExtension, IFilterGroup, List, LogicalOperator, PipelinesService } from 'src/app/services/pipelines.service';
 import { PluginService } from 'src/app/services/plugin.service';
 import { OptionsDescription, PropertyDescription } from 'src/app/services/register.service';
 import { DropdownMenuEntry } from 'src/stories/components/dropdown-menu/dropdown-menu.component';
@@ -116,7 +116,7 @@ export class PipelinePageComponent implements OnInit {
         description: eventDetails.optionFullName,
       };
 
-      this.filterBlock = res[0].data.eventFilter && ((res[0].data.eventFilter as any).filters?.$values?.length > 0 || (res[0].data.eventFilter as any).filterValue)
+      this.filterBlock = res[0].data.eventFilter && ((res[0].data.eventFilter as any).filters?.$values?.length > 0 || (res[0].data.eventFilter as IFilterExtension).customFilterConfiguration)
         ? {
           title: 'Filter',
           description: 'Filter allow you to specify, which events should trigger this pipeline.',
@@ -151,13 +151,14 @@ export class PipelinePageComponent implements OnInit {
     if (!this.filter) {
       if (event === 'eventFilter') {
         this.filter = {
-          $type: 'YAB.Core.Pipelines.Filter.Filter, YAB.Core.Pipelines',
-          filterValue: '29',
-          ignoreValueCasing: false,
-          propertyName: 'MinuteOfHour',
-
-          // instance of FilterOperator
-          operator: 0,
+          $type: 'YAB.Core.Pipelines.Filter.FilterExtension YAB.Core.Pipelines',
+          customFilterConfiguration: {
+            "$type": "YAB.Core.Filters.EventPropertyFilterConfiguration, YAB.Core",
+            "FilterValue": "15",
+            "IgnoreValueCasing": true,
+            "Operator": 2,
+            "PropertyName": "MinuteOfHour"
+          }
         } as IFilterBase;
       } else if (event === 'filterGroup') {
         this.filter = {
@@ -180,7 +181,7 @@ export class PipelinePageComponent implements OnInit {
 
     if (event === 'eventFilter') {
       arrayOfFilterPartsToAddPartTo.push({
-        $type: 'YAB.Core.Pipelines.Filter.Filter, YAB.Core.Pipelines',
+        $type: 'YAB.Core.Pipelines.Filter.FilterExtension YAB.Core.Pipelines',
         filterValue: '29',
         ignoreValueCasing: false,
         propertyName: 'MinuteOfHour',
@@ -261,7 +262,7 @@ export class PipelinePageComponent implements OnInit {
   }
 
   public isFilterBaseFilter(filterBase: IFilterBase) {
-    return (filterBase.$type.indexOf('YAB.Core.Pipelines.Filter.Filter,') !== -1);
+    return (filterBase.$type.indexOf('YAB.Core.Pipelines.Filter.FilterExtension') !== -1);
   }
 
   public filterBaseAsFilter(filterBase: IFilterBase): IFilter {
@@ -294,13 +295,17 @@ export class PipelinePageComponent implements OnInit {
     if (!eventFilter) {
       return '';
     }
-    if (eventFilter.$type.indexOf('YAB.Core.Pipelines.Filter.Filter, ') !== -1) {
-      const filter = eventFilter as IFilter;
-      const filterOperation = Object.entries(FilterOperator).filter(o => o[1] === filter.operator)[0][0];
-      return 'event.' + filter.propertyName + ' ' + filterOperation + ' "' + filter.filterValue + '" (ignoreCasing: ' + filter.ignoreValueCasing + ')';
+    if (eventFilter.$type.indexOf('YAB.Core.Pipelines.Filter.FilterExtension, ') !== -1) {
+      const filter = eventFilter as IFilterExtension;
+      const configuration = filter.customFilterConfiguration;
+      const configurationName = configuration.$type.split(", ")[0].split('.')[configuration.$type.split(", ")[0].split('.').length - 1];
+
+      const configurationEntries = Object.entries(configuration).filter(o => o[0] !== "$type");
+      return configurationName + ': {' + configurationEntries.map(t => '"' + t[0] + '": "' + t[1] + '"').join(', ') + '}';
     } else {
       const filterGroup = eventFilter as IFilterGroup;
       const opEntries = Object.entries(LogicalOperator);
+      debugger;
       const logicOperator = opEntries.filter(o => o[1] === filterGroup.operator)[0][0];
       return logicOperator;
     }
