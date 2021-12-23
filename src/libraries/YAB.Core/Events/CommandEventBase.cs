@@ -2,7 +2,7 @@
 
 namespace YAB.Core.Events
 {
-    public abstract class CommandEventBase : UserEventBase
+    public abstract class CommandEventBase : EventBase
     {
         public IReadOnlyList<string> Arguments { get; set; }
 
